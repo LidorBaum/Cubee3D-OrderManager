@@ -51,50 +51,31 @@ const VaseSchema = Schema(
   }
 );
 
-// UserSchema.statics.linkDogToUser = function (userId, dogId) {
-//   return this.findOneAndUpdate(
-//     {
-//       _id: userId,
-//     },
-//     {
-//       $addToSet: {
-//         dogsIds: dogId,
-//       },
-//     }
-//   );
-// };
+VaseSchema.statics.createVase = function (vaseObj) {
+  return this.create(vaseObj);
+};
 
-// UserSchema.statics.createUser = function (userObj) {
-//   return this.create(userObj);
-// };
+VaseSchema.statics.getAllVases = function () {
+  return this.find({}).exec();
+};
 
-// UserSchema.statics.checkEmailAvailable = function (email) {
-//   console.log(email, "email is ");
-//   return this.findOne({ email: email });
-// };
 
+VaseSchema.statics.deleteVase = function (vaseObj) {
+  return this.deleteOne({ _id: vaseObj });
+};
+ 
 // UserSchema.statics.getByEmail = async function (email) {
 //   console.log("getting by email");
 //   const user = await this.findOne({ email: email });
 //   console.log(user, "USER FROM EMAIL");
 //   return user;
 // };
-
-// UserSchema.statics.getAllUsers = function () {
-//   return this.find({}).sort({ name: 1 }).exec();
-// };
-
 // UserSchema.statics.getById = function (userId) {
 //   return this.findById(userId);
 // };
-
-// UserSchema.statics.deleteUser = function (userId) {
-//   return this.deleteOne({ _id: userId });
-// };
-
-// UserSchema.statics.updateUser = function (userObj) {
+// VaseSchema.statics.updateVase = function (vaseObj) {
 //   return this.findOneAndUpdate(
-//     { _id: userObj._id },
+//     { _id: vaseObj._id },
 //     {
 //       $set: {
 //         name: userObj.name,

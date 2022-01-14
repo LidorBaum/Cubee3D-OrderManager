@@ -4,93 +4,66 @@ const Libs = require("../libs");
 const Schema = db.mongoose.Schema;
 
 const FilamentSchema = Schema(
-  {
-    color: {
-      type: String,
-      required: true,
+    {
+        color: {
+            type: String,
+            required: true,
+        },
+        vendor: {
+            type: String,
+            required: true,
+        },
+        store: {
+            type: String,
+            required: true,
+        },
+        price: {
+            type: Number,
+            required: true,
+        },
+        weight: {
+            type: Number,
+            required: true,
+            default: 1000
+        },
     },
-    vendor: {
-      type: String,
-      required: true,
-    },
-    store: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    weight: {
-      type: Number,
-      required: true,
-      default: 1000
-    },
-    quantity: {
-        type: Number,
-        required: true,
-        default: 0
+    {
+        collection: "Filaments",
+        versionKey: false,
+        timestamps: true,
     }
-  },
-  {
-    collection: "Filaments",
-    versionKey: false,
-    timestamps: true,
-  }
 );
 
-// UserSchema.statics.linkDogToUser = function (userId, dogId) {
-//   return this.findOneAndUpdate(
-//     {
-//       _id: userId,
-//     },
-//     {
-//       $addToSet: {
-//         dogsIds: dogId,
-//       },
-//     }
-//   );
-// };
+FilamentSchema.statics.createFilament = function (FilamentObj) {
+    return this.create(FilamentObj);
+};
 
-// UserSchema.statics.createUser = function (userObj) {
-//   return this.create(userObj);
-// };
+FilamentSchema.statics.getAllFilaments = function () {
+    return this.find({}).exec();
+};
 
-// UserSchema.statics.checkEmailAvailable = function (email) {
-//   console.log(email, "email is ");
-//   return this.findOne({ email: email });
-// };
+FilamentSchema.statics.deleteFilamentPermanent = function (FilamentObj) {
+    return this.deleteOne({ _id: FilamentObj });
+};
 
-// UserSchema.statics.getByEmail = async function (email) {
-//   console.log("getting by email");
-//   const user = await this.findOne({ email: email });
-//   console.log(user, "USER FROM EMAIL");
-//   return user;
-// };
+FilamentSchema.statics.decreaseWeight = function (filamentId, weightToRemove) {
+    return this.updateOne({ _id: filamentId },
+        {
+            $inc: {
+                weight: -weightToRemove
+            }
+        }
+    )
+}
 
-// UserSchema.statics.getAllUsers = function () {
-//   return this.find({}).sort({ name: 1 }).exec();
-// };
-
-// UserSchema.statics.getById = function (userId) {
-//   return this.findById(userId);
-// };
-
-// UserSchema.statics.deleteUser = function (userId) {
-//   return this.deleteOne({ _id: userId });
-// };
-
-// UserSchema.statics.updateUser = function (userObj) {
-//   return this.findOneAndUpdate(
-//     { _id: userObj._id },
-//     {
-//       $set: {
-//         name: userObj.name,
-//         email: userObj.email,
-//       },
-//     },
-//     { new: true }
-//   );
-// };
+FilamentSchema.statics.increaseWeight = function (filamentId, weightToAdd) {
+    return this.updateOne({ _id: filamentId },
+        {
+            $inc: {
+                weight: weightToAdd
+            }
+        }
+    )
+}
 
 exports.FilamentModel = db.connection.model("Filament", FilamentSchema);

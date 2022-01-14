@@ -9,6 +9,9 @@ const OrderSchema = Schema(
             type: String,
             required: true,
         },
+        comment: {
+            type: String,
+        },
         selectedVasesArray: {
             type: [
                 {
@@ -33,10 +36,10 @@ const OrderSchema = Schema(
                     },
                     status: {
                         type: String,
-                        enum: ["Pending","Approved","Printing","Ready","Shipped","Delivered","Cancelled"],
+                        enum: ["Pending", "Approved", "Printing", "Ready", "Shipped", "Delivered", "Cancelled"],
                         default: "Pending",
                     },
-                    storeAddress:{
+                    storeAddress: {
                         type: String,
                     }
                 },
@@ -53,58 +56,21 @@ const OrderSchema = Schema(
 );
 
 
-// UserSchema.statics.linkDogToUser = function (userId, dogId) {
-//   return this.findOneAndUpdate(
-//     {
-//       _id: userId,
-//     },
-//     {
-//       $addToSet: {
-//         dogsIds: dogId,
-//       },
-//     }
-//   );
-// };
+OrderSchema.statics.createOrder = function (orderObj) {
+    return this.create(orderObj);
+};
 
-// UserSchema.statics.createUser = function (userObj) {
-//   return this.create(userObj);
-// };
+OrderSchema.statics.getAllOrders = function () {
+    return this.find({}).exec();
+};
 
-// UserSchema.statics.checkEmailAvailable = function (email) {
-//   console.log(email, "email is ");
-//   return this.findOne({ email: email });
-// };
+OrderSchema.statics.updateStatus = function (orderId, newStatus) {
+    return this.updateOne({ _id: orderId }, {
+        $set: {
+            status: newStatus
+        }
+    })
+}
 
-// UserSchema.statics.getByEmail = async function (email) {
-//   console.log("getting by email");
-//   const user = await this.findOne({ email: email });
-//   console.log(user, "USER FROM EMAIL");
-//   return user;
-// };
-
-// UserSchema.statics.getAllUsers = function () {
-//   return this.find({}).sort({ name: 1 }).exec();
-// };
-
-// UserSchema.statics.getById = function (userId) {
-//   return this.findById(userId);
-// };
-
-// UserSchema.statics.deleteUser = function (userId) {
-//   return this.deleteOne({ _id: userId });
-// };
-
-// UserSchema.statics.updateUser = function (userObj) {
-//   return this.findOneAndUpdate(
-//     { _id: userObj._id },
-//     {
-//       $set: {
-//         name: userObj.name,
-//         email: userObj.email,
-//       },
-//     },
-//     { new: true }
-//   );
-// };
 
 exports.OrderModel = db.connection.model("Order", OrderSchema);
