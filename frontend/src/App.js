@@ -11,6 +11,7 @@ import Alert from '@mui/material/Alert';
 import Slide from '@mui/material/Slide';
 import { VaseManagment } from './pages/VaseManagment';
 import { FialmentMangement } from './pages/FilamentManagement';
+import { OrderPage } from './pages/OrderPage';
 
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
@@ -107,6 +108,10 @@ function App() {
                                     <Route
                                         path="/inventory/filament"
                                         component={FialmentMangement}
+                                    />
+                                    <Route
+                                        path="/order"
+                                        component={OrderPage}
                                     />
                                 </Switch>
                             </div>

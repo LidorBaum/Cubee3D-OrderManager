@@ -1,0 +1,52 @@
+.sizeButton {
+    cursor: pointer;
+    background-color: rgb(54, 137, 247);
+}
+.order-page {
+    display: flex;
+    justify-content: space-between;
+}
+.cart {
+    width: 30vw;
+    background-color: rgb(196, 213, 250);
+    .vase-cart-card {
+        display: flex;
+        gap: 20px;
+        justify-content: flex-start;
+        align-items: center;
+        border-top: 1px solid black;
+    }
+    .cart-vase {
+        width: 120px;
+        object-fit: stretch;
+        border-radius: 10px;
+    }
+    .cart-filament {
+        width: 100px;
+        border-radius: 10px;
+    }
+    button {
+        width: 30px;
+        height: 30px;
+    }
+}
+.products {
+    flex-basis: 2;
+    align-self: center;
+}
+.colors {
+    display: flex;
+    gap: 5px;
+    margin: 10px 0px;
+    .modal-filament-img {
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+    }
+    .selectedColor {
+        border: 3px solid rgb(42, 187, 245);
+    }
+}
+.addtocart {
+    color: violet;
+}

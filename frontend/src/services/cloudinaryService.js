@@ -4,7 +4,7 @@ const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 export async function uploadImg(ev) {
     const formData = new FormData();
     formData.append('file', ev.target.files[0]);
-    formData.append('upload_preset', 'echoshareImgs');
+    formData.append('upload_preset', 'g0chqgej');
     try {
         const res = await fetch(UPLOAD_URL, {
             method: 'POST',

@@ -1,3 +1,38 @@
+.vase-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+.add-new-btn {
+    width: 200px;
+}
+form {
+    display: flex;
+    flex-direction: row;
+    width: 500px;
+    // height: 400px;
+    gap: 30px;
+    margin-bottom: 10px;
+    align-items: center;
+    .form-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .form-img {
+        height: 100%;
+    }
+    .company-form-img {
+        height: 250px;
+        width: auto;
+    }
+    .primary-img {
+        display: block;
+
+        width: 200px;
+    }
+}
 .vase-list {
     display: flex;
     justify-content: center;
@@ -28,7 +63,7 @@
         .sizesp {
             display: flex;
             gap: 30px;
-            color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
         }
         .sizeHover {
             width: 40px;
