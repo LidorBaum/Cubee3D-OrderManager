@@ -1,0 +1,61 @@
+.filament-list {
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    padding: 5px;
+    align-items: center;
+    margin: 0 auto;
+    .opacity {
+        opacity: 0%;
+        transition: all 0.5s;
+    }
+    .filament-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 5px;
+        padding: 5px;
+        border: 3px solid rgba(2, 44, 63, 0.719);
+        text-align: center;
+        width: 250px;
+        height: 300px;
+        box-sizing: border-box;
+        border-radius: 15px;
+        align-items: center;
+        font-size: 20px;
+        // line-height: px;
+        // .sizesp{
+        //     display: flex;
+        //     gap: 30px;
+        //     color: rgb(255, 255, 255)
+        // }
+        .sizeHover {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgb(40, 133, 255);
+            padding: 5px;
+            border-radius: 5px;
+        }
+        p {
+            white-space: nowrap;
+            // overflow: hidden;
+            height: auto;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            margin-bottom: 5 !important;
+            // padding: 10px;
+        }
+        .filament-img {
+            width: 40%;
+            height: 40%;
+            padding-bottom: 5px;
+            object-fit: cover;
+            border-radius: 15px;
+            justify-self: center;
+            transition: all 2.2s;
+            overflow: hidden;
+        }
+    }
+}

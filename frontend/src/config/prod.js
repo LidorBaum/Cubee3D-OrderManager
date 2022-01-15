@@ -1,4 +1,4 @@
 module.exports = {
-  // baseURL: 'https://presence-board-echo.herokuapp.com',
-  env: "prod",
+    // baseURL: 'https://presence-board-echo.herokuapp.com',
+    env: 'prod',
 };

@@ -8,21 +8,12 @@ import React, { useEffect, useState, useContext } from 'react';
 // import Select from 'react-select';
 // import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 // import { snackNoEmployees } from '../snackMessages';
-import GoogleMap from '../cmps/GoogleMap'
-
-
-
+import GoogleMap from '../cmps/GoogleMap';
 
 export const ParksPage = () => {
-
-
-
-
     return (
-        <div className='mapcon'>
-        <GoogleMap />
+        <div className="mapcon">
+            <GoogleMap />
         </div>
-        
-    )
-
+    );
 };

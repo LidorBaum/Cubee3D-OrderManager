@@ -1,5 +1,5 @@
-const db = require("./db-connections/OrderManager-db");
-const Libs = require("../libs");
+const db = require('./db-connections/OrderManager-db');
+const Libs = require('../libs');
 
 const Schema = db.mongoose.Schema;
 
@@ -24,11 +24,15 @@ const FilamentSchema = Schema(
         weight: {
             type: Number,
             required: true,
-            default: 1000
+            default: 1000,
+        },
+        image: {
+            type: String,
+            required: true,
         },
     },
     {
-        collection: "Filaments",
+        collection: 'Filaments',
         versionKey: false,
         timestamps: true,
     }
@@ -47,23 +51,25 @@ FilamentSchema.statics.deleteFilamentPermanent = function (FilamentObj) {
 };
 
 FilamentSchema.statics.decreaseWeight = function (filamentId, weightToRemove) {
-    return this.updateOne({ _id: filamentId },
+    return this.updateOne(
+        { _id: filamentId },
         {
             $inc: {
-                weight: -weightToRemove
-            }
+                weight: -weightToRemove,
+            },
         }
-    )
-}
+    );
+};
 
 FilamentSchema.statics.increaseWeight = function (filamentId, weightToAdd) {
-    return this.updateOne({ _id: filamentId },
+    return this.updateOne(
+        { _id: filamentId },
         {
             $inc: {
-                weight: weightToAdd
-            }
+                weight: weightToAdd,
+            },
         }
-    )
-}
+    );
+};
 
-exports.FilamentModel = db.connection.model("Filament", FilamentSchema);
+exports.FilamentModel = db.connection.model('Filament', FilamentSchema);
