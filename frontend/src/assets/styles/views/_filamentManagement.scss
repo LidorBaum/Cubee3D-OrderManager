@@ -1,3 +1,8 @@
+.filament-form-basic{
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
 .filament-list {
     display: flex;
     justify-content: center;
@@ -10,7 +15,7 @@
         opacity: 0%;
         transition: all 0.5s;
     }
-    .filament-card {
+    .filament-card {  
         position: relative;
         display: flex;
         flex-direction: column;
@@ -19,18 +24,16 @@
         padding: 5px;
         border: 3px solid rgba(2, 44, 63, 0.719);
         text-align: center;
-        width: 250px;
+        width: 300px;
         height: 300px;
         box-sizing: border-box;
         border-radius: 15px;
         align-items: center;
         font-size: 20px;
-        // line-height: px;
-        // .sizesp{
-        //     display: flex;
-        //     gap: 30px;
-        //     color: rgb(255, 255, 255)
-        // }
+        gap: 3px;
+        p{
+            margin:0
+        }
         .sizeHover {
             width: 40px;
             height: 40px;
@@ -56,6 +59,10 @@
             justify-self: center;
             transition: all 2.2s;
             overflow: hidden;
+        }
+        .edit-delete-btns{
+            display: flex;
+            gap: 20px;
         }
     }
 }

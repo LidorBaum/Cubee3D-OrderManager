@@ -1,4 +1,4 @@
 module.exports = {
-    // baseURL: 'https://presence-board-echo.herokuapp.com',
+    baseURL: 'https://peaceful-falls-72058.herokuapp.com',
     env: 'prod',
 };

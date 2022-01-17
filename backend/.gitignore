@@ -47,4 +47,3 @@ testem.log
 Thumbs.db
 
 # react build folder
-public/*

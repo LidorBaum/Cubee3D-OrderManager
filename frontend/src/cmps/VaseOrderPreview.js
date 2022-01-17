@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import ReactTooltip from 'react-tooltip';
 
 export function VaseOrderPreview({ vase, handleOpen }) {
+    if(!vase.sizes.small.printTime && !vase.sizes.small.printTime && !vase.sizes.small.printTime) return <></>
+
     const onSelectSize = size => {
         const dbSize = size.toLowerCase();
         const vaseObj = {
@@ -12,7 +14,7 @@ export function VaseOrderPreview({ vase, handleOpen }) {
             size: size,
             vaseId: vase._id,
             image: vase.image,
-            dimensions: `Height ${vase.sizes[dbSize].height}mm, Diamter ${vase.sizes[dbSize].diamter}mm`,
+            dimensions: `Height ${vase.sizes[dbSize].height}mm, Diamter ${vase.sizes[dbSize].diameter}mm`,
         };
         handleOpen(vaseObj);
     };

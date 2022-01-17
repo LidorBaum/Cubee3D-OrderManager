@@ -2,9 +2,11 @@ import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import ReactTooltip from 'react-tooltip';
 
-export function FilamentPreview({ filament, deleteFilament }) {
+export function FilamentPreview({ filament, deleteFilament, editFilament }) {
     console.log(filament);
-
+    const onEditFilament = () =>{
+        editFilament(filament)
+    }
     const onRemoveFilament = () => {
         deleteFilament(filament._id);
     };
@@ -23,6 +25,10 @@ export function FilamentPreview({ filament, deleteFilament }) {
                 alt="filamentimg"
                 className={'filament-img'}
             />
+            <div className='edit-delete-btns'>
+            <Button onClick={onEditFilament} variant="contained" color="primary">
+                Edit
+            </Button>
             <Button
                 onClick={onRemoveFilament}
                 variant="contained"
@@ -30,6 +36,7 @@ export function FilamentPreview({ filament, deleteFilament }) {
             >
                 Remove
             </Button>
+            </div>
         </article>
     );
 }

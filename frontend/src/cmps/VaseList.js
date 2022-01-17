@@ -1,7 +1,7 @@
 import React from 'react';
 import { VasePreview } from './VasePreview';
 
-export const VaseList = ({ vases, deleteVase }) => {
+export const VaseList = ({ vases, deleteVase, editVase }) => {
     return (
         <>
             <div className="vase-list">
@@ -10,6 +10,7 @@ export const VaseList = ({ vases, deleteVase }) => {
                         key={vase._id}
                         vase={vase}
                         deleteVase={deleteVase}
+                        editVase={editVase}
                     />
                 ))}
             </div>

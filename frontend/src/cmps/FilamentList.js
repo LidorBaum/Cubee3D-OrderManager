@@ -1,7 +1,7 @@
 import React from 'react';
 import { FilamentPreview } from './FilamentPreview';
 
-export const FilamentList = ({ filaments, deleteFilament }) => {
+export const FilamentList = ({ filaments, deleteFilament, editFilament }) => {
     return (
         <>
             <div className="filament-list">
@@ -10,6 +10,7 @@ export const FilamentList = ({ filaments, deleteFilament }) => {
                         key={filament._id}
                         filament={filament}
                         deleteFilament={deleteFilament}
+                        editFilament={editFilament}
                     />
                 ))}
             </div>
