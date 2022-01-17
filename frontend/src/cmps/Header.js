@@ -42,6 +42,13 @@ export function Header(props) {
             >
                 Filaments
             </NavLink>
+            <NavLink
+                activeClassName="active"
+                to={'/inventory/order'}
+                exact={true}
+            >
+                Orders
+            </NavLink>
             <NavLink activeClassName="active" to={'/order'} exact={true}>
                 Place An Order
             </NavLink>
