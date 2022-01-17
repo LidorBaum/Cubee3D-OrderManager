@@ -12,10 +12,11 @@
 @import 'basics/buttons.scss';
 
 // Components
-@import './views/loginSignup';
+// @import './views/loginSignup';
 @import './views/vaseManagement';
 @import './views/filamentManagement';
 @import './views/orderPage';
+@import './views/header';
 
 .mapcon {
     width: 100px;

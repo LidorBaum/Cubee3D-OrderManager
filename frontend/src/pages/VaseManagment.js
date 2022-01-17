@@ -30,11 +30,16 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-
-
+    backdrop: "#626565"
 };
 
 export const VaseManagment = () => {
+    if (window.screen.width < 1000) {
+        console.log('mobile');
+        style.width = window.screen.width - 50
+        style.overflow = 'scroll'
+        style.height = '80%'
+    }
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [vases, setVases] = useState(null);
     const [isRefresh, setDoRefresh] = useState(false);

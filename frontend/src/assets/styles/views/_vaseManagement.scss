@@ -34,10 +34,6 @@ form {
     .form-img {
         height: 100%;
     }
-    .company-form-img {
-        height: 250px;
-        width: auto;
-    }
     .primary-img {
         display: block;
 
@@ -108,4 +104,19 @@ form {
             gap: 20px;
         }
     }
+}
+@media only screen and (max-width: 750px) {
+    form {
+        display: flex;
+        flex-direction: column;
+        .vase-form-sizes-input{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 4px;
+            // background-color: violet;
+
+        }
+    }
+
 }

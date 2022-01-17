@@ -32,9 +32,14 @@ const style = {
     boxShadow: 24,
     p: 4,
 
-
 };
 export const FialmentMangement = () => {
+    if (window.screen.width < 1000) {
+        console.log('mobile');
+        style.width = window.screen.width - 50
+        style.overflow = 'scroll'
+        style.height = '80%'
+    }
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [filaments, setFilaments] = useState(null);
     const [isRefresh, setDoRefresh] = useState(false);
@@ -101,13 +106,13 @@ export const FialmentMangement = () => {
         setDoRefresh(!isRefresh);
         notificationHandler.warning(snackFilamentDeleted);
     };
-    const editFilament = filament =>{
+    const editFilament = filament => {
         console.log(filament);
         setFilamentToEdit(filament)
         setPrimaryUrl(filament.image)
         handleOpen()
     }
-    const onAddFilament = async (e) =>{
+    const onAddFilament = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         if (
@@ -158,13 +163,13 @@ export const FialmentMangement = () => {
                 </Link>
             </div>
             <Box textAlign='center' sx={{ 'margin-top': 10 }} >
-            <Button
-                onClick={handleOpen}
-                className="add-new-btn"
-                variant="contained"
-            >
-                Add New Filament
-            </Button>
+                <Button
+                    onClick={handleOpen}
+                    className="add-new-btn"
+                    variant="contained"
+                >
+                    Add New Filament
+                </Button>
             </Box>
             <div>
                 <FilamentList
@@ -173,7 +178,7 @@ export const FialmentMangement = () => {
                     editFilament={editFilament}
                 />
             </div>
-            
+
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -182,8 +187,8 @@ export const FialmentMangement = () => {
             >
                 <Box sx={style}>
                     {/* <FormControl fullWidth> */}
-                        <h2>New Filament</h2>
-                    <form id='filament-form' onSubmit={onAddFilament}>
+                    <h2>New Filament</h2>
+                    <form className='filament-form' id='filament-form' onSubmit={onAddFilament}>
                         <div className='filament-form-basic'>
                             <TextField
                                 required
@@ -213,7 +218,7 @@ export const FialmentMangement = () => {
                                 value={filamentToEdit.weight}
                                 onChange={handleChange}
                                 type="number"
-                                inputProps={{  'min': 1 }}
+                                inputProps={{ 'min': 1 }}
                             />
                             <TextField
                                 required
@@ -222,7 +227,7 @@ export const FialmentMangement = () => {
                                 value={filamentToEdit.price}
                                 onChange={handleChange}
                                 type="number"
-                                inputProps={{  'min': 1 }}
+                                inputProps={{ 'min': 1 }}
                             />
 
 

@@ -11,7 +11,7 @@ export function Header(props) {
     let history = useHistory();
     const notificationHandler = useContext(SnackbarHandlerContext);
 
-    useEffect(() => {}, [loggedUser]);
+    useEffect(() => { }, [loggedUser]);
 
     const onLogout = async () => {
         const res = await userService.logout();
@@ -25,7 +25,32 @@ export function Header(props) {
     //   setLoggedCompany(null);
     //   history.push("/");
     // };
-    if (true) return <div>Header</div>;
+    if (false) return <div>Header</div>;
+    return (
+        <div  className="links">
+            <NavLink
+                activeClassName="active"
+                to={'/inventory/vase'}
+                exact={true}
+            >
+                Vases
+            </NavLink>
+            <NavLink
+                activeClassName="active"
+                to={'/inventory/filament'}
+                exact={true}
+            >
+                Filaments
+            </NavLink>
+            <NavLink
+                activeClassName="active"
+                to={'/order'}
+                exact={true}
+            >
+                Place An Order
+            </NavLink>
+        </div>
+    )
     // return (
     //   <div className="header">
     //     <NavLink to={"/"}>

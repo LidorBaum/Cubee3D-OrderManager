@@ -1,0 +1,29 @@
+.links{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgb(226, 225, 225);
+    height: 100px;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+.links * {
+    display: inline-block;
+    margin-inline-end: 30px;
+    vertical-align: middle;
+    text-decoration: none;
+    color: rgb(130, 194, 255);
+    transition: all 0.4s;
+    
+    &:hover {
+        color: rgba(23, 202, 178, 0.753);
+        transform: scale(1.08);
+    }
+    &:last-child {
+        transform: scale(1);
+    }
+}
+
+.active {
+    color: rgba(19, 50, 136, 0.753);
+}

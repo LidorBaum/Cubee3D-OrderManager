@@ -82,13 +82,6 @@ function App() {
                                 </Snackbar>
                             }
                             <Header />
-                            <button
-                                onClick={() =>
-                                    notificationHandler.success('Snackbar')
-                                }
-                            >
-                                Test Snack
-                            </button>
                             <div className="content">
                                 <Switch>
                                     {/* <Route path="/" component={Home} exact /> */}

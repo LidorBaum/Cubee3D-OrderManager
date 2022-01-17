@@ -7,6 +7,8 @@ import { VaseOrderList } from '../cmps/VaseOrderList';
 // import io from 'socket.io-client';
 // import Spin from 'react-cssfx-loading/lib/Spin';
 // import Select from 'react-select';
+import ReactTooltip from 'react-tooltip';
+
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import vaseService from '../services/vaseService';
 import {
@@ -21,7 +23,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { TextField } from '@mui/material';
 import { Link } from 'react-router-dom';
-
+import Cookies from 'js-cookie'
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import filamentService from '../services/filamentService';
 import { Cart } from '../cmps/Cart';
@@ -69,24 +71,13 @@ export const OrderPage = () => {
         dimensions: '',
         vaseId: '',
     });
-
+    const cartCookie= Cookies.get('cart')
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [vases, setVases] = useState(null);
     const [filaments, setFilaments] = useState(null);
     const [isRefresh, setDoRefresh] = useState(false);
-    const [selectedProducts, setSelectedProducts] = useState([
-        // {
-        //     vaseId: "XTZ",
-        //     name: "Gusin",
-        //     size: "Large",
-        //     image: "https://res.cloudinary.com/echoshare/image/upload/v1642250618/Gusein_vase_1642080295590_ytwfxu.jpg",
-        //     type: "Planter",
-        //     color: "https://res.cloudinary.com/echoshare/image/upload/v1642253816/Cubee3D/Screenshot_6_ngaj8w.png",
-        //     filamentId: "XYZ",
-        //     quantity: 1
-        // }
-    ]);
-
+    const [selectedProducts, setSelectedProducts] = useState(cartCookie? JSON.parse(cartCookie):[]);
+    window.selectedProducts = selectedProducts
     useEffect(() => {
         const getVasesAndFilaments = async () => {
             const vases = await vaseService.getAllVases();
@@ -158,6 +149,7 @@ export const OrderPage = () => {
         }
         if (!isExist) selectedProducts.push(productToAdd);
         console.log(selectedProducts);
+        Cookies.set('cart',JSON.stringify(selectedProducts))
         handleClose();
     };
 
@@ -166,9 +158,9 @@ export const OrderPage = () => {
         setSelectedProducts(
             selectedProducts.filter(prod => {
                 return (
-                    prod.vaseId !== productIdentifier.vaseId &&
-                    prod.filamentId !== productIdentifier.filamentId &&
-                    prod.size !== productIdentifier.size
+                    !(prod.vaseId === productIdentifier.vaseId &&
+                    prod.filamentId === productIdentifier.filamentId &&
+                    prod.size === productIdentifier.size)
                 );
             })
         );
@@ -202,54 +194,70 @@ export const OrderPage = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <p>{modalContent.name + ' ' + modalContent.type}</p>
-                    <p>
-                        {modalContent.size} size - {modalContent.dimensions}
-                    </p>
+                    <div className='vase-choose-popup'>
+                        <div className='inputs-submit'>
+                            <div className='inputs'>
+                                <p>{modalContent.name + ' ' + modalContent.type}</p>
+                                <p>
+                                    {modalContent.size} size - {modalContent.dimensions}
+                                </p>
 
-                    <span>Choose Color:</span>
-                    <div className="colors">
-                        {filaments.map(filament => {
-                            const isSelected =
-                                modalContent.selectedColorId === filament._id
-                                    ? 'selectedColor'
-                                    : '';
-                            return (
-                                <img
-                                    key={filament._id}
-                                    onClick={() =>
-                                        onColorChoose({
-                                            color: filament.image,
-                                            colorId: filament._id,
-                                        })
-                                    }
-                                    className={[
-                                        'modal-filament-img',
-                                        isSelected,
-                                    ].join(' ')}
-                                    src={filament.image}
-                                ></img>
-                            );
-                        })}
+                                <span>Choose Color:</span>
+                                <div className="colors">
+                                    {filaments.map(filament => {
+                                        const isSelected =
+                                            modalContent.selectedColorId === filament._id
+                                                ? 'selectedColor'
+                                                : '';
+                                        return (
+                                            <React.Fragment key ={filament._id}>
+                                                <img
+                                                data-tip data-for={filament._id}
+                                                    key={filament._id}
+                                                    onClick={() =>
+                                                        onColorChoose({
+                                                            color: filament.image,
+                                                            colorId: filament._id,
+                                                        })
+                                                    }
+                                                    className={[
+                                                        'modal-filament-img',
+                                                        isSelected,
+                                                    ].join(' ')}
+                                                    src={filament.image}
+                                                ></img>
+                                                <ReactTooltip id={filament._id}>
+                                                    <span >
+                                                       {filament.color}
+                                                    </span>
+                                                </ReactTooltip>
+                                            </React.Fragment>
+                                        );
+                                    })}
+                                </div>
+                                <br />
+                                <TextField
+                                    onChange={onChangeQuantity}
+                                    defaultValue="1"
+                                    InputProps={{ inputProps: { min: 0, max: 10 } }}
+                                    size="medium"
+                                    type="number"
+                                    id="quantity"
+                                    label="Quantity"
+                                    variant="outlined"
+                                />
+                            </div>
+                            <Button className='add-to-cart-btn'
+                                onClick={onAddToCart}
+                                className="addtocart"
+                                variant="contained"
+                                style={{ width: '150px' }}
+                            >
+                                Add to cart
+                            </Button>
+                        </div>
+                        <img src={modalContent.image} />
                     </div>
-                    <TextField
-                        onChange={onChangeQuantity}
-                        defaultValue="1"
-                        InputProps={{ inputProps: { min: 0, max: 10 } }}
-                        size="medium"
-                        type="number"
-                        id="quantity"
-                        label="Quantity"
-                        variant="outlined"
-                    />
-                    <br />
-                    <Button
-                        onClick={onAddToCart}
-                        className="addtocart"
-                        variant="contained"
-                    >
-                        Add to cart
-                    </Button>
                     {/* <Typography id="modal-modal-title" variant="h6" component="h2">
                         Text in a modal
                     </Typography>

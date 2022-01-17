@@ -66,3 +66,18 @@
         }
     }
 }
+@media only screen and (max-width: 750px) {
+    .filament-form {
+        display: flex;
+        flex-direction: column;
+        .filament-form-basic{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 4px;
+            // background-color: violet;
+
+        }
+    }
+
+}

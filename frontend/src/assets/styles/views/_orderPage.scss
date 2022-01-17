@@ -30,6 +30,18 @@
         height: 30px;
     }
 }
+.vase-choose-popup{
+    display: flex;
+    .inputs-submit{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    img{
+        max-width: 60%;
+    height: fit-content;
+    }
+}
 .products {
     flex-basis: 2;
     align-self: center;
