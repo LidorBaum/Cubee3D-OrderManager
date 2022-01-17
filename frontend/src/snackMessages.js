@@ -9,6 +9,7 @@ const snackNoImg = 'You Must Upload A Photo';
 const snackSavedVase = 'Vase Saved Succesfully';
 const snackSavedFilament = 'Filament Saved Succesfully';
 const snackOrderPlaced = 'Order Placed!';
+const snackNoOrders = 'No Orders Yet';
 
 module.exports = {
     snackNoVases,

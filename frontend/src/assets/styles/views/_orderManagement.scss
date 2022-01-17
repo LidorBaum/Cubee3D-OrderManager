@@ -1,0 +1,36 @@
+.order-manage {
+    display: flex;
+    justify-content: space-between;
+    .statistics {
+        margin: 30px;
+    }
+    .order-list {
+        display: flex;
+        margin: 30px;
+        .order-card {
+            p {
+                margin: 0;
+            }
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin: 5px;
+            padding: 5px;
+            border: 3px solid rgba(2, 44, 63, 0.719);
+            text-align: center;
+            width: 300px;
+            height: 220px;
+            box-sizing: border-box;
+            border-radius: 15px;
+            align-items: center;
+            font-size: 20px;
+            gap: 3px;
+            transition: 1s all;
+            cursor: pointer;
+            &:hover {
+                background-color: rgb(177, 226, 255);
+            }
+        }
+    }
+}
