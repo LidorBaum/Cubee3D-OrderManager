@@ -22,7 +22,7 @@
         "server:prod": "set NODE_ENV=prod&& nodemon server.js"
     },
     "engines": {
-        "node": "14.17.5"
+        "node": "14.x"
     },
     "author": "",
     "license": "ISC"
