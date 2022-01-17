@@ -6,9 +6,9 @@ const quantity0 = 'Quantity must be 1 or more';
 const noColorChosen = 'You must choose a color';
 const productRemoved = 'Vase Removed';
 const snackNoImg = 'You Must Upload A Photo';
-const snackSavedVase = 'Vase Saved Succesfully'
-const snackSavedFilament = 'Filament Saved Succesfully'
-
+const snackSavedVase = 'Vase Saved Succesfully';
+const snackSavedFilament = 'Filament Saved Succesfully';
+const snackOrderPlaced = 'Order Placed!';
 
 module.exports = {
     snackNoVases,
@@ -20,5 +20,6 @@ module.exports = {
     productRemoved,
     snackNoImg,
     snackSavedFilament,
-    snackSavedVase
+    snackSavedVase,
+    snackOrderPlaced,
 };

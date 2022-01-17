@@ -3,7 +3,12 @@ import React, { useState } from 'react';
 import ReactTooltip from 'react-tooltip';
 
 export function VaseOrderPreview({ vase, handleOpen }) {
-    if(!vase.sizes.small.printTime && !vase.sizes.small.printTime && !vase.sizes.small.printTime) return <></>
+    if (
+        !vase.sizes.small.printTime &&
+        !vase.sizes.small.printTime &&
+        !vase.sizes.small.printTime
+    )
+        return <></>;
 
     const onSelectSize = size => {
         const dbSize = size.toLowerCase();

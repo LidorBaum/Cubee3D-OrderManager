@@ -9,7 +9,7 @@ const emptyFilamentObj = {
     store: '',
     price: '',
     weight: 1000,
-}
+};
 
 const emptyVaseObj = {
     name: '',
@@ -19,22 +19,22 @@ const emptyVaseObj = {
             height: 0,
             diameter: 0,
             weight: 0,
-            printTime: 0
+            printTime: 0,
         },
         medium: {
             height: 0,
             diameter: 0,
             weight: 0,
-            printTime: 0
+            printTime: 0,
         },
         large: {
             height: 0,
             diameter: 0,
             weight: 0,
-            printTime: 0
-        }
+            printTime: 0,
+        },
     },
-    image: ''
-}
+    image: '',
+};
 
-module.exports = { isValidPassword, emptyVaseObj ,emptyFilamentObj};
+module.exports = { isValidPassword, emptyVaseObj, emptyFilamentObj };

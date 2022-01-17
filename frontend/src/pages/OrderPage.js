@@ -8,7 +8,13 @@ import { VaseOrderList } from '../cmps/VaseOrderList';
 // import Spin from 'react-cssfx-loading/lib/Spin';
 // import Select from 'react-select';
 import ReactTooltip from 'react-tooltip';
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import vaseService from '../services/vaseService';
 import {
@@ -17,17 +23,19 @@ import {
     quantity0,
     noColorChosen,
     productRemoved,
+    snackOrderPlaced,
 } from '../snackMessages';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { TextField } from '@mui/material';
 import { Link } from 'react-router-dom';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import filamentService from '../services/filamentService';
 import { Cart } from '../cmps/Cart';
 import Modal from '@mui/material/Modal';
+import orderService from '../services/orderService';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -43,15 +51,73 @@ const style = {
 export const OrderPage = () => {
     if (window.screen.width < 1000) {
         console.log('mobile');
-        style.width = window.screen.width - 50
-        style.overflow = 'scroll'
-        style.height = '70%'
+        style.width = window.screen.width - 50;
+        style.overflow = 'scroll';
+        style.height = '70%';
     }
     const [open, setOpen] = useState(false);
+
+    //ModalContent is also the product choice for adding to card
+    const [modalContent, setModalContent] = useState({
+        name: '',
+        type: '',
+        quantity: 1,
+        size: '',
+        selectedColor: '',
+        selectedColorId: '',
+        dimensions: '',
+        vaseId: '',
+    });
+    const cartCookie = Cookies.get('cart');
+    const notificationHandler = useContext(SnackbarHandlerContext);
+    const [vases, setVases] = useState(null);
+    const [filaments, setFilaments] = useState(null);
+    const [isRefresh, setDoRefresh] = useState(false);
+    const [selectedProducts, setSelectedProducts] = useState(
+        cartCookie ? JSON.parse(cartCookie) : []
+    );
+    const [openPlaceConfirm, setOpenPlaceConfirm] = useState(false);
+    const [orderAttachments, setOrderAttachments] = useState({
+        storeName: '',
+        comments: '',
+    });
+    window.selectedProducts = selectedProducts;
+    useEffect(() => {
+        const getVasesAndFilaments = async () => {
+            const vases = await vaseService.getAllVases();
+            if (vases.error)
+                return notificationHandler.error(vases.error.message);
+            if (!vases.length) {
+                notificationHandler.error(snackNoVases);
+            }
+            const filamentsArray = await filamentService.getAllFilaments();
+            if (filamentsArray.error)
+                return notificationHandler.error(filamentsArray.error.message);
+            if (!filamentsArray.length) {
+                notificationHandler.error(snackNoFilaments);
+            }
+            setVases(vases);
+            setFilaments(filamentsArray);
+        };
+        getVasesAndFilaments();
+    }, []);
+
     const handleOpen = vaseObj => {
         setModalContent({ ...vaseObj, selectedColor: '' });
         setOpen(true);
     };
+
+    const handleopenConfirmDialog = () => {
+        setOpenPlaceConfirm(true);
+    };
+    const handleCloseConfirmDialog = () => {
+        setOpenPlaceConfirm(false);
+    };
+
+    const onPlaceOrder = () => {
+        handleopenConfirmDialog();
+    };
+
     const handleClose = () => {
         setModalContent({
             name: '',
@@ -66,52 +132,22 @@ export const OrderPage = () => {
         setOpen(false);
     };
 
-    //ModalContent is also the product choice for adding to card
-    const [modalContent, setModalContent] = useState({
-        name: '',
-        type: '',
-        quantity: 1,
-        size: '',
-        selectedColor: '',
-        selectedColorId: '',
-        dimensions: '',
-        vaseId: '',
-    });
-    const cartCookie= Cookies.get('cart')
-    const notificationHandler = useContext(SnackbarHandlerContext);
-    const [vases, setVases] = useState(null);
-    const [filaments, setFilaments] = useState(null);
-    const [isRefresh, setDoRefresh] = useState(false);
-    const [selectedProducts, setSelectedProducts] = useState(cartCookie? JSON.parse(cartCookie):[]);
-    window.selectedProducts = selectedProducts
-    useEffect(() => {
-        const getVasesAndFilaments = async () => {
-            const vases = await vaseService.getAllVases();
-            if (vases.error)
-                return notificationHandler.error(vases.error.message);
-            console.log(vases);
-            if (!vases.length) {
-                notificationHandler.error(snackNoVases);
-            }
-            const filamentsArray = await filamentService.getAllFilaments();
-            if (filamentsArray.error)
-                return notificationHandler.error(filamentsArray.error.message);
-            console.log(filamentsArray);
-            if (!filamentsArray.length) {
-                notificationHandler.error(snackNoFilaments);
-            }
-            setVases(vases);
-            setFilaments(filamentsArray);
-        };
-        getVasesAndFilaments();
-    }, []);
-
     const onChangeQuantity = e => {
         e.persist();
         setModalContent(prevContent => {
             return { ...prevContent, quantity: parseInt(e.target.value) };
         });
     };
+
+    const handleChangeOrderAttachments = e => {
+        e.persist();
+        const target = e.target.name;
+        const value = e.target.value;
+        setOrderAttachments(prevAttach => {
+            return { ...prevAttach, [target]: value };
+        });
+    };
+
     const onColorChoose = colorObj => {
         setModalContent(prevContent => {
             return {
@@ -129,7 +165,7 @@ export const OrderPage = () => {
             vaseId: modalContent.vaseId,
             name: modalContent.name,
             type: modalContent.type,
-            size: modalContent.size,
+            size: modalContent.size.toLocaleLowerCase(),
             image: modalContent.image,
             color: modalContent.selectedColor,
             filamentId: modalContent.selectedColorId,
@@ -155,7 +191,7 @@ export const OrderPage = () => {
         }
         if (!isExist) selectedProducts.push(productToAdd);
         console.log(selectedProducts);
-        Cookies.set('cart',JSON.stringify(selectedProducts))
+        Cookies.set('cart', JSON.stringify(selectedProducts));
         handleClose();
     };
 
@@ -163,14 +199,42 @@ export const OrderPage = () => {
         console.log(productIdentifier);
         setSelectedProducts(
             selectedProducts.filter(prod => {
-                return (
-                    !(prod.vaseId === productIdentifier.vaseId &&
+                return !(
+                    prod.vaseId === productIdentifier.vaseId &&
                     prod.filamentId === productIdentifier.filamentId &&
-                    prod.size === productIdentifier.size)
+                    prod.size === productIdentifier.size
                 );
             })
         );
         notificationHandler.success(productRemoved);
+    };
+
+    const onOrderConfirmed = async () => {
+        console.log('place the order');
+        let selectedProductsForOrder = [];
+        selectedProducts.forEach(prod => {
+            return selectedProductsForOrder.push({
+                vaseId: prod.vaseId,
+                vaseSize: prod.size,
+                filamentId: prod.filamentId,
+                quantity: prod.quantity,
+            });
+        });
+        const orderObj = {
+            selectedVasesArray: selectedProductsForOrder,
+            customerName: orderAttachments.storeName,
+            comment: orderAttachments.comments,
+        };
+        const newOrder = await orderService.createOrder(orderObj);
+        if (newOrder.error) {
+            notificationHandler.error(newOrder.error.message);
+            return;
+        }
+        console.log('order placed');
+        Cookies.remove('cart');
+        setSelectedProducts([]);
+        handleCloseConfirmDialog();
+        notificationHandler.success(snackOrderPlaced);
     };
 
     if (!filaments || !vases || !selectedProducts)
@@ -190,6 +254,7 @@ export const OrderPage = () => {
                 <Cart
                     removeProduct={onRemoveProduct}
                     selectedProducts={selectedProducts}
+                    onPlaceOrder={onPlaceOrder}
                 />
             </div>
 
@@ -200,30 +265,38 @@ export const OrderPage = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <div className='vase-choose-popup'>
-                        <div className='inputs-submit'>
-                            <div className='inputs'>
-                                <p>{modalContent.name + ' ' + modalContent.type}</p>
+                    <div className="vase-choose-popup">
+                        <div className="inputs-submit">
+                            <div className="inputs">
                                 <p>
-                                    {modalContent.size} size - {modalContent.dimensions}
+                                    {modalContent.name +
+                                        ' ' +
+                                        modalContent.type}
+                                </p>
+                                <p>
+                                    {modalContent.size} size -{' '}
+                                    {modalContent.dimensions}
                                 </p>
 
                                 <span>Choose Color:</span>
                                 <div className="colors">
                                     {filaments.map(filament => {
                                         const isSelected =
-                                            modalContent.selectedColorId === filament._id
+                                            modalContent.selectedColorId ===
+                                            filament._id
                                                 ? 'selectedColor'
                                                 : '';
                                         return (
-                                            <React.Fragment key ={filament._id}>
+                                            <React.Fragment key={filament._id}>
                                                 <img
-                                                data-tip data-for={filament._id}
+                                                    data-tip
+                                                    data-for={filament._id}
                                                     key={filament._id}
                                                     onClick={() =>
                                                         onColorChoose({
                                                             color: filament.image,
-                                                            colorId: filament._id,
+                                                            colorId:
+                                                                filament._id,
                                                         })
                                                     }
                                                     className={[
@@ -233,8 +306,8 @@ export const OrderPage = () => {
                                                     src={filament.image}
                                                 ></img>
                                                 <ReactTooltip id={filament._id}>
-                                                    <span >
-                                                       {filament.color}
+                                                    <span>
+                                                        {filament.color}
                                                     </span>
                                                 </ReactTooltip>
                                             </React.Fragment>
@@ -245,7 +318,9 @@ export const OrderPage = () => {
                                 <TextField
                                     onChange={onChangeQuantity}
                                     defaultValue="1"
-                                    InputProps={{ inputProps: { min: 0, max: 10 } }}
+                                    InputProps={{
+                                        inputProps: { min: 0, max: 10 },
+                                    }}
                                     size="medium"
                                     type="number"
                                     id="quantity"
@@ -253,7 +328,8 @@ export const OrderPage = () => {
                                     variant="outlined"
                                 />
                             </div>
-                            <Button className='add-to-cart-btn'
+                            <Button
+                                className="add-to-cart-btn"
                                 onClick={onAddToCart}
                                 className="addtocart"
                                 variant="contained"
@@ -264,14 +340,56 @@ export const OrderPage = () => {
                         </div>
                         <img src={modalContent.image} />
                     </div>
-                    {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </Typography> */}
                 </Box>
             </Modal>
+            <Dialog
+                open={openPlaceConfirm}
+                onClose={handleCloseConfirmDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                sx={{ mt: 2, minWidth: 500 }}
+                fullWidth
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {'Are you sure about your order?'}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Please check your cart and make sure everything is
+                        correct
+                        <br />
+                        If everything is fine, please enter your store's name.
+                        <br />
+                        You can attach a comment also.
+                    </DialogContentText>
+                    <br />
+                    <TextField
+                        label="Store Name"
+                        name="storeName"
+                        value={orderAttachments.storeName}
+                        onChange={handleChangeOrderAttachments}
+                        required
+                    />
+                    <br />
+                    <TextField
+                        sx={{ mt: 2 }}
+                        label="Comments"
+                        name="comments"
+                        value={orderAttachments.comments}
+                        onChange={handleChangeOrderAttachments}
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="text" onClick={handleCloseConfirmDialog}>
+                        <ArrowBackIosNewIcon /> I want to fix!
+                    </Button>
+                    <Button variant="text" onClick={onOrderConfirmed} autoFocus>
+                        <DoubleArrowIcon />
+                        Place Order Now!
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

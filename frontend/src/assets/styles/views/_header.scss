@@ -1,4 +1,4 @@
-.links{
+.links {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -14,7 +14,7 @@
     text-decoration: none;
     color: rgb(130, 194, 255);
     transition: all 0.4s;
-    
+
     &:hover {
         color: rgba(23, 202, 178, 0.753);
         transform: scale(1.08);

@@ -9,7 +9,12 @@ import { VaseList } from '../cmps/VaseList';
 // import Select from 'react-select';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import vaseService from '../services/vaseService';
-import { snackNoVases, snackVaseDeleted, snackNoImg, snackSavedVase } from '../snackMessages';
+import {
+    snackNoVases,
+    snackVaseDeleted,
+    snackNoImg,
+    snackSavedVase,
+} from '../snackMessages';
 import { Button, TextField } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
@@ -18,7 +23,6 @@ import Box from '@mui/material/Box';
 import { emptyVaseObj } from '../services/utils';
 import { uploadImg } from '../services/cloudinaryService';
 import MenuItem from '@mui/material/MenuItem';
-
 
 const style = {
     position: 'absolute',
@@ -35,9 +39,9 @@ const style = {
 export const VaseManagment = () => {
     if (window.screen.width < 1000) {
         console.log('mobile');
-        style.width = window.screen.width - 50
-        style.overflow = 'scroll'
-        style.height = '80%'
+        style.width = window.screen.width - 50;
+        style.overflow = 'scroll';
+        style.height = '80%';
     }
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [vases, setVases] = useState(null);
@@ -49,14 +53,14 @@ export const VaseManagment = () => {
     const [vaseToEdit, setVaseToEdit] = useState({ ...emptyVaseObj });
     const [primaryImgUrl, setPrimaryUrl] = useState(
         vaseToEdit.image ||
-        'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
+            'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
     );
     // const [vaseForm, setForm] = useState({
     //     name: vaseToEdit.name,
     //     type: vaseToEdit.type,
     // });
 
-    window.vaseToEdit = vaseToEdit
+    window.vaseToEdit = vaseToEdit;
 
     const onUploadImg = async e => {
         e.persist();
@@ -74,8 +78,10 @@ export const VaseManagment = () => {
         setOpen(true);
     };
     const handleClose = () => {
-        setPrimaryUrl('https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png')
-        setDoRefresh(!isRefresh)
+        setPrimaryUrl(
+            'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
+        );
+        setDoRefresh(!isRefresh);
         setVaseToEdit({
             name: '',
             type: '',
@@ -84,23 +90,23 @@ export const VaseManagment = () => {
                     height: 0,
                     diameter: 0,
                     weight: 0,
-                    printTime: 0
+                    printTime: 0,
                 },
                 medium: {
                     height: 0,
                     diameter: 0,
                     weight: 0,
-                    printTime: 0
+                    printTime: 0,
                 },
                 large: {
                     height: 0,
                     diameter: 0,
                     weight: 0,
-                    printTime: 0
-                }
+                    printTime: 0,
+                },
             },
-            image: ''
-        })
+            image: '',
+        });
         setOpen(false);
     };
 
@@ -115,25 +121,24 @@ export const VaseManagment = () => {
     const handleSelectChange = e => {
         console.log(e.target.value);
         setVaseToEdit(prevForm => {
-            return { ...prevForm, type: e.target.value }
-        })
-    }
+            return { ...prevForm, type: e.target.value };
+        });
+    };
     const handleSizeInputsChange = e => {
-        e.persist()
-        const size = e.target.dataset.sizing
-        const target = e.target.name
-        const value = e.target.value
+        e.persist();
+        const size = e.target.dataset.sizing;
+        const target = e.target.name;
+        const value = e.target.value;
         console.log(`${value} @ ${target} @ ${size}`);
-        let prevSizesObj = vaseToEdit.sizes
-        let specificSize = prevSizesObj[size]
-        specificSize[target] = value
-        prevSizesObj = { ...prevSizesObj, [size]: specificSize }
+        let prevSizesObj = vaseToEdit.sizes;
+        let specificSize = prevSizesObj[size];
+        specificSize[target] = value;
+        prevSizesObj = { ...prevSizesObj, [size]: specificSize };
         setVaseToEdit(prevForm => {
-            return { ...prevForm, prevSizesObj }
-        })
+            return { ...prevForm, prevSizesObj };
+        });
         console.log(vaseToEdit);
-    }
-
+    };
 
     useEffect(() => {
         const getAllVases = async () => {
@@ -157,13 +162,13 @@ export const VaseManagment = () => {
         setDoRefresh(!isRefresh);
         notificationHandler.succes(snackVaseDeleted);
     };
-    const editVase = (vase) => {
-        setVaseToEdit(vase)
-        setPrimaryUrl(vase.image)
-        handleOpen()
-    }
+    const editVase = vase => {
+        setVaseToEdit(vase);
+        setPrimaryUrl(vase.image);
+        handleOpen();
+    };
 
-    const onAddVase = async (e) => {
+    const onAddVase = async e => {
         e.preventDefault();
         setIsLoading(true);
         if (
@@ -173,18 +178,15 @@ export const VaseManagment = () => {
             setIsLoading(false);
             return notificationHandler.error(snackNoImg);
         }
-        const vaseObj = { ...vaseToEdit, image: primaryImgUrl }
+        const vaseObj = { ...vaseToEdit, image: primaryImgUrl };
         if (vaseToEdit._id) {
-            vaseObj._id = vaseToEdit._id
-            const updatedVase = await vaseService.updateVase(
-                vaseObj
-            );
+            vaseObj._id = vaseToEdit._id;
+            const updatedVase = await vaseService.updateVase(vaseObj);
             if (updatedVase.error) {
                 notificationHandler.error(updatedVase.error.message);
                 return setIsLoading(false);
             }
-        }
-        else {
+        } else {
             const newVase = await vaseService.addVase(vaseObj);
             if (newVase.error) {
                 notificationHandler.error(newVase.error.message);
@@ -192,11 +194,11 @@ export const VaseManagment = () => {
             }
         }
         notificationHandler.success(snackSavedVase);
-        setIsLoading(false)
-        setVaseToEdit({ ...emptyVaseObj })
+        setIsLoading(false);
+        setVaseToEdit({ ...emptyVaseObj });
         // handleClose('new', newEmployeeObj);
         console.log('submitting');
-        handleClose()
+        handleClose();
     };
 
     if (!vases)
@@ -228,7 +230,11 @@ export const VaseManagment = () => {
                 Add New Vase
             </Button>
             <div>
-                <VaseList vases={vases} deleteVase={deleteVase} editVase={editVase} />
+                <VaseList
+                    vases={vases}
+                    deleteVase={deleteVase}
+                    editVase={editVase}
+                />
             </div>
             <Modal
                 open={open}
@@ -238,8 +244,8 @@ export const VaseManagment = () => {
             >
                 <Box sx={style}>
                     {/* <FormControl fullWidth> */}
-                    <form id='vase-form' onSubmit={onAddVase}>
-                        <div className='vase-form-basic'>
+                    <form id="vase-form" onSubmit={onAddVase}>
+                        <div className="vase-form-basic">
                             <TextField
                                 required
                                 label="Vase Name"
@@ -248,16 +254,15 @@ export const VaseManagment = () => {
                                 onChange={handleChange}
                             />
 
-
-                            <TextField select
+                            <TextField
+                                select
                                 label="Type"
                                 value={vaseToEdit.type}
-                                onChange={handleSelectChange}>
+                                onChange={handleSelectChange}
+                            >
                                 <MenuItem value={'Planter'}>Planter</MenuItem>
                                 <MenuItem value={'Vase'}>Vase</MenuItem>
                                 <MenuItem value={'Bowl'}>Bowl</MenuItem>
-
-
                             </TextField>
 
                             <div className="form-img">
@@ -276,12 +281,12 @@ export const VaseManagment = () => {
                                 </label>
                             </div>
                         </div>
-                        <div className='vase-form-sizes'>
+                        <div className="vase-form-sizes">
                             <h2>Available Sizes</h2>
                             <h4>Leave blank if not exist</h4>
                             <br />
                             <h3>Small</h3>
-                            <div className='vase-form-sizes-input'>
+                            <div className="vase-form-sizes-input">
                                 <TextField
                                     label="Height (mm)"
                                     name="height"
@@ -290,17 +295,25 @@ export const VaseManagment = () => {
                                     type="number"
                                     size="small"
                                     style={{ width: 150 }}
-                                    inputProps={{ 'data-sizing': 'small', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'small',
+                                        min: 1,
+                                    }}
                                 />
                                 <TextField
                                     label="Diameter (mm)"
                                     name="diameter"
-                                    value={vaseToEdit.sizes.small.diameter || ''}
+                                    value={
+                                        vaseToEdit.sizes.small.diameter || ''
+                                    }
                                     onChange={handleSizeInputsChange}
                                     type="number"
                                     size="small"
                                     style={{ width: 150 }}
-                                    inputProps={{ 'data-sizing': 'small', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'small',
+                                        min: 1,
+                                    }}
                                 />
                                 <TextField
                                     label="Weight (g)"
@@ -310,24 +323,31 @@ export const VaseManagment = () => {
                                     type="number"
                                     size="small"
                                     style={{ width: 150 }}
-                                    inputProps={{ 'data-sizing': 'small', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'small',
+                                        min: 1,
+                                    }}
                                 />
 
                                 <TextField
                                     label="Print Time (h)"
                                     name="printTime"
-                                    value={vaseToEdit.sizes.small.printTime || ''}
+                                    value={
+                                        vaseToEdit.sizes.small.printTime || ''
+                                    }
                                     onChange={handleSizeInputsChange}
                                     type="number"
                                     size="small"
                                     style={{ width: 140 }}
-                                    inputProps={{ 'data-sizing': 'small', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'small',
+                                        min: 1,
+                                    }}
                                 />
-
                             </div>
                             <br />
                             <h3>Medium</h3>
-                            <div className='vase-form-sizes-input'>
+                            <div className="vase-form-sizes-input">
                                 <TextField
                                     label="Height (mm)"
                                     name="height"
@@ -336,17 +356,25 @@ export const VaseManagment = () => {
                                     type="number"
                                     size="small"
                                     style={{ width: 150 }}
-                                    inputProps={{ 'data-sizing': 'medium', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'medium',
+                                        min: 1,
+                                    }}
                                 />
                                 <TextField
                                     label="Diameter (mm)"
                                     name="diameter"
-                                    value={vaseToEdit.sizes.medium.diameter || ''}
+                                    value={
+                                        vaseToEdit.sizes.medium.diameter || ''
+                                    }
                                     onChange={handleSizeInputsChange}
                                     type="number"
                                     size="small"
                                     style={{ width: 150 }}
-                                    inputProps={{ 'data-sizing': 'medium', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'medium',
+                                        min: 1,
+                                    }}
                                 />
                                 <TextField
                                     label="Weight (g)"
@@ -356,22 +384,30 @@ export const VaseManagment = () => {
                                     type="number"
                                     size="small"
                                     style={{ width: 150 }}
-                                    inputProps={{ 'data-sizing': 'medium', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'medium',
+                                        min: 1,
+                                    }}
                                 />
                                 <TextField
                                     label="Print Time (h)"
                                     name="printTime"
-                                    value={vaseToEdit.sizes.medium.printTime || ''}
+                                    value={
+                                        vaseToEdit.sizes.medium.printTime || ''
+                                    }
                                     onChange={handleSizeInputsChange}
                                     type="number"
                                     size="small"
                                     style={{ width: 140 }}
-                                    inputProps={{ 'data-sizing': 'medium', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'medium',
+                                        min: 1,
+                                    }}
                                 />
                             </div>
                             <br />
                             <h3>Large</h3>
-                            <div className='vase-form-sizes-input'>
+                            <div className="vase-form-sizes-input">
                                 <TextField
                                     label="Height (mm)"
                                     name="height"
@@ -380,17 +416,25 @@ export const VaseManagment = () => {
                                     type="number"
                                     size="small"
                                     style={{ width: 150 }}
-                                    inputProps={{ 'data-sizing': 'large', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'large',
+                                        min: 1,
+                                    }}
                                 />
                                 <TextField
                                     label="Diameter (mm)"
                                     name="diameter"
-                                    value={vaseToEdit.sizes.large.diameter || ''}
+                                    value={
+                                        vaseToEdit.sizes.large.diameter || ''
+                                    }
                                     onChange={handleSizeInputsChange}
                                     type="number"
                                     size="small"
                                     style={{ width: 150 }}
-                                    inputProps={{ 'data-sizing': 'large', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'large',
+                                        min: 1,
+                                    }}
                                 />
                                 <TextField
                                     label="Weight (g)"
@@ -400,26 +444,40 @@ export const VaseManagment = () => {
                                     type="number"
                                     size="small"
                                     style={{ width: 150 }}
-                                    inputProps={{ 'data-sizing': 'large', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'large',
+                                        min: 1,
+                                    }}
                                 />
                                 <TextField
                                     label="Print Time (h)"
                                     name="printTime"
-                                    value={vaseToEdit.sizes.large.printTime || ''}
+                                    value={
+                                        vaseToEdit.sizes.large.printTime || ''
+                                    }
                                     onChange={handleSizeInputsChange}
                                     type="number"
                                     size="small"
                                     style={{ width: 140 }}
-                                    inputProps={{ 'data-sizing': 'large', 'min': 1 }}
+                                    inputProps={{
+                                        'data-sizing': 'large',
+                                        min: 1,
+                                    }}
                                 />
                             </div>
-
                         </div>
                     </form>
                     {/* </FormControl> */}
-                    <Box textAlign='center' sx={{ 'margin-top': 30 }} >
-                        <Button disabled={isUploading || isLoading}
-                            form="vase-form" type={'submit'} className='save-btn' variant='contained' >Submit</Button>
+                    <Box textAlign="center" sx={{ 'margin-top': 30 }}>
+                        <Button
+                            disabled={isUploading || isLoading}
+                            form="vase-form"
+                            type={'submit'}
+                            className="save-btn"
+                            variant="contained"
+                        >
+                            Submit
+                        </Button>
                     </Box>
                 </Box>
             </Modal>

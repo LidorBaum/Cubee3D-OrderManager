@@ -51,7 +51,7 @@ const VaseSchema = Schema(
     }
 );
 
-VaseSchema.statics.updateVase = async function (vaseObj){
+VaseSchema.statics.updateVase = async function (vaseObj) {
     return this.findOneAndUpdate(
         { _id: vaseObj._id },
         {
@@ -59,12 +59,12 @@ VaseSchema.statics.updateVase = async function (vaseObj){
                 name: vaseObj.name,
                 type: vaseObj.type,
                 image: vaseObj.image,
-                sizes: vaseObj.sizes
+                sizes: vaseObj.sizes,
             },
         },
         { new: true }
     );
-}
+};
 
 VaseSchema.statics.createVase = function (vaseObj) {
     return this.create(vaseObj);

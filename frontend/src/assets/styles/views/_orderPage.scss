@@ -5,16 +5,25 @@
 .order-page {
     display: flex;
     justify-content: space-between;
+    align-items: stretch;
+    // height: 80vh;
 }
 .cart {
+    margin-right: 20px;
+    margin-top: 15px;
     width: 30vw;
     background-color: rgb(196, 213, 250);
+    border-radius: 10px;
     .vase-cart-card {
         display: flex;
         gap: 20px;
         justify-content: flex-start;
         align-items: center;
         border-top: 1px solid black;
+        button {
+            width: 30px;
+            height: 30px;
+        }
     }
     .cart-vase {
         width: 120px;
@@ -25,21 +34,17 @@
         width: 100px;
         border-radius: 10px;
     }
-    button {
-        width: 30px;
-        height: 30px;
-    }
 }
-.vase-choose-popup{
+.vase-choose-popup {
     display: flex;
-    .inputs-submit{
+    .inputs-submit {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
-    img{
+    img {
         max-width: 60%;
-    height: fit-content;
+        height: fit-content;
     }
 }
 .products {
@@ -62,15 +67,17 @@
 .addtocart {
     color: violet;
 }
-
+.place-order-btn {
+    width: 100px;
+    height: 50px;
+}
 @media only screen and (max-width: 750px) {
     .vase-choose-popup {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        img{
+        img {
             width: 300px;
         }
     }
-
 }

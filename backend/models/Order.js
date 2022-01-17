@@ -34,26 +34,26 @@ const OrderSchema = Schema(
                         type: Number,
                         default: 0,
                     },
-                    status: {
-                        type: String,
-                        enum: [
-                            'Pending',
-                            'Approved',
-                            'Printing',
-                            'Ready',
-                            'Shipped',
-                            'Delivered',
-                            'Cancelled',
-                        ],
-                        default: 'Pending',
-                    },
-                    storeAddress: {
-                        type: String,
-                    },
                 },
             ],
             required: true,
             default: [],
+        },
+        status: {
+            type: String,
+            enum: [
+                'Pending',
+                'Approved',
+                'Printing',
+                'Ready',
+                'Shipped',
+                'Delivered',
+                'Cancelled',
+            ],
+            default: 'Pending',
+        },
+        storeAddress: {
+            type: String,
         },
     },
     {

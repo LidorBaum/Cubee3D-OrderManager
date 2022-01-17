@@ -2,7 +2,7 @@ const environment = process.env.NODE_ENV || 'prod';
 
 function tryRequire(environment) {
     try {
-        console.log("THE ENVIRONMENT IS!!!!!!" + environment);
+        console.log('THE ENVIRONMENT IS!!!!!!' + environment);
         return require(`./${environment}`);
     } catch (err) {
         if ('MODULE_NOT_FOUND' === err.code) {

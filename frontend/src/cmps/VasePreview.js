@@ -6,20 +6,32 @@ export function VasePreview({ vase, deleteVase, editVase }) {
     const onRemoveVase = () => {
         deleteVase(vase._id);
     };
-    const onEditVase = () =>{
+    const onEditVase = () => {
         console.log('open');
-        editVase(vase)
-    }
-    
-    const isAnySize = (!vase.sizes.small.printTime && !vase.sizes.small.printTime && !vase.sizes.small.printTime)? <p>No Sizes Available</p> : ''
+        editVase(vase);
+    };
+
+    const isAnySize =
+        !vase.sizes.small.printTime &&
+        !vase.sizes.small.printTime &&
+        !vase.sizes.small.printTime ? (
+            <p>No Sizes Available</p>
+        ) : (
+            ''
+        );
     return (
         <article id={`${vase._id}-card`} className="vase-card">
             <p>{vase.name + ' ' + vase.type}</p>
             <div className="sizesp">
-                {vase.sizes.small.printTime >0  &&
-                    <span className="sizeHover" data-tip data-for={vase._id + 'S'}>
+                {vase.sizes.small.printTime > 0 && (
+                    <span
+                        className="sizeHover"
+                        data-tip
+                        data-for={vase._id + 'S'}
+                    >
                         S
-                    </span>}
+                    </span>
+                )}
                 <ReactTooltip id={vase._id + 'S'}>
                     <span>
                         Small
@@ -33,10 +45,15 @@ export function VasePreview({ vase, deleteVase, editVase }) {
                     </span>
                 </ReactTooltip>
 
-                {vase.sizes.medium.printTime >0  &&
-                    <span className="sizeHover" data-tip data-for={vase._id + 'M'}>
+                {vase.sizes.medium.printTime > 0 && (
+                    <span
+                        className="sizeHover"
+                        data-tip
+                        data-for={vase._id + 'M'}
+                    >
                         M
-                    </span>}
+                    </span>
+                )}
                 <ReactTooltip id={vase._id + 'M'}>
                     <span>
                         Medium
@@ -50,10 +67,15 @@ export function VasePreview({ vase, deleteVase, editVase }) {
                     </span>
                 </ReactTooltip>
 
-                {vase.sizes.large.printTime > 0 &&
-                    <span className="sizeHover" data-tip data-for={vase._id + 'L'}>
+                {vase.sizes.large.printTime > 0 && (
+                    <span
+                        className="sizeHover"
+                        data-tip
+                        data-for={vase._id + 'L'}
+                    >
                         L
-                    </span>}
+                    </span>
+                )}
                 <ReactTooltip id={vase._id + 'L'}>
                     <span>
                         Large
@@ -74,13 +96,21 @@ export function VasePreview({ vase, deleteVase, editVase }) {
                 alt="vaseimg"
                 className={'vase-img'}
             />
-            <div className='edit-delete-btns'>
-            <Button onClick={onEditVase} variant="contained" color="primary">
-                Edit
-            </Button>
-            <Button onClick={onRemoveVase} variant="contained" color="error">
-                Remove
-            </Button>
+            <div className="edit-delete-btns">
+                <Button
+                    onClick={onEditVase}
+                    variant="contained"
+                    color="primary"
+                >
+                    Edit
+                </Button>
+                <Button
+                    onClick={onRemoveVase}
+                    variant="contained"
+                    color="error"
+                >
+                    Remove
+                </Button>
             </div>
         </article>
     );

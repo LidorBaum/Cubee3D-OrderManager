@@ -56,6 +56,7 @@ const connectSockets = require('./apis/socketRoutes');
 app.use('/api/vase', vaseRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/filament', filamentRouter);
+app.use('/api/order', orderRouter);
 
 app.use('/api/auth', authRouter);
 connectSockets(io);

@@ -11,7 +11,12 @@ import { FilamentList } from '../cmps/FilamentList';
 // import Select from 'react-select';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import filamentService from '../services/filamentService';
-import { snackFilamentDeleted, snackNoFilaments, snackNoImg, snackSavedFilament } from '../snackMessages';
+import {
+    snackFilamentDeleted,
+    snackNoFilaments,
+    snackNoImg,
+    snackSavedFilament,
+} from '../snackMessages';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -19,7 +24,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { uploadImg } from '../services/cloudinaryService';
 import { emptyFilamentObj } from '../services/utils';
 import { TextField } from '@mui/material';
-
 
 const style = {
     position: 'absolute',
@@ -31,14 +35,13 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-
 };
 export const FialmentMangement = () => {
     if (window.screen.width < 1000) {
         console.log('mobile');
-        style.width = window.screen.width - 50
-        style.overflow = 'scroll'
-        style.height = '80%'
+        style.width = window.screen.width - 50;
+        style.overflow = 'scroll';
+        style.height = '80%';
     }
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [filaments, setFilaments] = useState(null);
@@ -46,11 +49,13 @@ export const FialmentMangement = () => {
     const [open, setOpen] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [filamentToEdit, setFilamentToEdit] = useState({ ...emptyFilamentObj });
+    const [filamentToEdit, setFilamentToEdit] = useState({
+        ...emptyFilamentObj,
+    });
 
     const [primaryImgUrl, setPrimaryUrl] = useState(
         filamentToEdit.image ||
-        'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
+            'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
     );
 
     const onUploadImg = async e => {
@@ -69,9 +74,11 @@ export const FialmentMangement = () => {
         setOpen(true);
     };
     const handleClose = () => {
-        setPrimaryUrl('https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png')
-        setDoRefresh(!isRefresh)
-        setFilamentToEdit(emptyFilamentObj)
+        setPrimaryUrl(
+            'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
+        );
+        setDoRefresh(!isRefresh);
+        setFilamentToEdit(emptyFilamentObj);
         setOpen(false);
     };
     useEffect(() => {
@@ -108,11 +115,11 @@ export const FialmentMangement = () => {
     };
     const editFilament = filament => {
         console.log(filament);
-        setFilamentToEdit(filament)
-        setPrimaryUrl(filament.image)
-        handleOpen()
-    }
-    const onAddFilament = async (e) => {
+        setFilamentToEdit(filament);
+        setPrimaryUrl(filament.image);
+        handleOpen();
+    };
+    const onAddFilament = async e => {
         e.preventDefault();
         setIsLoading(true);
         if (
@@ -122,16 +129,17 @@ export const FialmentMangement = () => {
             setIsLoading(false);
             return notificationHandler.error(snackNoImg);
         }
-        const filamentObj = { ...filamentToEdit, image: primaryImgUrl }
+        const filamentObj = { ...filamentToEdit, image: primaryImgUrl };
         if (filamentObj._id) {
-            filamentObj._id = filamentToEdit._id
-            const updateFilament = await filamentService.updateFilament(filamentObj);
+            filamentObj._id = filamentToEdit._id;
+            const updateFilament = await filamentService.updateFilament(
+                filamentObj
+            );
             if (updateFilament.error) {
                 notificationHandler.error(updateFilament.error.message);
                 return setIsLoading(false);
             }
-        }
-        else {
+        } else {
             const newFilament = await filamentService.addFilament(filamentObj);
             if (newFilament.error) {
                 notificationHandler.error(newFilament.error.message);
@@ -139,11 +147,11 @@ export const FialmentMangement = () => {
             }
         }
         notificationHandler.success(snackSavedFilament);
-        setIsLoading(false)
-        setFilamentToEdit({ ...emptyFilamentObj })
+        setIsLoading(false);
+        setFilamentToEdit({ ...emptyFilamentObj });
         console.log('submitting');
-        handleClose()
-    }
+        handleClose();
+    };
 
     if (!filaments)
         return (
@@ -162,7 +170,7 @@ export const FialmentMangement = () => {
                     <Button variant="contained">Vases</Button>{' '}
                 </Link>
             </div>
-            <Box textAlign='center' sx={{ 'margin-top': 10 }} >
+            <Box textAlign="center" sx={{ 'margin-top': 10 }}>
                 <Button
                     onClick={handleOpen}
                     className="add-new-btn"
@@ -188,8 +196,12 @@ export const FialmentMangement = () => {
                 <Box sx={style}>
                     {/* <FormControl fullWidth> */}
                     <h2>New Filament</h2>
-                    <form className='filament-form' id='filament-form' onSubmit={onAddFilament}>
-                        <div className='filament-form-basic'>
+                    <form
+                        className="filament-form"
+                        id="filament-form"
+                        onSubmit={onAddFilament}
+                    >
+                        <div className="filament-form-basic">
                             <TextField
                                 required
                                 label="Color"
@@ -218,7 +230,7 @@ export const FialmentMangement = () => {
                                 value={filamentToEdit.weight}
                                 onChange={handleChange}
                                 type="number"
-                                inputProps={{ 'min': 1 }}
+                                inputProps={{ min: 1 }}
                             />
                             <TextField
                                 required
@@ -227,9 +239,8 @@ export const FialmentMangement = () => {
                                 value={filamentToEdit.price}
                                 onChange={handleChange}
                                 type="number"
-                                inputProps={{ 'min': 1 }}
+                                inputProps={{ min: 1 }}
                             />
-
 
                             <div className="form-img">
                                 <label htmlFor="img-input">
@@ -249,9 +260,16 @@ export const FialmentMangement = () => {
                         </div>
                     </form>
                     {/* </FormControl> */}
-                    <Box textAlign='center' sx={{ 'margin-top': 30 }} >
-                        <Button disabled={isUploading || isLoading}
-                            form="filament-form" type={'submit'} className='save-btn' variant='contained' >Submit</Button>
+                    <Box textAlign="center" sx={{ 'margin-top': 30 }}>
+                        <Button
+                            disabled={isUploading || isLoading}
+                            form="filament-form"
+                            type={'submit'}
+                            className="save-btn"
+                            variant="contained"
+                        >
+                            Submit
+                        </Button>
                     </Box>
                 </Box>
             </Modal>

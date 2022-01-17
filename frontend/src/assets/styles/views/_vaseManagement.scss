@@ -16,12 +16,12 @@ form {
     gap: 30px;
     margin-bottom: 10px;
     align-items: flex-start;
-    .vase-form-basic{
+    .vase-form-basic {
         display: flex;
         flex-direction: column;
         gap: 20px;
     }
-    .vase-form-sizes-input{
+    .vase-form-sizes-input {
         display: flex;
         flex-direction: row;
         gap: 20px;
@@ -39,7 +39,7 @@ form {
 
         width: 200px;
     }
-    h2{
+    h2 {
         width: fit-content;
     }
 }
@@ -99,7 +99,7 @@ form {
             overflow: hidden;
             padding: 5px;
         }
-        .edit-delete-btns{
+        .edit-delete-btns {
             display: flex;
             gap: 20px;
         }
@@ -109,14 +109,12 @@ form {
     form {
         display: flex;
         flex-direction: column;
-        .vase-form-sizes-input{
+        .vase-form-sizes-input {
             display: flex;
             flex-direction: column;
             flex-wrap: wrap;
             gap: 4px;
             // background-color: violet;
-
         }
     }
-
 }

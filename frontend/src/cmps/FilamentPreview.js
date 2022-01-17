@@ -4,9 +4,9 @@ import ReactTooltip from 'react-tooltip';
 
 export function FilamentPreview({ filament, deleteFilament, editFilament }) {
     console.log(filament);
-    const onEditFilament = () =>{
-        editFilament(filament)
-    }
+    const onEditFilament = () => {
+        editFilament(filament);
+    };
     const onRemoveFilament = () => {
         deleteFilament(filament._id);
     };
@@ -25,17 +25,21 @@ export function FilamentPreview({ filament, deleteFilament, editFilament }) {
                 alt="filamentimg"
                 className={'filament-img'}
             />
-            <div className='edit-delete-btns'>
-            <Button onClick={onEditFilament} variant="contained" color="primary">
-                Edit
-            </Button>
-            <Button
-                onClick={onRemoveFilament}
-                variant="contained"
-                color="error"
-            >
-                Remove
-            </Button>
+            <div className="edit-delete-btns">
+                <Button
+                    onClick={onEditFilament}
+                    variant="contained"
+                    color="primary"
+                >
+                    Edit
+                </Button>
+                <Button
+                    onClick={onRemoveFilament}
+                    variant="contained"
+                    color="error"
+                >
+                    Remove
+                </Button>
             </div>
         </article>
     );

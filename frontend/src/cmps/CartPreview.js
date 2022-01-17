@@ -21,7 +21,10 @@ export function CartPreview({ productObj, removeProduct }) {
             />
             <div className="info">
                 <p>{productObj.name + ' ' + productObj.type}</p>
-                <p>{productObj.size}</p>
+                <p>
+                    {productObj.size.charAt(0).toUpperCase() +
+                        productObj.size.slice(1)}
+                </p>
                 <p>Quantity: {productObj.quantity}</p>
             </div>
             <Button

@@ -9,7 +9,7 @@ vaseRouter.post('/', createVase);
 
 vaseRouter.get('/', getAllVases);
 
-vaseRouter.put("/edit/:vaseId([A-Fa-f0-9]{24})", updateVase);
+vaseRouter.put('/edit/:vaseId([A-Fa-f0-9]{24})', updateVase);
 
 // userRouter.get("/:userId([A-Fa-f0-9]{24})", getUserById);
 
