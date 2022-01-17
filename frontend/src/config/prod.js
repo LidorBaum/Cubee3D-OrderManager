@@ -1,4 +1,4 @@
 module.exports = {
-    baseURL: 'https://peaceful-falls-72058.herokuapp.com',
+    baseURL: 'https://cubee3dordermanagement.herokuapp.com',
     env: 'prod',
 };
