@@ -5,6 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "heroku-prebuild": "cd frontend && npm install && npm run build && cd ../ && npm run move-build",
+        "move-build": "mkdir -p backend/public && mv -fv frontend/build/* backend/public",
         "start": "cd backend && npm install && npm start"
     },
     "author": "",
