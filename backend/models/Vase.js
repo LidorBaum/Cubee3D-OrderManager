@@ -5,19 +5,15 @@ const Schema = db.mongoose.Schema;
 const VaseSizeSchema = Schema({
     height: {
         type: Number,
-        required: true,
     },
-    diamter: {
+    diameter: {
         type: Number,
-        required: true,
     },
     weight: {
         type: Number,
-        required: true,
     },
     printTime: {
         type: Number,
-        required: true,
     },
 });
 const VaseSchema = Schema(
@@ -36,15 +32,15 @@ const VaseSchema = Schema(
         sizes: {
             small: {
                 type: VaseSizeSchema,
-                default: null,
+                // default: {height: null, diameter: null, printTime: null, weight: null},
             },
             medium: {
                 type: VaseSizeSchema,
-                default: null,
+                // default: {height: null, diameter: null, printTime: null, weight: null},
             },
             large: {
                 type: VaseSizeSchema,
-                default: null,
+                // default: {height: null, diameter: null, printTime: null, weight: null},
             },
         },
     },
@@ -54,6 +50,21 @@ const VaseSchema = Schema(
         timestamps: true,
     }
 );
+
+VaseSchema.statics.updateVase = async function (vaseObj){
+    return this.findOneAndUpdate(
+        { _id: vaseObj._id },
+        {
+            $set: {
+                name: vaseObj.name,
+                type: vaseObj.type,
+                image: vaseObj.image,
+                sizes: vaseObj.sizes
+            },
+        },
+        { new: true }
+    );
+}
 
 VaseSchema.statics.createVase = function (vaseObj) {
     return this.create(vaseObj);

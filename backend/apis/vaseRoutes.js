@@ -9,7 +9,7 @@ vaseRouter.post('/', createVase);
 
 vaseRouter.get('/', getAllVases);
 
-// userRouter.put("/edit/:userId([A-Fa-f0-9]{24})", updateUser);
+vaseRouter.put("/edit/:vaseId([A-Fa-f0-9]{24})", updateVase);
 
 // userRouter.get("/:userId([A-Fa-f0-9]{24})", getUserById);
 
@@ -46,6 +46,14 @@ async function createVase(req, res) {
         res.send(newVase);
     } catch (err) {
         console.log(err);
+        return responseError(res, err.message);
+    }
+}
+async function updateVase(req, res) {
+    try {
+        const newVaseObj = await VaseModel.updateVase(req.body);
+        res.send(newVaseObj);
+    } catch (err) {
         return responseError(res, err.message);
     }
 }

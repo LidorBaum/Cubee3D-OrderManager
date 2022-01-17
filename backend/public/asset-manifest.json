@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.88d4ea71.css",
+    "main.js": "/static/js/main.fd6de627.js",
+    "static/media/Caveat-Regular.ttf": "/static/media/Caveat-Regular.76167cc679e8138706a2.ttf",
+    "static/media/Montserrat-Regular.ttf": "/static/media/Montserrat-Regular.3cd786652b8a2e9d41f2.ttf",
+    "index.html": "/index.html",
+    "main.88d4ea71.css.map": "/static/css/main.88d4ea71.css.map",
+    "main.fd6de627.js.map": "/static/js/main.fd6de627.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.88d4ea71.css",
+    "static/js/main.fd6de627.js"
+  ]
+}
