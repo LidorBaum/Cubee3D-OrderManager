@@ -41,6 +41,12 @@ const style = {
 };
 
 export const OrderPage = () => {
+    if (window.screen.width < 1000) {
+        console.log('mobile');
+        style.width = window.screen.width - 50
+        style.overflow = 'scroll'
+        style.height = '70%'
+    }
     const [open, setOpen] = useState(false);
     const handleOpen = vaseObj => {
         setModalContent({ ...vaseObj, selectedColor: '' });

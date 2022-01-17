@@ -62,3 +62,15 @@
 .addtocart {
     color: violet;
 }
+
+@media only screen and (max-width: 750px) {
+    .vase-choose-popup {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        img{
+            width: 300px;
+        }
+    }
+
+}
