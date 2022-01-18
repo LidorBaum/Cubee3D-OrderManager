@@ -14,7 +14,18 @@ import ReactTooltip from 'react-tooltip';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import { Modal, Slide, Box, Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import {
+    Modal,
+    Slide,
+    Box,
+    Button,
+    TextField,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from '@mui/material';
 import Cookies from 'js-cookie';
 import vaseService from '../services/vaseService';
 import filamentService from '../services/filamentService';
@@ -33,8 +44,8 @@ const style = {
 };
 const dialogStyle = {
     mt: 2,
-    minWidth: style.width
-}
+    minWidth: style.width,
+};
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -44,8 +55,8 @@ export const OrderPage = props => {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
         style.height = '70%';
-        dialogStyle.maxWidth = 300
-        delete dialogStyle.minWidth
+        dialogStyle.maxWidth = 300;
+        delete dialogStyle.minWidth;
     }
 
     const [open, setOpen] = useState(false);
@@ -68,8 +79,8 @@ export const OrderPage = props => {
     const [selectedProducts, setSelectedProducts] = useState(
         cartCookie ? JSON.parse(cartCookie) : []
     );
-    const [openWelcomeDialog, setWelcomeDialog] = useState(false)
-    const [store, setStore] = useState('')
+    const [openWelcomeDialog, setWelcomeDialog] = useState(false);
+    const [store, setStore] = useState('');
     const [openPlaceConfirm, setOpenPlaceConfirm] = useState(false);
     const [orderAttachments, setOrderAttachments] = useState({
         storeName: '',
@@ -94,8 +105,8 @@ export const OrderPage = props => {
             setFilaments(filamentsArray);
             const searchQuery = new URLSearchParams(props.location.search);
             if (searchQuery.get('store')) {
-                setWelcomeDialog(true)
-                setStore(searchQuery.get('store'))
+                setWelcomeDialog(true);
+                setStore(searchQuery.get('store'));
             }
         };
         getVasesAndFilaments();
@@ -115,8 +126,8 @@ export const OrderPage = props => {
     };
 
     const handleCloseWelcomeDialog = () => {
-        setWelcomeDialog(false)
-    }
+        setWelcomeDialog(false);
+    };
 
     const onPlaceOrder = () => {
         handleopenConfirmDialog();
@@ -281,7 +292,7 @@ export const OrderPage = props => {
                                     {filaments.map(filament => {
                                         const isSelected =
                                             modalContent.selectedColorId ===
-                                                filament._id
+                                            filament._id
                                                 ? 'selectedColor'
                                                 : '';
                                         return (
@@ -389,7 +400,6 @@ export const OrderPage = props => {
                 </DialogActions>
             </Dialog>
 
-
             <Dialog
                 open={openWelcomeDialog}
                 onClose={handleCloseWelcomeDialog}
@@ -398,7 +408,7 @@ export const OrderPage = props => {
                 sx={dialogStyle}
                 fullWidth
                 TransitionComponent={Transition}
-            // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
+                // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
             >
                 <DialogTitle id="alert-dialog-title">
                     {`Hello ${store} TLV!`}
@@ -414,7 +424,10 @@ export const OrderPage = props => {
                     <br />
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={handleCloseWelcomeDialog}>
+                    <Button
+                        variant="contained"
+                        onClick={handleCloseWelcomeDialog}
+                    >
                         <DoubleArrowIcon />
                         Let's Start
                     </Button>
@@ -423,4 +436,3 @@ export const OrderPage = props => {
         </div>
     );
 };
-

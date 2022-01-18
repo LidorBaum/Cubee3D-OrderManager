@@ -11,7 +11,7 @@ export const Cart = ({ selectedProducts, removeProduct, onPlaceOrder }) => {
     };
     return (
         <div className="cart">
-            <div className='cart-list'>
+            <div className="cart-list">
                 {selectedProducts.map(productObj => {
                     return (
                         <CartPreview
@@ -26,7 +26,7 @@ export const Cart = ({ selectedProducts, removeProduct, onPlaceOrder }) => {
                     );
                 })}
             </div>
-            <div className='cta-cart'>
+            <div className="cta-cart">
                 <p>Total: {getTotal()} Vases</p>
                 <Button
                     onClick={onPlaceOrder}

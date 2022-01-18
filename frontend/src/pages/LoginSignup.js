@@ -10,7 +10,7 @@ import {
     snackInvalidPasswordRegex,
     snackNameUnavailable,
 } from '../snackMessages.js';
-import {TextField, Button} from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import userService from '../services/userService';
 
 export const LoginSignup = props => {

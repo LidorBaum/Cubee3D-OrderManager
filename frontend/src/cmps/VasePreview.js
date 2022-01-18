@@ -13,10 +13,12 @@ export function VasePreview({ vase, deleteVase, editVase }) {
 
     const isAnySize =
         !vase.sizes.small.printTime &&
-            !vase.sizes.small.printTime &&
-            !vase.sizes.small.printTime ? (
+        !vase.sizes.small.printTime &&
+        !vase.sizes.small.printTime ? (
             <p>No Sizes Available</p>
-        ) : ('');
+        ) : (
+            ''
+        );
 
     return (
         <article id={`${vase._id}-card`} className="vase-card">

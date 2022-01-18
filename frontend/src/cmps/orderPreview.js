@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '@mui/material';
 
 export function OrderPreview({ orderObj }) {
-
     let colorsArr = [];
     orderObj.selectedVasesArray.map(vase => {
         if (colorsArr.indexOf(vase.filamentId) === -1)

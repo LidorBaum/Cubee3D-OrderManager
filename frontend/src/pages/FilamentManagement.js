@@ -81,7 +81,7 @@ export const FialmentMangement = () => {
         setFilamentToEdit(emptyFilamentObj);
         setOpen(false);
     };
-    
+
     const handleChange = e => {
         e.persist();
         const target = e.target.name;
