@@ -1,14 +1,6 @@
-import { Button } from '@mui/material';
 import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FilamentList } from '../cmps/FilamentList';
-// import { useHistory } from 'react-router-dom';
-// import { CompanyContext } from '../contexts/CompanyContext';
-// import { BoardEmployeeList } from '../cmps/BoardEmployeeList';
-// import employeeService from '../services/employeeService';
-// import io from 'socket.io-client';
-// import Spin from 'react-cssfx-loading/lib/Spin';
-// import Select from 'react-select';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import filamentService from '../services/filamentService';
 import {
@@ -18,12 +10,9 @@ import {
     snackSavedFilament,
 } from '../snackMessages';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import MenuItem from '@mui/material/MenuItem';
 import { uploadImg } from '../services/cloudinaryService';
 import { emptyFilamentObj } from '../services/utils';
-import { TextField } from '@mui/material';
+import { TextField, Modal, Box, Button } from '@mui/material';
 
 const style = {
     position: 'absolute',
@@ -36,9 +25,9 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
+
 export const FialmentMangement = () => {
     if (window.screen.width < 1000) {
-        console.log('mobile');
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
         style.height = '80%';
@@ -52,11 +41,22 @@ export const FialmentMangement = () => {
     const [filamentToEdit, setFilamentToEdit] = useState({
         ...emptyFilamentObj,
     });
-
     const [primaryImgUrl, setPrimaryUrl] = useState(
         filamentToEdit.image ||
             'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
     );
+
+    useEffect(() => {
+        const getAllFilaments = async () => {
+            const res = await filamentService.getAllFilaments();
+            if (res.error) return notificationHandler.error(res.error.message);
+            if (!res.length) {
+                notificationHandler.error(snackNoFilaments);
+            }
+            setFilaments(res);
+        };
+        getAllFilaments();
+    }, [isRefresh]);
 
     const onUploadImg = async e => {
         e.persist();
@@ -81,31 +81,17 @@ export const FialmentMangement = () => {
         setFilamentToEdit(emptyFilamentObj);
         setOpen(false);
     };
-    useEffect(() => {
-        const getAllFilaments = async () => {
-            const res = await filamentService.getAllFilaments();
-            if (res.error) return notificationHandler.error(res.error.message);
-            console.log(res);
-            if (!res.length) {
-                notificationHandler.error(snackNoFilaments);
-            }
-            setFilaments(res);
-        };
-        getAllFilaments();
-    }, [isRefresh]);
-
+    
     const handleChange = e => {
         e.persist();
         const target = e.target.name;
         const value = e.target.value;
-        console.log(target, value);
         setFilamentToEdit(prevForm => {
             return { ...prevForm, [target]: value };
         });
     };
 
     const deleteFilament = async filamentId => {
-        console.log('deleteing filament');
         const res = await filamentService.removeFilament(filamentId);
         if (res.error) {
             return notificationHandler.error(res.error.message);
@@ -113,12 +99,13 @@ export const FialmentMangement = () => {
         setDoRefresh(!isRefresh);
         notificationHandler.warning(snackFilamentDeleted);
     };
+
     const editFilament = filament => {
-        console.log(filament);
         setFilamentToEdit(filament);
         setPrimaryUrl(filament.image);
         handleOpen();
     };
+
     const onAddFilament = async e => {
         e.preventDefault();
         setIsLoading(true);
@@ -149,7 +136,6 @@ export const FialmentMangement = () => {
         notificationHandler.success(snackSavedFilament);
         setIsLoading(false);
         setFilamentToEdit({ ...emptyFilamentObj });
-        console.log('submitting');
         handleClose();
     };
 
@@ -159,7 +145,7 @@ export const FialmentMangement = () => {
                 <Hypnosis width="200px" height="200px" duration="3s" />
             </div>
         );
-    if (filaments && filaments.length === 0) return <h1>No Filaments</h1>;
+
     return (
         <div>
             <div className="inventory-nav">

@@ -1,21 +1,16 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
-import ReactTooltip from 'react-tooltip';
+import React from 'react';
 
-export function OrderPreview({ orderObj, removeProduct }) {
-    // const onRemoveProduct = () => {
-    //     removeProduct({
-    //         vaseId: productObj.vaseId,
-    //         filamentId: productObj.filamentId,
-    //         size: productObj.size,
-    //     });
-    // };
+export function OrderPreview({ orderObj }) {
+
     let colorsArr = [];
     orderObj.selectedVasesArray.map(vase => {
         if (colorsArr.indexOf(vase.filamentId) === -1)
             colorsArr.push(vase.filamentId);
     });
+
     const numOfColors = colorsArr.length;
+    
     return (
         <article id={`${orderObj._id}-order-card`} className="order-card">
             <div className="info">

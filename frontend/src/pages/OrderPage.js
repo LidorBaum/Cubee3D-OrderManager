@@ -1,13 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { VaseOrderList } from '../cmps/VaseOrderList';
-// import { useHistory } from 'react-router-dom';
-// import { CompanyContext } from '../contexts/CompanyContext';
-// import { BoardEmployeeList } from '../cmps/BoardEmployeeList';
-// import employeeService from '../services/employeeService';
-// import io from 'socket.io-client';
-// import Spin from 'react-cssfx-loading/lib/Spin';
-// import Select from 'react-select';
-import { withStyles } from "@material-ui/core/styles";
 import ReactTooltip from 'react-tooltip';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -54,23 +46,21 @@ const dialogStyle = {
     mt: 2,
     minWidth: style.width
 }
-
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
 export const OrderPage = props => {
     if (window.screen.width < 1000) {
-        console.log('mobile');
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
         style.height = '70%';
         dialogStyle.maxWidth= 300
         delete dialogStyle.minWidth
     }
-    const [open, setOpen] = useState(false);
 
-    //ModalContent is also the product choice for adding to card
+    const [open, setOpen] = useState(false);
+    //ModalContent is also the product choice for adding to cart
     const [modalContent, setModalContent] = useState({
         name: '',
         type: '',
@@ -96,7 +86,7 @@ export const OrderPage = props => {
         storeName: '',
         comments: '',
     });
-    window.selectedProducts = selectedProducts;
+
     useEffect(() => {
         const getVasesAndFilaments = async () => {
             const vases = await vaseService.getAllVases();
@@ -130,6 +120,7 @@ export const OrderPage = props => {
     const handleopenConfirmDialog = () => {
         setOpenPlaceConfirm(true);
     };
+
     const handleCloseConfirmDialog = () => {
         setOpenPlaceConfirm(false);
     };
@@ -141,7 +132,6 @@ export const OrderPage = props => {
     const onPlaceOrder = () => {
         handleopenConfirmDialog();
     };
-
 
     const handleClose = () => {
         setModalContent({
@@ -181,7 +171,6 @@ export const OrderPage = props => {
                 selectedColorId: colorObj.colorId,
             };
         });
-        console.log(modalContent);
     };
 
     const onAddToCart = () => {
@@ -215,13 +204,11 @@ export const OrderPage = props => {
             }
         }
         if (!isExist) selectedProducts.push(productToAdd);
-        console.log(selectedProducts);
         Cookies.set('cart', JSON.stringify(selectedProducts));
         handleClose();
     };
 
     const onRemoveProduct = productIdentifier => {
-        console.log(productIdentifier);
         setSelectedProducts(
             selectedProducts.filter(prod => {
                 return !(
@@ -235,7 +222,6 @@ export const OrderPage = props => {
     };
 
     const onOrderConfirmed = async () => {
-        console.log('place the order');
         let selectedProductsForOrder = [];
         selectedProducts.forEach(prod => {
             return selectedProductsForOrder.push({
@@ -255,7 +241,6 @@ export const OrderPage = props => {
             notificationHandler.error(newOrder.error.message);
             return;
         }
-        console.log('order placed');
         Cookies.remove('cart');
         setSelectedProducts([]);
         handleCloseConfirmDialog();
@@ -269,13 +254,12 @@ export const OrderPage = props => {
             </div>
         );
 
-    if (vases && vases.length === 0) return <h1>No Vases</h1>;
     return (
         <div className="order-page">
             <div className="products">
                 <VaseOrderList vases={vases} handleOpen={handleOpen} />
             </div>
-            <div className="cart">
+            <div className="cart-container">
                 <Cart
                     removeProduct={onRemoveProduct}
                     selectedProducts={selectedProducts}

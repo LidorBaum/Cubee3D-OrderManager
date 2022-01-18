@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import ReactTooltip from 'react-tooltip';
 
 export function VasePreview({ vase, deleteVase, editVase }) {
@@ -10,15 +10,14 @@ export function VasePreview({ vase, deleteVase, editVase }) {
         console.log('open');
         editVase(vase);
     };
-    console.log(parseFloat(vase.sizes.medium.printTime));
+
     const isAnySize =
         !vase.sizes.small.printTime &&
-        !vase.sizes.small.printTime &&
-        !vase.sizes.small.printTime ? (
+            !vase.sizes.small.printTime &&
+            !vase.sizes.small.printTime ? (
             <p>No Sizes Available</p>
-        ) : (
-            ''
-        );
+        ) : ('');
+
     return (
         <article id={`${vase._id}-card`} className="vase-card">
             <p>{vase.name + ' ' + vase.type}</p>

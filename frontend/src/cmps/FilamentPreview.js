@@ -1,12 +1,11 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
-import ReactTooltip from 'react-tooltip';
+import React from 'react';
 
 export function FilamentPreview({ filament, deleteFilament, editFilament }) {
-    console.log(filament);
     const onEditFilament = () => {
         editFilament(filament);
     };
+
     const onRemoveFilament = () => {
         deleteFilament(filament._id);
     };

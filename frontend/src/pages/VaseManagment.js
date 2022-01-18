@@ -1,12 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { VaseList } from '../cmps/VaseList';
-// import { useHistory } from 'react-router-dom';
-// import { CompanyContext } from '../contexts/CompanyContext';
-// import { BoardEmployeeList } from '../cmps/BoardEmployeeList';
-// import employeeService from '../services/employeeService';
-// import io from 'socket.io-client';
-// import Spin from 'react-cssfx-loading/lib/Spin';
-// import Select from 'react-select';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import vaseService from '../services/vaseService';
 import {
@@ -38,7 +31,6 @@ const style = {
 
 export const VaseManagment = () => {
     if (window.screen.width < 1000) {
-        console.log('mobile');
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
         style.height = '80%';
@@ -49,18 +41,24 @@ export const VaseManagment = () => {
     const [open, setOpen] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
     const [vaseToEdit, setVaseToEdit] = useState({ ...emptyVaseObj });
     const [primaryImgUrl, setPrimaryUrl] = useState(
         vaseToEdit.image ||
             'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
     );
-    // const [vaseForm, setForm] = useState({
-    //     name: vaseToEdit.name,
-    //     type: vaseToEdit.type,
-    // });
 
-    window.vaseToEdit = vaseToEdit;
+    useEffect(() => {
+        const getAllVases = async () => {
+            const res = await vaseService.getAllVases();
+            if (res.error) return notificationHandler.error(res.error.message);
+            console.log(res);
+            if (!res.length) {
+                notificationHandler.error(snackNoVases);
+            }
+            setVases(res);
+        };
+        getAllVases();
+    }, [isRefresh]);
 
     const onUploadImg = async e => {
         e.persist();
@@ -77,6 +75,7 @@ export const VaseManagment = () => {
     const handleOpen = () => {
         setOpen(true);
     };
+
     const handleClose = () => {
         setPrimaryUrl(
             'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
@@ -118,12 +117,13 @@ export const VaseManagment = () => {
             return { ...prevForm, [target]: value };
         });
     };
+
     const handleSelectChange = e => {
-        console.log(e.target.value);
         setVaseToEdit(prevForm => {
             return { ...prevForm, type: e.target.value };
         });
     };
+
     const handleSizeInputsChange = e => {
         e.persist();
         const size = e.target.dataset.sizing;
@@ -137,24 +137,9 @@ export const VaseManagment = () => {
         setVaseToEdit(prevForm => {
             return { ...prevForm, prevSizesObj };
         });
-        console.log(vaseToEdit);
     };
 
-    useEffect(() => {
-        const getAllVases = async () => {
-            const res = await vaseService.getAllVases();
-            if (res.error) return notificationHandler.error(res.error.message);
-            console.log(res);
-            if (!res.length) {
-                notificationHandler.error(snackNoVases);
-            }
-            setVases(res);
-        };
-        getAllVases();
-    }, [isRefresh]);
-
     const deleteVase = async vaseId => {
-        console.log('deleteing vase');
         const res = await vaseService.removeVase(vaseId);
         if (res.error) {
             return notificationHandler.error(res.error.message);
@@ -162,6 +147,7 @@ export const VaseManagment = () => {
         setDoRefresh(!isRefresh);
         notificationHandler.success(snackVaseDeleted);
     };
+
     const editVase = vase => {
         setVaseToEdit(vase);
         setPrimaryUrl(vase.image);
@@ -196,8 +182,6 @@ export const VaseManagment = () => {
         notificationHandler.success(snackSavedVase);
         setIsLoading(false);
         setVaseToEdit({ ...emptyVaseObj });
-        // handleClose('new', newEmployeeObj);
-        console.log('submitting');
         handleClose();
     };
 

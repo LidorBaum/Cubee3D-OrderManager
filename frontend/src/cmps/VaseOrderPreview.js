@@ -1,9 +1,7 @@
-import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import ReactTooltip from 'react-tooltip';
 
 export function VaseOrderPreview({ vase, handleOpen }) {
-    console.log(vase);
     if (
         !vase.sizes.small.height &&
         !vase.sizes.medium.height &&
