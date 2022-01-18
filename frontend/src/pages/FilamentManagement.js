@@ -2,17 +2,17 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FilamentList } from '../cmps/FilamentList';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
-import filamentService from '../services/filamentService';
+import { TextField, Modal, Box, Button } from '@mui/material';
 import {
     snackFilamentDeleted,
     snackNoFilaments,
     snackNoImg,
     snackSavedFilament,
 } from '../snackMessages';
+import filamentService from '../services/filamentService';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import { uploadImg } from '../services/cloudinaryService';
 import { emptyFilamentObj } from '../services/utils';
-import { TextField, Modal, Box, Button } from '@mui/material';
 
 const style = {
     position: 'absolute',

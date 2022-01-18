@@ -1,5 +1,5 @@
-import { Button } from '@mui/material';
 import React from 'react';
+import { Button } from '@mui/material';
 import { CartPreview } from './CartPreview';
 
 export const Cart = ({ selectedProducts, removeProduct, onPlaceOrder }) => {

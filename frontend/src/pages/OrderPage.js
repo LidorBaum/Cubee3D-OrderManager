@@ -1,15 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { VaseOrderList } from '../cmps/VaseOrderList';
-import ReactTooltip from 'react-tooltip';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import { Cart } from '../cmps/Cart';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
-import vaseService from '../services/vaseService';
 import {
     snackNoFilaments,
     snackNoVases,
@@ -18,18 +10,15 @@ import {
     productRemoved,
     snackOrderPlaced,
 } from '../snackMessages';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { TextField } from '@mui/material';
-import { Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import ReactTooltip from 'react-tooltip';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import { Modal, Slide, Box, Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import Cookies from 'js-cookie';
+import vaseService from '../services/vaseService';
 import filamentService from '../services/filamentService';
-import { Cart } from '../cmps/Cart';
-import Modal from '@mui/material/Modal';
 import orderService from '../services/orderService';
-import Slide from '@mui/material/Slide';
 
 const style = {
     position: 'absolute',
@@ -48,14 +37,14 @@ const dialogStyle = {
 }
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
-  });
+});
 
 export const OrderPage = props => {
     if (window.screen.width < 1000) {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
         style.height = '70%';
-        dialogStyle.maxWidth= 300
+        dialogStyle.maxWidth = 300
         delete dialogStyle.minWidth
     }
 
@@ -125,7 +114,7 @@ export const OrderPage = props => {
         setOpenPlaceConfirm(false);
     };
 
-    const handleCloseWelcomeDialog = () =>{
+    const handleCloseWelcomeDialog = () => {
         setWelcomeDialog(false)
     }
 
@@ -292,7 +281,7 @@ export const OrderPage = props => {
                                     {filaments.map(filament => {
                                         const isSelected =
                                             modalContent.selectedColorId ===
-                                            filament._id
+                                                filament._id
                                                 ? 'selectedColor'
                                                 : '';
                                         return (
@@ -403,13 +392,13 @@ export const OrderPage = props => {
 
             <Dialog
                 open={openWelcomeDialog}
-                onClose={handleCloseWelcomeDialog }
+                onClose={handleCloseWelcomeDialog}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 sx={dialogStyle}
                 fullWidth
                 TransitionComponent={Transition}
-                // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
+            // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
             >
                 <DialogTitle id="alert-dialog-title">
                     {`Hello ${store} TLV!`}
@@ -417,10 +406,10 @@ export const OrderPage = props => {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         We are happy you are here.
-                        <br/>
+                        <br />
                         In this page you can choose your vases.
-                        <br/>
-                         press on the desired size, and a popup will show.
+                        <br />
+                        press on the desired size, and a popup will show.
                     </DialogContentText>
                     <br />
                 </DialogContent>

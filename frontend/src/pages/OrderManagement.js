@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
-import orderService from '../services/orderService';
-import { snackNoOrders } from '../snackMessages';
-import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import { OrderPreview } from '../cmps/orderPreview';
+import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
+import { snackNoOrders } from '../snackMessages';
+import orderService from '../services/orderService';
 let totalVases = 0;
 
 export const OrderManagement = () => {

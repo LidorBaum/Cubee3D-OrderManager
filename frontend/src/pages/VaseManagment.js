@@ -1,21 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { VaseList } from '../cmps/VaseList';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import vaseService from '../services/vaseService';
+import { Button, TextField, MenuItem, Modal, Box } from '@mui/material';
+import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
+import { uploadImg } from '../services/cloudinaryService';
+import { emptyVaseObj } from '../services/utils';
 import {
     snackNoVases,
     snackVaseDeleted,
     snackNoImg,
     snackSavedVase,
 } from '../snackMessages';
-import { Button, TextField } from '@mui/material';
-import { Link } from 'react-router-dom';
-import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import { emptyVaseObj } from '../services/utils';
-import { uploadImg } from '../services/cloudinaryService';
-import MenuItem from '@mui/material/MenuItem';
 
 const style = {
     position: 'absolute',

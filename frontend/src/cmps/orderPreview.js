@@ -1,5 +1,5 @@
-import { Button } from '@mui/material';
 import React from 'react';
+import { Button } from '@mui/material';
 
 export function OrderPreview({ orderObj }) {
 
@@ -10,7 +10,7 @@ export function OrderPreview({ orderObj }) {
     });
 
     const numOfColors = colorsArr.length;
-    
+
     return (
         <article id={`${orderObj._id}-order-card`} className="order-card">
             <div className="info">
