@@ -50,6 +50,10 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
+const dialogStyle = {
+    mt: 2,
+    minWidth: style.width
+}
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -61,6 +65,8 @@ export const OrderPage = props => {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
         style.height = '70%';
+        dialogStyle.maxWidth= 300
+        delete dialogStyle.minWidth
     }
     const [open, setOpen] = useState(false);
 
@@ -416,7 +422,7 @@ export const OrderPage = props => {
                 onClose={handleCloseWelcomeDialog }
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-                sx={{ mt: 2, minWidth: style.width, maxWidth: style.width }}
+                sx={dialogStyle}
                 fullWidth
                 TransitionComponent={Transition}
                 // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
