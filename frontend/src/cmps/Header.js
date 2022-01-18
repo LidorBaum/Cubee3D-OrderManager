@@ -6,12 +6,12 @@ import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import { Button } from '@mui/material';
 import userService from '../services/userService';
 
-export function Header(props) {
+export const Header = props => {
     const { loggedUser, setLoggedUser } = useContext(UserContext);
     let history = useHistory();
     const notificationHandler = useContext(SnackbarHandlerContext);
-
-    useEffect(() => {}, [loggedUser]);
+    useEffect(() => {
+    }, [loggedUser]);
 
     const onLogout = async () => {
         const res = await userService.logout();
@@ -27,32 +27,35 @@ export function Header(props) {
     // };
     if (false) return <div>Header</div>;
     return (
-        <div className="links">
-            <NavLink
-                activeClassName="active"
-                to={'/inventory/vase'}
-                exact={true}
-            >
-                Vases
-            </NavLink>
-            <NavLink
-                activeClassName="active"
-                to={'/inventory/filament'}
-                exact={true}
-            >
-                Filaments
-            </NavLink>
-            <NavLink
-                activeClassName="active"
-                to={'/inventory/order'}
-                exact={true}
-            >
-                Orders
-            </NavLink>
-            <NavLink activeClassName="active" to={'/order'} exact={true}>
-                Place An Order
-            </NavLink>
-        </div>
+        // <div className='header'>
+            <div className="links">
+                <NavLink
+                    activeClassName="active"
+                    to={'/inventory/vase'}
+                    exact={true}
+                >
+                    Vases
+                </NavLink>
+                <NavLink
+                    activeClassName="active"
+                    to={'/inventory/filament'}
+                    exact={true}
+                >
+                    Filaments
+                </NavLink>
+                <NavLink
+                    activeClassName="active"
+                    to={'/inventory/order'}
+                    exact={true}
+                >
+                    Orders
+                </NavLink>
+                <NavLink activeClassName="active" to={'/order'} exact={true}>
+                    Place An Order
+                </NavLink>
+            </div>
+        //    {/* {store && <img src='https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg' />} */}
+        //{/* </div> */}
     );
     // return (
     //   <div className="header">
