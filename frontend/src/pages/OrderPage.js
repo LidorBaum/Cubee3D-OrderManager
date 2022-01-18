@@ -7,7 +7,7 @@ import { VaseOrderList } from '../cmps/VaseOrderList';
 // import io from 'socket.io-client';
 // import Spin from 'react-cssfx-loading/lib/Spin';
 // import Select from 'react-select';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 import ReactTooltip from 'react-tooltip';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -53,7 +53,7 @@ const style = {
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
-});
+  });
 
 export const OrderPage = props => {
     if (window.screen.width < 1000) {
@@ -83,8 +83,8 @@ export const OrderPage = props => {
     const [selectedProducts, setSelectedProducts] = useState(
         cartCookie ? JSON.parse(cartCookie) : []
     );
-    const [openWelcomeDialog, setWelcomeDialog] = useState(false);
-    const [store, setStore] = useState('');
+    const [openWelcomeDialog, setWelcomeDialog] = useState(false)
+    const [store, setStore] = useState('')
     const [openPlaceConfirm, setOpenPlaceConfirm] = useState(false);
     const [orderAttachments, setOrderAttachments] = useState({
         storeName: '',
@@ -109,8 +109,8 @@ export const OrderPage = props => {
             setFilaments(filamentsArray);
             const searchQuery = new URLSearchParams(props.location.search);
             if (searchQuery.get('store')) {
-                setWelcomeDialog(true);
-                setStore(searchQuery.get('store'));
+                setWelcomeDialog(true)
+                setStore(searchQuery.get('store'))
             }
         };
         getVasesAndFilaments();
@@ -128,13 +128,14 @@ export const OrderPage = props => {
         setOpenPlaceConfirm(false);
     };
 
-    const handleCloseWelcomeDialog = () => {
-        setWelcomeDialog(false);
-    };
+    const handleCloseWelcomeDialog = () =>{
+        setWelcomeDialog(false)
+    }
 
     const onPlaceOrder = () => {
         handleopenConfirmDialog();
     };
+
 
     const handleClose = () => {
         setModalContent({
@@ -409,12 +410,13 @@ export const OrderPage = props => {
                 </DialogActions>
             </Dialog>
 
+
             <Dialog
                 open={openWelcomeDialog}
-                onClose={handleCloseWelcomeDialog}
+                onClose={handleCloseWelcomeDialog }
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-                sx={{ mt: 2, minWidth: 500 }}
+                sx={{ mt: 2, minWidth: style.width, maxWidth: style.width }}
                 fullWidth
                 TransitionComponent={Transition}
                 // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
@@ -425,18 +427,15 @@ export const OrderPage = props => {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         We are happy you are here.
-                        <br />
+                        <br/>
                         In this page you can choose your vases.
-                        <br />
-                        press on the desired size, and a popup will show.
+                        <br/>
+                         press on the desired size, and a popup will show.
                     </DialogContentText>
                     <br />
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        variant="contained"
-                        onClick={handleCloseWelcomeDialog}
-                    >
+                    <Button variant="contained" onClick={handleCloseWelcomeDialog}>
                         <DoubleArrowIcon />
                         Let's Start
                     </Button>
@@ -445,3 +444,4 @@ export const OrderPage = props => {
         </div>
     );
 };
+
