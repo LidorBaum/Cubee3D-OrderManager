@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import ReactTooltip from 'react-tooltip';
 
 export function VaseOrderPreview({ vase, handleOpen }) {
+    console.log(vase);
     if (
-        !vase.sizes.small.printTime &&
-        !vase.sizes.small.printTime &&
-        !vase.sizes.small.printTime
+        !vase.sizes.small.height &&
+        !vase.sizes.medium.height &&
+        !vase.sizes.large.height
     )
         return <></>;
 
@@ -19,7 +20,7 @@ export function VaseOrderPreview({ vase, handleOpen }) {
             size: size,
             vaseId: vase._id,
             image: vase.image,
-            dimensions: `Height ${vase.sizes[dbSize].height}mm, Diamter ${vase.sizes[dbSize].diameter}mm`,
+            dimensions: `Height ${vase.sizes[dbSize].height}mm, Diameter ${vase.sizes[dbSize].diameter}mm`,
         };
         handleOpen(vaseObj);
     };
@@ -28,53 +29,59 @@ export function VaseOrderPreview({ vase, handleOpen }) {
         <article id={`${vase._id}-card`} className="vase-card">
             <p>{vase.name + ' ' + vase.type}</p>
             <div className="sizesp">
-                <span
-                    onClick={() => onSelectSize('Small')}
-                    className="sizeHover sizeButton"
-                    data-tip
-                    data-for={vase._id + 'S'}
-                >
-                    S
-                </span>
+                {vase.sizes.small.height !== 0 && (
+                    <span
+                        onClick={() => onSelectSize('Small')}
+                        className="sizeHover sizeButton"
+                        data-tip
+                        data-for={vase._id + 'S'}
+                    >
+                        S
+                    </span>
+                )}
                 <ReactTooltip id={vase._id + 'S'}>
                     <span>
                         Small
                         <br />
-                        Height {vase.sizes.small.height}mm / Diamter{' '}
+                        Height {vase.sizes.small.height}mm / Diameter{' '}
                         {vase.sizes.small.height}mm
                     </span>
                 </ReactTooltip>
 
-                <span
-                    onClick={() => onSelectSize('Medium')}
-                    className="sizeHover sizeButton"
-                    data-tip
-                    data-for={vase._id + 'M'}
-                >
-                    M
-                </span>
+                {vase.sizes.medium.height !== 0 && (
+                    <span
+                        onClick={() => onSelectSize('Medium')}
+                        className="sizeHover sizeButton"
+                        data-tip
+                        data-for={vase._id + 'M'}
+                    >
+                        M
+                    </span>
+                )}
                 <ReactTooltip id={vase._id + 'M'}>
                     <span>
                         Medium
                         <br />
-                        Height {vase.sizes.medium.height}mm / Diamter{' '}
+                        Height {vase.sizes.medium.height}mm / Diameter{' '}
                         {vase.sizes.medium.height}mm
                     </span>
                 </ReactTooltip>
 
-                <span
-                    onClick={() => onSelectSize('Large')}
-                    className="sizeHover sizeButton"
-                    data-tip
-                    data-for={vase._id + 'L'}
-                >
-                    L
-                </span>
+                {vase.sizes.large.height !== 0 && (
+                    <span
+                        onClick={() => onSelectSize('Large')}
+                        className="sizeHover sizeButton"
+                        data-tip
+                        data-for={vase._id + 'L'}
+                    >
+                        L
+                    </span>
+                )}
                 <ReactTooltip id={vase._id + 'L'}>
                     <span>
                         Large
                         <br />
-                        Height {vase.sizes.large.height}mm / Diamter{' '}
+                        Height {vase.sizes.large.height}mm / Diameter{' '}
                         {vase.sizes.large.height}mm
                     </span>
                 </ReactTooltip>

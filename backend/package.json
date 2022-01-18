@@ -12,6 +12,7 @@
         "express-session": "^1.17.2",
         "joi": "^17.5.0",
         "mongoose": "^6.1.6",
+        "mongoose-float": "^1.0.4",
         "socket.io": "^4.4.0"
     },
     "devDependencies": {},

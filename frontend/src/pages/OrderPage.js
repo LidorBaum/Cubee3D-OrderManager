@@ -7,6 +7,7 @@ import { VaseOrderList } from '../cmps/VaseOrderList';
 // import io from 'socket.io-client';
 // import Spin from 'react-cssfx-loading/lib/Spin';
 // import Select from 'react-select';
+import { withStyles } from '@material-ui/core/styles';
 import ReactTooltip from 'react-tooltip';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -36,19 +37,25 @@ import filamentService from '../services/filamentService';
 import { Cart } from '../cmps/Cart';
 import Modal from '@mui/material/Modal';
 import orderService from '../services/orderService';
+import Slide from '@mui/material/Slide';
+
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: 950,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
 };
 
-export const OrderPage = () => {
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+export const OrderPage = props => {
     if (window.screen.width < 1000) {
         console.log('mobile');
         style.width = window.screen.width - 50;
@@ -76,6 +83,8 @@ export const OrderPage = () => {
     const [selectedProducts, setSelectedProducts] = useState(
         cartCookie ? JSON.parse(cartCookie) : []
     );
+    const [openWelcomeDialog, setWelcomeDialog] = useState(false);
+    const [store, setStore] = useState('');
     const [openPlaceConfirm, setOpenPlaceConfirm] = useState(false);
     const [orderAttachments, setOrderAttachments] = useState({
         storeName: '',
@@ -98,6 +107,11 @@ export const OrderPage = () => {
             }
             setVases(vases);
             setFilaments(filamentsArray);
+            const searchQuery = new URLSearchParams(props.location.search);
+            if (searchQuery.get('store')) {
+                setWelcomeDialog(true);
+                setStore(searchQuery.get('store'));
+            }
         };
         getVasesAndFilaments();
     }, []);
@@ -112,6 +126,10 @@ export const OrderPage = () => {
     };
     const handleCloseConfirmDialog = () => {
         setOpenPlaceConfirm(false);
+    };
+
+    const handleCloseWelcomeDialog = () => {
+        setWelcomeDialog(false);
     };
 
     const onPlaceOrder = () => {
@@ -387,6 +405,40 @@ export const OrderPage = () => {
                     <Button variant="text" onClick={onOrderConfirmed} autoFocus>
                         <DoubleArrowIcon />
                         Place Order Now!
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={openWelcomeDialog}
+                onClose={handleCloseWelcomeDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                sx={{ mt: 2, minWidth: 500 }}
+                fullWidth
+                TransitionComponent={Transition}
+                // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {`Hello ${store} TLV!`}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        We are happy you are here.
+                        <br />
+                        In this page you can choose your vases.
+                        <br />
+                        press on the desired size, and a popup will show.
+                    </DialogContentText>
+                    <br />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        onClick={handleCloseWelcomeDialog}
+                    >
+                        <DoubleArrowIcon />
+                        Let's Start
                     </Button>
                 </DialogActions>
             </Dialog>

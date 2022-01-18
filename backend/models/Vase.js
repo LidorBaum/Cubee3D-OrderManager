@@ -2,6 +2,7 @@ const db = require('./db-connections/OrderManager-db');
 const Libs = require('../libs');
 
 const Schema = db.mongoose.Schema;
+
 const VaseSizeSchema = Schema({
     height: {
         type: Number,
@@ -13,7 +14,7 @@ const VaseSizeSchema = Schema({
         type: Number,
     },
     printTime: {
-        type: Number,
+        type: String,
     },
 });
 const VaseSchema = Schema(

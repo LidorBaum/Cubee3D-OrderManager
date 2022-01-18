@@ -160,7 +160,7 @@ export const VaseManagment = () => {
             return notificationHandler.error(res.error.message);
         }
         setDoRefresh(!isRefresh);
-        notificationHandler.succes(snackVaseDeleted);
+        notificationHandler.success(snackVaseDeleted);
     };
     const editVase = vase => {
         setVaseToEdit(vase);
@@ -207,7 +207,7 @@ export const VaseManagment = () => {
                 <Hypnosis width="200px" height="200px" duration="3s" />
             </div>
         );
-    if (vases && vases.length === 0) return <h1>No Vases</h1>;
+
     return (
         <div className="vase-page">
             <div className="inventory-nav">
@@ -298,6 +298,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'small',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                                 <TextField
@@ -313,6 +314,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'small',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                                 <TextField
@@ -326,6 +328,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'small',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
 
@@ -342,6 +345,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'small',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                             </div>
@@ -359,6 +363,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'medium',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                                 <TextField
@@ -374,6 +379,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'medium',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                                 <TextField
@@ -387,6 +393,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'medium',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                                 <TextField
@@ -402,6 +409,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'medium',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                             </div>
@@ -419,6 +427,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'large',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                                 <TextField
@@ -434,6 +443,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'large',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                                 <TextField
@@ -447,6 +457,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'large',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                                 <TextField
@@ -462,6 +473,7 @@ export const VaseManagment = () => {
                                     inputProps={{
                                         'data-sizing': 'large',
                                         min: 1,
+                                        step: '0.01',
                                     }}
                                 />
                             </div>

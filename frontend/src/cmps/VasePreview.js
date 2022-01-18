@@ -10,7 +10,7 @@ export function VasePreview({ vase, deleteVase, editVase }) {
         console.log('open');
         editVase(vase);
     };
-
+    console.log(parseFloat(vase.sizes.medium.printTime));
     const isAnySize =
         !vase.sizes.small.printTime &&
         !vase.sizes.small.printTime &&
@@ -41,7 +41,7 @@ export function VasePreview({ vase, deleteVase, editVase }) {
                         Height {vase.sizes.small.height} / Diamter{' '}
                         {vase.sizes.small.height}
                         <br />
-                        Print Time: {vase.sizes.small.printTime}
+                        Print Time: {vase.sizes.small.printTime}h
                     </span>
                 </ReactTooltip>
 
@@ -63,7 +63,7 @@ export function VasePreview({ vase, deleteVase, editVase }) {
                         Height {vase.sizes.medium.height} / Diamter{' '}
                         {vase.sizes.medium.height}
                         <br />
-                        Print Time: {vase.sizes.medium.printTime}
+                        Print Time: {vase.sizes.medium.printTime}h
                     </span>
                 </ReactTooltip>
 
@@ -85,7 +85,7 @@ export function VasePreview({ vase, deleteVase, editVase }) {
                         Height {vase.sizes.large.height} / Diamter{' '}
                         {vase.sizes.large.height}
                         <br />
-                        Print Time: {vase.sizes.large.printTime}
+                        Print Time: {vase.sizes.large.printTime}h
                     </span>
                 </ReactTooltip>
             </div>
