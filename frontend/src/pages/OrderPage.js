@@ -95,14 +95,14 @@ export const OrderPage = props => {
             if (!vases.length) {
                 notificationHandler.error(snackNoVases);
             }
-            vases = arrangeVasesByType(vases)
+            const arrangedVases = arrangeVasesByType(vases)
             const filamentsArray = await filamentService.getAllFilaments();
             if (filamentsArray.error)
                 return notificationHandler.error(filamentsArray.error.message);
             if (!filamentsArray.length) {
                 notificationHandler.error(snackNoFilaments);
             }
-            setVases(vases);
+            setVases(arrangedVases);
             setFilaments(filamentsArray);
             const searchQuery = new URLSearchParams(props.location.search);
             if (searchQuery.get('store')) {
@@ -112,6 +112,24 @@ export const OrderPage = props => {
         };
         getVasesAndFilaments();
     }, []);
+
+    const arrangeVasesByType = (vases) =>{
+        let planter = vases.filter(vase =>{
+            return vase.type === "Planter"
+        })
+        let bowl = vases.filter(vase =>{
+            return vase.type === "Bowl"
+        })
+        let vase = vases.filter(vase =>{
+            return vase.type === "Vase"
+        })
+        return {
+            typeVase: vase,
+            typePlanter: planter,
+            typeBowl: bowl
+        }
+        
+    }
 
     const handleOpen = vaseObj => {
         setModalContent({ ...vaseObj, selectedColor: '' });
@@ -258,7 +276,19 @@ export const OrderPage = props => {
     return (
         <div className="order-page">
             <div className="products">
-                <VaseOrderList vases={vases} handleOpen={handleOpen} />
+                <div className='type-list-container'>
+                <h2>Planters</h2>
+                <VaseOrderList vases={vases.typePlanter} handleOpen={handleOpen} />
+                </div>
+                <div className='type-list-container'>
+                <h2>Vases</h2>
+                <VaseOrderList vases={vases.typeVase} handleOpen={handleOpen} />
+                </div>
+                <div className='type-list-container'>
+                <h2>Bowls</h2>
+                <VaseOrderList vases={vases.typeBowl} handleOpen={handleOpen} />
+                </div>
+
             </div>
             <div className="cart-container">
                 <Cart
