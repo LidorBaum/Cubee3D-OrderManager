@@ -1,16 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from '@mui/material';
-const monitorURL =
-    'https://res.cloudinary.com/echoshare/image/upload/v1639472363/Monitor-amico_y3qtgo.svg';
-const seekingURL =
-    'https://res.cloudinary.com/echoshare/image/upload/v1639472277/Hiring-rafiki_l5zl2f.svg';
-const powerURL =
-    'https://res.cloudinary.com/echoshare/image/upload/v1639473292/Efficiency-amico_q6kxbc.svg';
-const joinURL =
-    'https://res.cloudinary.com/echoshare/image/upload/v1639473945/Sign_up-amico_h4lig3.svg';
-const signinURL =
-    'https://res.cloudinary.com/echoshare/image/upload/v1639474054/Mobile_login-amico_eyriw3.svg';
+
 export const Home = props => {
     let history = useHistory();
 

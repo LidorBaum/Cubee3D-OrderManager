@@ -4,6 +4,7 @@ import { UserContext } from './contexts/UserContext';
 import { SnackbarHandlerContext } from './contexts/SnackbarHandlerContext';
 import { SnackbarContext } from './contexts/SnackbarContext';
 import { Header } from './cmps/Header';
+import { Footer } from './cmps/Footer';
 import { LoginSignup } from './pages/LoginSignup';
 import Cookies from 'js-cookie';
 import Snackbar from '@mui/material/Snackbar';
@@ -113,6 +114,7 @@ function App() {
                                     />
                                 </Switch>
                             </div>
+                            <Footer /> 
                         </SnackbarContext.Provider>
                     </SnackbarHandlerContext.Provider>
                 </UserContext.Provider>

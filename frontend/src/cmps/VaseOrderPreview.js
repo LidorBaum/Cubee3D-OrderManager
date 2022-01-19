@@ -24,7 +24,7 @@ export function VaseOrderPreview({ vase, handleOpen }) {
     };
 
     return (
-        <article id={`${vase._id}-card`} className="vase-card">
+        <article id={`${vase._id}-card`} className="vase-order-card">
             <p>{vase.name + ' ' + vase.type}</p>
             <div className="sizesp">
                 {vase.sizes.small.height !== 0 && (

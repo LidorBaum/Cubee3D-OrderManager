@@ -1,21 +1,26 @@
-.header {
+header {
     display: flex;
+    box-shadow: 0 1px 2px #00000029, 0 2px 4px #0000001f, 0 1px 8px #0000001a;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 18px;
 }
 .links {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background-color: rgb(226, 225, 225);
-    height: 100px;
+    height: 70px;
     padding: 20px;
     margin-bottom: 10px;
+    img{
+        width: 120px;
+    }
 }
 .links * {
     display: inline-block;
     margin-inline-end: 30px;
     vertical-align: middle;
     text-decoration: none;
-    color: rgb(130, 194, 255);
+    color: $clr2;
     transition: all 0.4s;
 
     &:hover {

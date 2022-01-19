@@ -12,7 +12,7 @@ export function CartPreview({ productObj, removeProduct }) {
     };
 
     return (
-        <article id={`${productObj._id}-cart-card`} className="vase-cart-card">
+        <article id={`${productObj.vaseId}-cart-card`} className="vase-cart-card">
             <img className="cart-vase" alt="vaseimg" src={productObj.image} />
             <img
                 className="cart-filament"

@@ -11,32 +11,35 @@ export const Header = props => {
 
     return (
         // <div className='header'>
-        <div className="links">
-            <NavLink
-                activeClassName="active"
-                to={'/inventory/vase'}
-                exact={true}
-            >
-                Vases
-            </NavLink>
-            <NavLink
-                activeClassName="active"
-                to={'/inventory/filament'}
-                exact={true}
-            >
-                Filaments
-            </NavLink>
-            <NavLink
-                activeClassName="active"
-                to={'/inventory/order'}
-                exact={true}
-            >
-                Orders
-            </NavLink>
-            <NavLink activeClassName="active" to={'/order'} exact={true}>
-                Place An Order
-            </NavLink>
-        </div>
+        <header>
+            <div className="links">
+                <img src={'https://res.cloudinary.com/echoshare/image/upload/v1642510871/Cubee3D/new-logo_vqg9pl.svg'}/>
+                <NavLink
+                    activeClassName="active"
+                    to={'/inventory/vase'}
+                    exact={true}
+                >
+                    Vases
+                </NavLink>
+                <NavLink
+                    activeClassName="active"
+                    to={'/inventory/filament'}
+                    exact={true}
+                >
+                    Filaments
+                </NavLink>
+                <NavLink
+                    activeClassName="active"
+                    to={'/inventory/order'}
+                    exact={true}
+                >
+                    Orders
+                </NavLink>
+                <NavLink activeClassName="active" to={'/order'} exact={true}>
+                    Place An Order
+                </NavLink>
+            </div>
+        </header>
         //    {/* {store && <img src='https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg' />} */}
         //{/* </div> */}
     );
