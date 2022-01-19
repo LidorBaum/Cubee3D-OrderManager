@@ -95,6 +95,7 @@ export const OrderPage = props => {
             if (!vases.length) {
                 notificationHandler.error(snackNoVases);
             }
+            vases = arrangeVasesByType(vases)
             const filamentsArray = await filamentService.getAllFilaments();
             if (filamentsArray.error)
                 return notificationHandler.error(filamentsArray.error.message);
