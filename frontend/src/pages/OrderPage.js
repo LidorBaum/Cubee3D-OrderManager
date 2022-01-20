@@ -50,7 +50,7 @@ export const OrderPage = props => {
     if (window.screen.width < 1000) {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
-        style.height = '70%';
+        style.height = '85%';
         dialogStyle.maxWidth = 300;
         delete dialogStyle.minWidth;
     }
@@ -314,7 +314,7 @@ export const OrderPage = props => {
                                 onClick={onAddToCart}
                                 className="addtocart"
                                 variant="contained"
-                                style={{ width: '150px' }}
+                                style={{ width: '180px' }}
                             >
                                 Add to cart
                             </Button>

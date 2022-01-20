@@ -42,7 +42,7 @@ export const CartPage = props => {
     if (window.screen.width < 1000) {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
-        style.height = '70%';
+        style.height = '85%';
     }
 
     const { cart, setCart } = useContext(CartContext);
