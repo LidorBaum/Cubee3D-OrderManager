@@ -14,6 +14,7 @@ export function OrderPreview({ orderObj, onInspect }) {
         onInspect(orderObj._id)
     }
 
+    
     return (
         <article id={`${orderObj._id}-order-card`} className="order-card">
             <div className="info">

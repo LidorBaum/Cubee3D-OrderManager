@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
-import { OrderPreview } from '../cmps/OrderPreview';
+import { OrderPreview } from '../cmps/orderPreview';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import { snackNoOrders } from '../snackMessages';
 import orderService from '../services/orderService';
