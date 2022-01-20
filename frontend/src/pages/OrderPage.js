@@ -306,6 +306,7 @@ export const OrderPage = props => {
                                     id="quantity"
                                     label="Quantity"
                                     variant="outlined"
+                                    className='quantity-field'
                                 />
                             </div>
                             <Button
