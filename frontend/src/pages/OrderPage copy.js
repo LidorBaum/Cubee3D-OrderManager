@@ -342,7 +342,7 @@ export const OrderPage = props => {
                                 onClick={onAddToCart}
                                 className="addtocart"
                                 variant="contained"
-                                style={{ width: '150px' }}
+                                style={{ width: '180px' }}
                             >
                                 Add to cart
                             </Button>

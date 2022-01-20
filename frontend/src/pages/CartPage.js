@@ -403,6 +403,7 @@ export const CartPage = props => {
                                         label="Quantity"
                                         variant="outlined"
                                         style={{ textTransform: 'none' }}
+                                        className='quantity-field'
                                     />
                                 </div>
                                 <Button
@@ -411,7 +412,7 @@ export const CartPage = props => {
                                     className="addtocart"
                                     variant="contained"
                                     style={{
-                                        width: '150px',
+                                        width: '180px',
                                         textTransform: 'none',
                                     }}
                                 >
