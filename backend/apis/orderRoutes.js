@@ -7,6 +7,8 @@ const orderRouter = express.Router();
 
 orderRouter.post('/', createOrder);
 
+orderRouter.get('/printTime', getTotalPrintTime);
+
 orderRouter.get('/', getAllOrders);
 
 orderRouter.put('/:orderId([A-Fa-f0-9]{24})', updateStatus);
@@ -16,6 +18,17 @@ orderRouter.put('/:orderId([A-Fa-f0-9]{24})', updateStatus);
 function responseError(response, errMessage) {
     let status = 500;
     return response.status(status).send(errMessage);
+}
+
+async function getTotalPrintTime(req,res){
+    try{
+        const {vaseArray} = req.body
+        const result = await OrderModel.getPrintTimeArray(vaseArray)
+        
+    }catch(err){
+        console.log(err);
+        return responseError(res, err.message);
+    }
 }
 
 async function updateStatus(req, res) {

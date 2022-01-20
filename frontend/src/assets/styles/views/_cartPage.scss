@@ -136,6 +136,17 @@
             }
         }
     }
+    .order-confirmation-dialog{
+        width: 100%;
+        .confirm-dialog-btns{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            *{
+                margin: 0;
+            }
+        }
+    }
 
     // display: flex;
     // flex-direction: column;

@@ -79,7 +79,7 @@ export const Header = props => {
         // <div className='header'>
         <header>
             <ThemeProvider theme={darkTheme}>
-                <AppBar position="static">
+                <AppBar position="fixed">
                     <Container maxWidth="false">
                         <Toolbar disableGutters>
                             <Typography

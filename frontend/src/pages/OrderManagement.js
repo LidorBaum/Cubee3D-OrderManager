@@ -42,8 +42,10 @@ export const OrderManagement = () => {
                 })}
             </div>
             <div className="statistics">
-                <h2>Total Orders: {orders.length}</h2>
-                <h2>Total Vases: {totalVases}</h2>
+                <h3>Total Orders: {orders.length}</h3>
+                <h3>Total Vases: {totalVases}</h3>
+                <h3>Total Print Time: </h3>
+                <h3>Total Print Weight: </h3>
             </div>
         </div>
     );

@@ -63,6 +63,10 @@ const OrderSchema = Schema(
     }
 );
 
+OrderSchema.statics.getPrintTimeArray = function (vaseArray){
+    
+}
+
 OrderSchema.statics.createOrder = function (orderObj) {
     return this.create(orderObj);
 };

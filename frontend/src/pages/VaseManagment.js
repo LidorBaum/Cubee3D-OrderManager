@@ -324,7 +324,7 @@ export const VaseManagment = () => {
                                     onChange={handleSizeInputsChange}
                                     type="number"
                                     size="small"
-                                    style={{ width: 140 }}
+                                    style={{ width: 150 }}
                                     inputProps={{
                                         'data-sizing': 'small',
                                         min: 1,
@@ -388,7 +388,7 @@ export const VaseManagment = () => {
                                     onChange={handleSizeInputsChange}
                                     type="number"
                                     size="small"
-                                    style={{ width: 140 }}
+                                    style={{ width: 150 }}
                                     inputProps={{
                                         'data-sizing': 'medium',
                                         min: 1,
@@ -452,7 +452,7 @@ export const VaseManagment = () => {
                                     onChange={handleSizeInputsChange}
                                     type="number"
                                     size="small"
-                                    style={{ width: 140 }}
+                                    style={{ width: 150 }}
                                     inputProps={{
                                         'data-sizing': 'large',
                                         min: 1,

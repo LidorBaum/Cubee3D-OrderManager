@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { VaseOrderList } from '../cmps/VaseOrderList';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import {
@@ -196,40 +196,68 @@ export const OrderPage = props => {
         Cookies.set('cart', JSON.stringify(cartArr));
         handleClose();
     };
+    let myRef = useRef()
 
-    if (!filaments || !vases)
-        return (
-            <div className="loader">
-                <Hypnosis width="200px" height="200px" duration="3s" />
-            </div>
-        );
 
-    return (
-        <div className="order-page">
-            <div className="products">
-                <div className="type-list-container">
-                    <h2>Planters</h2>
-                    <VaseOrderList
-                        vases={vases.typePlanter}
-                        handleOpen={handleOpen}
-                    />
+    const scrollTo = () => {
+        window.scrollTo({ behavior: 'smooth', top: elRef.current })
+        console.log('scrolling');
+
+    }
+
+    let elRef = useRef(null);
+    const useScroll = () => {
+        window.scrollTo({ behavior: 'smooth', top: elRef.current-100 })
+
+        // const executeScroll = () => elRef.current.scrollIntoView({block: "end", inline: "nearest"});
+        // return [executeScroll, elRef];
+    };
+
+    const ScrollDemo = () => {
+        // const myRef = useRef(null)
+        const [executeScroll, elRef] = useScroll();
+        useEffect(executeScroll, []); // Scroll on mount
+
+
+    }
+        if (!filaments || !vases)
+            return (
+                <div className="loader">
+                    <Hypnosis width="200px" height="200px" duration="3s" />
                 </div>
-                <div className="type-list-container">
-                    <h2>Vases</h2>
-                    <VaseOrderList
-                        vases={vases.typeVase}
-                        handleOpen={handleOpen}
-                    />
-                </div>
-                <div className="type-list-container">
-                    <h2>Bowls</h2>
-                    <VaseOrderList
-                        vases={vases.typeBowl}
-                        handleOpen={handleOpen}
-                    />
-                </div>
+            );
+
+        return (<React.Fragment>
+            <div className='quick-links'>
+                <a href="#planter">Planters</a>
+                <a href="#vase">Vases</a>
+                <a href="#bowl" >Bowls</a>
             </div>
-            {/* <div className="cart-container">
+            <div className="order-page">
+                <div ref={elRef} id='planter' className="products">
+                    <div className="type-list-container">
+                        <h2>Planters</h2>
+                        <VaseOrderList
+                            vases={vases.typePlanter}
+                            handleOpen={handleOpen}
+                        />
+                    </div>
+                    <div ref={elRef} id='vase' className="type-list-container">
+                        <h2>Vases</h2>
+                        <VaseOrderList
+                            vases={vases.typeVase}
+                            handleOpen={handleOpen}
+                        />
+                    </div>
+                    <div ref={elRef} id="bowl" className="type-list-container">
+                        <h2>Bowls</h2>
+                        <VaseOrderList
+                            vases={vases.typeBowl}
+                            handleOpen={handleOpen}
+                        />
+                    </div>
+                </div>
+                {/* <div className="cart-container">
                 <Cart
                     removeProduct={onRemoveProduct}
                     selectedProducts={cart}
@@ -237,126 +265,127 @@ export const OrderPage = props => {
                 />
             </div> */}
 
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <div className="vase-choose-popup">
-                        <div className="inputs-submit">
-                            <div className="inputs">
-                                <p>
-                                    {modalContent.name +
-                                        ' ' +
-                                        modalContent.type}
-                                </p>
-                                <p>
-                                    {modalContent.size.charAt(0).toUpperCase() +
-                                        modalContent.size.slice(1)}{' '}
-                                    size - {modalContent.dimensions}
-                                </p>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <div className="vase-choose-popup">
+                            <div className="inputs-submit">
+                                <div className="inputs">
+                                    <p>
+                                        {modalContent.name +
+                                            ' ' +
+                                            modalContent.type}
+                                    </p>
+                                    <p>
+                                        {modalContent.size.charAt(0).toUpperCase() +
+                                            modalContent.size.slice(1)}{' '}
+                                        size - {modalContent.dimensions}
+                                    </p>
 
-                                <span>Choose Color:</span>
-                                <div className="colors">
-                                    {filaments.map(filament => {
-                                        const isSelected =
-                                            modalContent.selectedColorId ===
-                                            filament._id
-                                                ? 'selectedColor'
-                                                : '';
-                                        return (
-                                            <React.Fragment key={filament._id}>
-                                                <img
-                                                    data-tip
-                                                    data-for={filament._id}
-                                                    key={filament._id}
-                                                    onClick={() =>
-                                                        onColorChoose({
-                                                            color: filament.image,
-                                                            colorId:
-                                                                filament._id,
-                                                        })
-                                                    }
-                                                    className={[
-                                                        'modal-filament-img',
-                                                        isSelected,
-                                                    ].join(' ')}
-                                                    src={filament.image}
-                                                ></img>
-                                                <ReactTooltip id={filament._id}>
-                                                    <span>
-                                                        {filament.color}
-                                                    </span>
-                                                </ReactTooltip>
-                                            </React.Fragment>
-                                        );
-                                    })}
+                                    <span>Choose Color:</span>
+                                    <div className="colors">
+                                        {filaments.map(filament => {
+                                            const isSelected =
+                                                modalContent.selectedColorId ===
+                                                    filament._id
+                                                    ? 'selectedColor'
+                                                    : '';
+                                            return (
+                                                <React.Fragment key={filament._id}>
+                                                    <img
+                                                        data-tip
+                                                        data-for={filament._id}
+                                                        key={filament._id}
+                                                        onClick={() =>
+                                                            onColorChoose({
+                                                                color: filament.image,
+                                                                colorId:
+                                                                    filament._id,
+                                                            })
+                                                        }
+                                                        className={[
+                                                            'modal-filament-img',
+                                                            isSelected,
+                                                        ].join(' ')}
+                                                        src={filament.image}
+                                                    ></img>
+                                                    <ReactTooltip id={filament._id}>
+                                                        <span>
+                                                            {filament.color}
+                                                        </span>
+                                                    </ReactTooltip>
+                                                </React.Fragment>
+                                            );
+                                        })}
+                                    </div>
+                                    <br />
+                                    <TextField
+                                        onChange={onChangeQuantity}
+                                        defaultValue="1"
+                                        InputProps={{
+                                            inputProps: { min: 0, max: 10 },
+                                        }}
+                                        size="medium"
+                                        type="number"
+                                        id="quantity"
+                                        label="Quantity"
+                                        variant="outlined"
+                                        className='quantity-field'
+                                    />
                                 </div>
-                                <br />
-                                <TextField
-                                    onChange={onChangeQuantity}
-                                    defaultValue="1"
-                                    InputProps={{
-                                        inputProps: { min: 0, max: 10 },
-                                    }}
-                                    size="medium"
-                                    type="number"
-                                    id="quantity"
-                                    label="Quantity"
-                                    variant="outlined"
-                                    className='quantity-field'
-                                />
+                                <Button
+                                    className="add-to-cart-btn"
+                                    onClick={onAddToCart}
+                                    className="addtocart"
+                                    variant="contained"
+                                    style={{ width: '180px' }}
+                                >
+                                    Add to cart
+                                </Button>
                             </div>
-                            <Button
-                                className="add-to-cart-btn"
-                                onClick={onAddToCart}
-                                className="addtocart"
-                                variant="contained"
-                                style={{ width: '180px' }}
-                            >
-                                Add to cart
-                            </Button>
+                            <img src={modalContent.image} />
                         </div>
-                        <img src={modalContent.image} />
-                    </div>
-                </Box>
-            </Modal>
+                    </Box>
+                </Modal>
 
-            <Dialog
-                open={openWelcomeDialog}
-                onClose={handleCloseWelcomeDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                sx={dialogStyle}
-                fullWidth
-                TransitionComponent={Transition}
+                <Dialog
+                    open={openWelcomeDialog}
+                    onClose={handleCloseWelcomeDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    sx={dialogStyle}
+                    fullWidth
+                    TransitionComponent={Transition}
                 // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {`Hello ${store} TLV!`}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        We are happy you are here.
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {`Hello ${store} TLV!`}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            We are happy you are here.
+                            <br />
+                            In this page you can choose your vases.
+                            <br />
+                            press on the desired size, and a popup will show.
+                        </DialogContentText>
                         <br />
-                        In this page you can choose your vases.
-                        <br />
-                        press on the desired size, and a popup will show.
-                    </DialogContentText>
-                    <br />
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        onClick={handleCloseWelcomeDialog}
-                    >
-                        <DoubleArrowIcon />
-                        Let's Start
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
-    );
-};
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            variant="contained"
+                            onClick={handleCloseWelcomeDialog}
+                        >
+                            <DoubleArrowIcon />
+                            Let's Start
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
+        </React.Fragment>
+        );
+    };

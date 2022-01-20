@@ -36,13 +36,15 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    dialogWidth: 500
 };
 
 export const CartPage = props => {
-    if (window.screen.width < 1000) {
+    if (window.screen.width < 720) {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
         style.height = '85%';
+        style.dialogWidth = window.screen.width - 20
     }
 
     const { cart, setCart } = useContext(CartContext);
@@ -282,8 +284,9 @@ export const CartPage = props => {
                 onClose={handleCloseConfirmDialog}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-                sx={{ mt: 2, minWidth: 500 }}
+                sx={{ mt: 2, minWidth: style.dialogWidth }}
                 fullWidth
+                className='order-confirmation-dialog'
             >
                 <DialogTitle id="alert-dialog-title">
                     {'Are you sure about your order?'}
@@ -315,11 +318,11 @@ export const CartPage = props => {
                         fullWidth
                     />
                 </DialogContent>
-                <DialogActions>
-                    <Button variant="text" onClick={handleCloseConfirmDialog}>
+                <DialogActions className='confirm-dialog-btns'>
+                    <Button  style={{ textTransform: 'none' }} variant="contained" onClick={handleCloseConfirmDialog}>
                         <ArrowBackIosNewIcon /> I want to fix!
                     </Button>
-                    <Button variant="text" onClick={onOrderConfirmed} autoFocus>
+                    <Button style={{ textTransform: 'none' }} variant="contained" onClick={onOrderConfirmed} autoFocus>
                         <DoubleArrowIcon />
                         Place Order Now!
                     </Button>

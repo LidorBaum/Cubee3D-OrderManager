@@ -1,12 +1,16 @@
 .order-manage {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     .statistics {
         margin: 30px;
+        width: 30%;
+        height: 220px;
     }
     .order-list {
         display: flex;
         margin: 30px;
+        width: 70%;
         .order-card {
             p {
                 margin: 0;
@@ -17,7 +21,6 @@
             justify-content: space-between;
             margin: 5px;
             padding: 5px;
-            border: 3px solid rgba(2, 44, 63, 0.719);
             text-align: center;
             width: 300px;
             height: 220px;
@@ -27,9 +30,34 @@
             font-size: 20px;
             gap: 3px;
             transition: 1s all;
+            background-color: #fff;
+            box-shadow: 2px 2px 10px #00000040;
+
             cursor: pointer;
             &:hover {
-                background-color: rgb(177, 226, 255);
+                // background-color: rgb(177, 226, 255);
+            }
+        }
+    }
+}
+@media only screen and (max-width: 750px) {
+    .order-manage{
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+        .statistics{
+            margin: 30px 0px 0px 30px;
+            // margin: 30px
+            h3{
+                width: 100vw    ;
+            }
+        }
+        .order-list{
+            flex-wrap: wrap;
+            justify-content: center;
+            .order-card{
+                &:hover {
+                    background-color: #fff;
+                }
             }
         }
     }
