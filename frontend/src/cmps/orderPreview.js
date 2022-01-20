@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@mui/material';
 
-export function OrderPreview({ orderObj }) {
+export function OrderPreview({ orderObj, onInspect }) {
     let colorsArr = [];
     orderObj.selectedVasesArray.map(vase => {
         if (colorsArr.indexOf(vase.filamentId) === -1)
@@ -9,6 +9,10 @@ export function OrderPreview({ orderObj }) {
     });
 
     const numOfColors = colorsArr.length;
+
+    const inspectOrder = () =>{
+        onInspect(orderObj._id)
+    }
 
     return (
         <article id={`${orderObj._id}-order-card`} className="order-card">
@@ -29,7 +33,7 @@ export function OrderPreview({ orderObj }) {
             </div>
             <Button
                 size="small"
-                // onClick={onRemoveProduct}
+                onClick={inspectOrder}
                 variant="contained"
                 color="primary"
             >

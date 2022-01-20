@@ -64,7 +64,7 @@ const OrderSchema = Schema(
 );
 
 OrderSchema.statics.getPrintTimeArray = function (vaseArray){
-    
+
 }
 
 OrderSchema.statics.createOrder = function (orderObj) {
@@ -74,6 +74,10 @@ OrderSchema.statics.createOrder = function (orderObj) {
 OrderSchema.statics.getAllOrders = function () {
     return this.find({}).exec();
 };
+
+OrderSchema.statics.getOrderById = function (orderId) {
+    return this.findOne({_id: orderId})
+}
 
 OrderSchema.statics.updateStatus = function (orderId, newStatus) {
     return this.updateOne(

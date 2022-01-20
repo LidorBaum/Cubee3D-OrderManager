@@ -17,6 +17,7 @@ import { OrderPage } from './pages/OrderPage';
 import { OrderManagement } from './pages/OrderManagement';
 import { CartPage } from './pages/CartPage';
 import { CartContext } from './contexts/CartContext';
+import { OrderInspect } from './pages/OrderInspect';
 
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
@@ -96,7 +97,7 @@ function App() {
                                 }
                                 <Header />
                                 <div className="content">
-                                <ScrollToTop smooth />
+                                    <ScrollToTop smooth />
                                     <Switch>
                                         {/* <Route path="/" component={Home} exact /> */}
                                         <Route
@@ -117,7 +118,12 @@ function App() {
                                             component={FialmentMangement}
                                         />
                                         <Route
+                                            path="/inventory/order/:orderId"
+                                            component={OrderInspect}
+                                        />
+                                        <Route
                                             path="/inventory/order"
+                                            exact
                                             component={OrderManagement}
                                         />
                                         <Route

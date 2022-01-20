@@ -13,11 +13,22 @@ orderRouter.get('/', getAllOrders);
 
 orderRouter.put('/:orderId([A-Fa-f0-9]{24})', updateStatus);
 
-// userRouter.get("/:userId([A-Fa-f0-9]{24})", getUserById);
+orderRouter.get("/:orderId([A-Fa-f0-9]{24})", getOrderById);
 
 function responseError(response, errMessage) {
     let status = 500;
     return response.status(status).send(errMessage);
+}
+
+async function getOrderById(req, res){
+    try{
+        const {orderId} = req.params
+        const orderObj = await OrderModel.getOrderById(orderId)
+        res.send(orderObj)
+    }catch(err){
+        console.log(err);
+        return responseError(res, err.message); 
+    }
 }
 
 async function getTotalPrintTime(req,res){
