@@ -19,15 +19,16 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 1000,
+    width: '50%',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    m: 'auto',
 };
 
 export const VaseManagment = () => {
-    if (window.screen.width < 1000) {
+    if (window.screen.width < 800) {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
         style.height = '80%';
@@ -222,8 +223,9 @@ export const VaseManagment = () => {
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                className="vase-form-modal"
             >
-                <Box sx={style}>
+                <Box sx={style} clasName="vase-form-modal-box">
                     {/* <FormControl fullWidth> */}
                     <form id="vase-form" onSubmit={onAddVase}>
                         <div className="vase-form-basic">

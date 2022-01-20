@@ -14,7 +14,11 @@ export const Footer = props => {
         <footer>
             <p>App developed by EchoShop3D</p>
             <a target="_blank" href="https://www.cubee3d.com/store/EchoShop">
-            <img src={'https://res.cloudinary.com/echoshare/image/upload/v1636287815/echo_icon_q1hjeb.png'} />
+                <img
+                    src={
+                        'https://res.cloudinary.com/echoshare/image/upload/v1636287815/echo_icon_q1hjeb.png'
+                    }
+                />
             </a>
         </footer>
         //    {/* {store && <img src='https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg' />} */}

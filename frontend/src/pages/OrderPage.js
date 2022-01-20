@@ -1,18 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { VaseOrderList } from '../cmps/VaseOrderList';
-import { Cart } from '../cmps/Cart';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import {
     snackNoFilaments,
     snackNoVases,
     quantity0,
     noColorChosen,
-    productRemoved,
-    snackOrderPlaced,
 } from '../snackMessages';
 import ReactTooltip from 'react-tooltip';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import {
     Modal,
@@ -29,7 +25,7 @@ import {
 import Cookies from 'js-cookie';
 import vaseService from '../services/vaseService';
 import filamentService from '../services/filamentService';
-import orderService from '../services/orderService';
+import { CartContext } from '../contexts/CartContext';
 
 const style = {
     position: 'absolute',
@@ -58,6 +54,7 @@ export const OrderPage = props => {
         dialogStyle.maxWidth = 300;
         delete dialogStyle.minWidth;
     }
+    const { cart, setCart } = useContext(CartContext);
 
     const [open, setOpen] = useState(false);
     //ModalContent is also the product choice for adding to cart
@@ -75,17 +72,8 @@ export const OrderPage = props => {
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [vases, setVases] = useState(null);
     const [filaments, setFilaments] = useState(null);
-    const [isRefresh, setDoRefresh] = useState(false);
-    const [selectedProducts, setSelectedProducts] = useState(
-        cartCookie ? JSON.parse(cartCookie) : []
-    );
     const [openWelcomeDialog, setWelcomeDialog] = useState(false);
     const [store, setStore] = useState('');
-    const [openPlaceConfirm, setOpenPlaceConfirm] = useState(false);
-    const [orderAttachments, setOrderAttachments] = useState({
-        storeName: '',
-        comments: '',
-    });
 
     useEffect(() => {
         const getVasesAndFilaments = async () => {
@@ -95,7 +83,7 @@ export const OrderPage = props => {
             if (!vases.length) {
                 notificationHandler.error(snackNoVases);
             }
-            const arrangedVases = arrangeVasesByType(vases)
+            const arrangedVases = arrangeVasesByType(vases);
             const filamentsArray = await filamentService.getAllFilaments();
             if (filamentsArray.error)
                 return notificationHandler.error(filamentsArray.error.message);
@@ -113,43 +101,30 @@ export const OrderPage = props => {
         getVasesAndFilaments();
     }, []);
 
-    const arrangeVasesByType = (vases) =>{
-        let planter = vases.filter(vase =>{
-            return vase.type === "Planter"
-        })
-        let bowl = vases.filter(vase =>{
-            return vase.type === "Bowl"
-        })
-        let vase = vases.filter(vase =>{
-            return vase.type === "Vase"
-        })
+    const arrangeVasesByType = vases => {
+        let planter = vases.filter(vase => {
+            return vase.type === 'Planter';
+        });
+        let bowl = vases.filter(vase => {
+            return vase.type === 'Bowl';
+        });
+        let vase = vases.filter(vase => {
+            return vase.type === 'Vase';
+        });
         return {
             typeVase: vase,
             typePlanter: planter,
-            typeBowl: bowl
-        }
-        
-    }
+            typeBowl: bowl,
+        };
+    };
 
     const handleOpen = vaseObj => {
         setModalContent({ ...vaseObj, selectedColor: '' });
         setOpen(true);
     };
 
-    const handleopenConfirmDialog = () => {
-        setOpenPlaceConfirm(true);
-    };
-
-    const handleCloseConfirmDialog = () => {
-        setOpenPlaceConfirm(false);
-    };
-
     const handleCloseWelcomeDialog = () => {
         setWelcomeDialog(false);
-    };
-
-    const onPlaceOrder = () => {
-        handleopenConfirmDialog();
     };
 
     const handleClose = () => {
@@ -170,15 +145,6 @@ export const OrderPage = props => {
         e.persist();
         setModalContent(prevContent => {
             return { ...prevContent, quantity: parseInt(e.target.value) };
-        });
-    };
-
-    const handleChangeOrderAttachments = e => {
-        e.persist();
-        const target = e.target.name;
-        const value = e.target.value;
-        setOrderAttachments(prevAttach => {
-            return { ...prevAttach, [target]: value };
         });
     };
 
@@ -209,64 +175,29 @@ export const OrderPage = props => {
             return notificationHandler.error(quantity0);
         if (!productToAdd.filamentId)
             return notificationHandler.error(noColorChosen);
-
-        for (let i = 0; i < selectedProducts.length; i++) {
+        for (let i = 0; i < cart.length; i++) {
+            console.log('inloop');
             if (
-                selectedProducts[i].vaseId === productToAdd.vaseId &&
-                selectedProducts[i].filamentId === productToAdd.filamentId &&
-                selectedProducts[i].size === productToAdd.size
+                cart[i].vaseId === productToAdd.vaseId &&
+                cart[i].filamentId === productToAdd.filamentId &&
+                cart[i].size === productToAdd.size
             ) {
-                selectedProducts[i].quantity =
-                    selectedProducts[i].quantity + productToAdd.quantity;
+                cart[i].quantity = cart[i].quantity + productToAdd.quantity;
                 isExist = true;
                 break;
             }
         }
-        if (!isExist) selectedProducts.push(productToAdd);
-        Cookies.set('cart', JSON.stringify(selectedProducts));
+        if (!isExist)
+            setCart(prevCart => {
+                console.log('should add to cart');
+                return [...prevCart, productToAdd];
+            });
+        const cartArr = [...cart, productToAdd];
+        Cookies.set('cart', JSON.stringify(cartArr));
         handleClose();
     };
 
-    const onRemoveProduct = productIdentifier => {
-        setSelectedProducts(
-            selectedProducts.filter(prod => {
-                return !(
-                    prod.vaseId === productIdentifier.vaseId &&
-                    prod.filamentId === productIdentifier.filamentId &&
-                    prod.size === productIdentifier.size
-                );
-            })
-        );
-        notificationHandler.success(productRemoved);
-    };
-
-    const onOrderConfirmed = async () => {
-        let selectedProductsForOrder = [];
-        selectedProducts.forEach(prod => {
-            return selectedProductsForOrder.push({
-                vaseId: prod.vaseId,
-                vaseSize: prod.size,
-                filamentId: prod.filamentId,
-                quantity: prod.quantity,
-            });
-        });
-        const orderObj = {
-            selectedVasesArray: selectedProductsForOrder,
-            customerName: orderAttachments.storeName,
-            comment: orderAttachments.comments,
-        };
-        const newOrder = await orderService.createOrder(orderObj);
-        if (newOrder.error) {
-            notificationHandler.error(newOrder.error.message);
-            return;
-        }
-        Cookies.remove('cart');
-        setSelectedProducts([]);
-        handleCloseConfirmDialog();
-        notificationHandler.success(snackOrderPlaced);
-    };
-
-    if (!filaments || !vases || !selectedProducts)
+    if (!filaments || !vases)
         return (
             <div className="loader">
                 <Hypnosis width="200px" height="200px" duration="3s" />
@@ -276,27 +207,35 @@ export const OrderPage = props => {
     return (
         <div className="order-page">
             <div className="products">
-                <div className='type-list-container'>
-                <h2>Planters</h2>
-                <VaseOrderList vases={vases.typePlanter} handleOpen={handleOpen} />
+                <div className="type-list-container">
+                    <h2>Planters</h2>
+                    <VaseOrderList
+                        vases={vases.typePlanter}
+                        handleOpen={handleOpen}
+                    />
                 </div>
-                <div className='type-list-container'>
-                <h2>Vases</h2>
-                <VaseOrderList vases={vases.typeVase} handleOpen={handleOpen} />
+                <div className="type-list-container">
+                    <h2>Vases</h2>
+                    <VaseOrderList
+                        vases={vases.typeVase}
+                        handleOpen={handleOpen}
+                    />
                 </div>
-                <div className='type-list-container'>
-                <h2>Bowls</h2>
-                <VaseOrderList vases={vases.typeBowl} handleOpen={handleOpen} />
+                <div className="type-list-container">
+                    <h2>Bowls</h2>
+                    <VaseOrderList
+                        vases={vases.typeBowl}
+                        handleOpen={handleOpen}
+                    />
                 </div>
-
             </div>
-            <div className="cart-container">
+            {/* <div className="cart-container">
                 <Cart
                     removeProduct={onRemoveProduct}
-                    selectedProducts={selectedProducts}
+                    selectedProducts={cart}
                     onPlaceOrder={onPlaceOrder}
                 />
-            </div>
+            </div> */}
 
             <Modal
                 open={open}
@@ -314,8 +253,9 @@ export const OrderPage = props => {
                                         modalContent.type}
                                 </p>
                                 <p>
-                                    {modalContent.size} size -{' '}
-                                    {modalContent.dimensions}
+                                    {modalContent.size.charAt(0).toUpperCase() +
+                                        modalContent.size.slice(1)}{' '}
+                                    size - {modalContent.dimensions}
                                 </p>
 
                                 <span>Choose Color:</span>
@@ -382,54 +322,6 @@ export const OrderPage = props => {
                     </div>
                 </Box>
             </Modal>
-            <Dialog
-                open={openPlaceConfirm}
-                onClose={handleCloseConfirmDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                sx={{ mt: 2, minWidth: 500 }}
-                fullWidth
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {'Are you sure about your order?'}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Please check your cart and make sure everything is
-                        correct
-                        <br />
-                        If everything is fine, please enter your store's name.
-                        <br />
-                        You can attach a comment also.
-                    </DialogContentText>
-                    <br />
-                    <TextField
-                        label="Store Name"
-                        name="storeName"
-                        value={orderAttachments.storeName}
-                        onChange={handleChangeOrderAttachments}
-                        required
-                    />
-                    <br />
-                    <TextField
-                        sx={{ mt: 2 }}
-                        label="Comments"
-                        name="comments"
-                        value={orderAttachments.comments}
-                        onChange={handleChangeOrderAttachments}
-                        fullWidth
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="text" onClick={handleCloseConfirmDialog}>
-                        <ArrowBackIosNewIcon /> I want to fix!
-                    </Button>
-                    <Button variant="text" onClick={onOrderConfirmed} autoFocus>
-                        <DoubleArrowIcon />
-                        Place Order Now!
-                    </Button>
-                </DialogActions>
-            </Dialog>
 
             <Dialog
                 open={openWelcomeDialog}

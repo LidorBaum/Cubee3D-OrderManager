@@ -48,3 +48,4 @@ testem.log
 Thumbs.db
 
 # react build folder
+.prettierc.yaml

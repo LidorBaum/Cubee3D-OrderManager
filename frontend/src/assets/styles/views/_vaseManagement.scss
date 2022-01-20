@@ -102,8 +102,19 @@ form {
         .edit-delete-btns {
             display: flex;
             gap: 20px;
+            * {
+                width: 80px;
+                height: 35px;
+            }
         }
     }
+}
+.vase-form-modal {
+    // min-width: 50%;
+    // width: 50%;
+    // width:
+
+    margin: auto;
 }
 @media only screen and (max-width: 750px) {
     form {
@@ -115,6 +126,14 @@ form {
             flex-wrap: wrap;
             gap: 4px;
             // background-color: violet;
+        }
+    }
+    .vase-form-modal {
+        // background-color: blue;
+        width: 80%;
+        margin: auto;
+        .vase-form-modal-box {
+            width: 80%;
         }
     }
 }

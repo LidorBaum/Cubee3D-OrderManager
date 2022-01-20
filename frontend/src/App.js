@@ -14,15 +14,22 @@ import { VaseManagment } from './pages/VaseManagment';
 import { FialmentMangement } from './pages/FilamentManagement';
 import { OrderPage } from './pages/OrderPage';
 import { OrderManagement } from './pages/OrderManagement';
+import { CartPage } from './pages/CartPage';
+import { CartContext } from './contexts/CartContext';
 
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
+    const [cart, setCart] = useState([]);
     const [snack, setSnack] = useState({});
     useEffect(() => {
         if (loggedUser) return;
         if (Cookies.get('loggedUser')) {
             const jsonStr = Cookies.get('loggedUser').slice(2);
             setLoggedUser(JSON.parse(jsonStr));
+        }
+        if (Cookies.get('cart')) {
+            const cartJson = JSON.parse(Cookies.get('cart'));
+            setCart(cartJson);
         }
     }, [loggedUser]);
 
@@ -57,67 +64,75 @@ function App() {
     return (
         <div className="App">
             <Router>
-                <UserContext.Provider value={{ loggedUser, setLoggedUser }}>
-                    <SnackbarHandlerContext.Provider
-                        value={notificationHandler}
-                    >
-                        <SnackbarContext.Provider value={{ snack, setSnack }}>
-                            {
-                                <Snackbar
-                                    TransitionComponent={Slide}
-                                    onClose={handleClose}
-                                    autoHideDuration={3000}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'center',
-                                    }}
-                                    open={snack.open}
-                                >
-                                    <Alert
+                <CartContext.Provider value={{ cart, setCart }}>
+                    <UserContext.Provider value={{ loggedUser, setLoggedUser }}>
+                        <SnackbarHandlerContext.Provider
+                            value={notificationHandler}
+                        >
+                            <SnackbarContext.Provider
+                                value={{ snack, setSnack }}
+                            >
+                                {
+                                    <Snackbar
+                                        TransitionComponent={Slide}
                                         onClose={handleClose}
-                                        severity={snack.severity}
-                                        sx={{ width: '100%' }}
+                                        autoHideDuration={3000}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'center',
+                                        }}
+                                        open={snack.open}
                                     >
-                                        {snack.message}
-                                        {/* <Button onClick={handleClose}>Share</Button> */}
-                                    </Alert>
-                                </Snackbar>
-                            }
-                            <Header />
-                            <div className="content">
-                                <Switch>
-                                    {/* <Route path="/" component={Home} exact /> */}
-                                    <Route
-                                        path="/login"
-                                        component={LoginSignup}
-                                    />
-                                    {/* <Route path="/board" component={Board} />
+                                        <Alert
+                                            onClose={handleClose}
+                                            severity={snack.severity}
+                                            sx={{ width: '100%' }}
+                                        >
+                                            {snack.message}
+                                            {/* <Button onClick={handleClose}>Share</Button> */}
+                                        </Alert>
+                                    </Snackbar>
+                                }
+                                <Header />
+                                <div className="content">
+                                    <Switch>
+                                        {/* <Route path="/" component={Home} exact /> */}
+                                        <Route
+                                            path="/login"
+                                            component={LoginSignup}
+                                        />
+                                        {/* <Route path="/board" component={Board} />
                                     <Route
                                         path="/company"
                                         component={CompanyProfile}
                                     /> */}
-                                    <Route
-                                        path="/inventory/vase"
-                                        component={VaseManagment}
-                                    />
-                                    <Route
-                                        path="/inventory/filament"
-                                        component={FialmentMangement}
-                                    />
-                                    <Route
-                                        path="/inventory/order"
-                                        component={OrderManagement}
-                                    />
-                                    <Route
-                                        path="/order"
-                                        component={OrderPage}
-                                    />
-                                </Switch>
-                            </div>
-                            <Footer /> 
-                        </SnackbarContext.Provider>
-                    </SnackbarHandlerContext.Provider>
-                </UserContext.Provider>
+                                        <Route
+                                            path="/inventory/vase"
+                                            component={VaseManagment}
+                                        />
+                                        <Route
+                                            path="/inventory/filament"
+                                            component={FialmentMangement}
+                                        />
+                                        <Route
+                                            path="/inventory/order"
+                                            component={OrderManagement}
+                                        />
+                                        <Route
+                                            path="/order"
+                                            component={OrderPage}
+                                        />
+                                        <Route
+                                            path="/cart"
+                                            component={CartPage}
+                                        />
+                                    </Switch>
+                                </div>
+                                <Footer />
+                            </SnackbarContext.Provider>
+                        </SnackbarHandlerContext.Provider>
+                    </UserContext.Provider>
+                </CartContext.Provider>
             </Router>
         </div>
     );

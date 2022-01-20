@@ -10,7 +10,7 @@ const snackSavedVase = 'Vase Saved Succesfully';
 const snackSavedFilament = 'Filament Saved Succesfully';
 const snackOrderPlaced = 'Order Placed!';
 const snackNoOrders = 'No Orders Yet';
-
+const snackNoStoreName = 'Please fill up store name';
 module.exports = {
     snackNoVases,
     snackVaseDeleted,
@@ -23,4 +23,6 @@ module.exports = {
     snackSavedFilament,
     snackSavedVase,
     snackOrderPlaced,
+    snackNoStoreName,
+    snackNoOrders,
 };

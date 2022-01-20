@@ -63,6 +63,10 @@
         .edit-delete-btns {
             display: flex;
             gap: 20px;
+            * {
+                width: 80px;
+                height: 35px;
+            }
         }
     }
 }
@@ -70,12 +74,16 @@
     .filament-form {
         display: flex;
         flex-direction: column;
+        // height: 85%;
         .filament-form-basic {
             display: flex;
             flex-direction: column;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 10px;
             // background-color: violet;
+        }
+        .primary-img {
+            width: 100%;
         }
     }
 }
