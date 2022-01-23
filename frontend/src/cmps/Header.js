@@ -4,6 +4,7 @@ import { Redirect, NavLink } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import { useHistory } from 'react-router-dom';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
+import { CartContext } from '../contexts/CartContext';
 import userService from '../services/userService';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AppBar from '@mui/material/AppBar';
@@ -19,6 +20,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Badge } from '@mui/material';
 const darkTheme = createTheme({
     palette: {
         mode: 'light',
@@ -55,6 +57,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 export const Header = props => {
     let history = useHistory();
     const notificationHandler = useContext(SnackbarHandlerContext);
+    const { cart, setCart } = useContext(CartContext);
     const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -205,12 +208,18 @@ export const Header = props => {
                                     to="/cart"
                                     style={{ textDecoration: 'none' }}
                                 >
-                                    {' '}
-                                    <ShoppingCartIcon
+                                    <Badge
                                         className="cart-icon"
+                                        badgeContent={cart.length}
                                         color="secondary"
-                                        fontSize="large"
-                                    />{' '}
+                                    >
+                                        {' '}
+                                        <ShoppingCartIcon
+                                            className="cart-icon"
+                                            color="secondary"
+                                            fontSize="large"
+                                        />{' '}
+                                    </Badge>
                                 </NavLink>
                                 <Tooltip title="Open settings">
                                     <IconButton

@@ -34,6 +34,11 @@ const OrderSchema = Schema(
                         type: Number,
                         default: 0,
                     },
+                    status: {
+                        type: String,
+                        enum: ['Pending', 'Printing', 'Ready'],
+                        default: 'Pending',
+                    },
                 },
             ],
             required: true,
@@ -63,9 +68,7 @@ const OrderSchema = Schema(
     }
 );
 
-OrderSchema.statics.getPrintTimeArray = function (vaseArray){
-
-}
+OrderSchema.statics.getPrintTimeArray = function (vaseArray) {};
 
 OrderSchema.statics.createOrder = function (orderObj) {
     return this.create(orderObj);
@@ -76,8 +79,8 @@ OrderSchema.statics.getAllOrders = function () {
 };
 
 OrderSchema.statics.getOrderById = function (orderId) {
-    return this.findOne({_id: orderId})
-}
+    return this.findOne({ _id: orderId });
+};
 
 OrderSchema.statics.updateStatus = function (orderId, newStatus) {
     return this.updateOne(

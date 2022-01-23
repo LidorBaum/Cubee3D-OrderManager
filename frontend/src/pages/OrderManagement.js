@@ -11,7 +11,7 @@ export const OrderManagement = () => {
     const [orders, setOrders] = useState(null);
     const [isRefresh, setDoRefresh] = useState(false);
     const notificationHandler = useContext(SnackbarHandlerContext);
-    let history = useHistory()
+    let history = useHistory();
     useEffect(() => {
         const getAllOrders = async () => {
             const res = await orderService.getAllOrders();
@@ -26,12 +26,13 @@ export const OrderManagement = () => {
             });
             setOrders(res);
         };
+        totalVases = 0;
         getAllOrders();
     }, [isRefresh]);
-
-    const onInspect = (orderId) =>{
-        history.push(`/inventory/order/${orderId}`)
-    }
+    window.orders = orders;
+    const onInspect = orderId => {
+        history.push(`/inventory/order/${orderId}`);
+    };
 
     if (!orders || (orders && totalVases === 0))
         return (
@@ -43,7 +44,13 @@ export const OrderManagement = () => {
         <div className="order-manage">
             <div className="order-list">
                 {orders.map(order => {
-                    return <OrderPreview key={order._id} orderObj={order} onInspect={onInspect}/>;
+                    return (
+                        <OrderPreview
+                            key={order._id}
+                            orderObj={order}
+                            onInspect={onInspect}
+                        />
+                    );
                 })}
             </div>
             <div className="statistics">

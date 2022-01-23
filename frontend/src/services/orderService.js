@@ -6,11 +6,11 @@ export default {
     getOrderById,
     removeOrder,
     getAllOrders,
-    getTotalPrintTime
+    getTotalPrintTime,
 };
 
 async function getTotalPrintTime(vaseArray) {
-    return await httpService.get('order/printTime', vaseArray)
+    return await httpService.get('order/printTime', vaseArray);
 }
 
 async function createOrder(orderObj) {

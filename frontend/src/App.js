@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import ScrollToTop from "react-scroll-to-top";
+import ScrollToTop from 'react-scroll-to-top';
 import { UserContext } from './contexts/UserContext';
 import { SnackbarHandlerContext } from './contexts/SnackbarHandlerContext';
 import { SnackbarContext } from './contexts/SnackbarContext';

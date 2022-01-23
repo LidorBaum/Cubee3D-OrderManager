@@ -32,7 +32,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 950,
+    width: 1200,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -196,18 +196,16 @@ export const OrderPage = props => {
         Cookies.set('cart', JSON.stringify(cartArr));
         handleClose();
     };
-    let myRef = useRef()
-
+    let myRef = useRef();
 
     const scrollTo = () => {
-        window.scrollTo({ behavior: 'smooth', top: elRef.current })
+        window.scrollTo({ behavior: 'smooth', top: elRef.current });
         console.log('scrolling');
-
-    }
+    };
 
     let elRef = useRef(null);
     const useScroll = () => {
-        window.scrollTo({ behavior: 'smooth', top: elRef.current-100 })
+        window.scrollTo({ behavior: 'smooth', top: elRef.current - 100 });
 
         // const executeScroll = () => elRef.current.scrollIntoView({block: "end", inline: "nearest"});
         // return [executeScroll, elRef];
@@ -217,24 +215,29 @@ export const OrderPage = props => {
         // const myRef = useRef(null)
         const [executeScroll, elRef] = useScroll();
         useEffect(executeScroll, []); // Scroll on mount
+    };
+    if (!filaments || !vases)
+        return (
+            <div className="loader">
+                <Hypnosis width="200px" height="200px" duration="3s" />
+            </div>
+        );
 
-
-    }
-        if (!filaments || !vases)
-            return (
-                <div className="loader">
-                    <Hypnosis width="200px" height="200px" duration="3s" />
-                </div>
-            );
-
-        return (<React.Fragment>
-            <div className='quick-links'>
-                <a href="#planter">Planters</a>
-                <a href="#vase">Vases</a>
-                <a href="#bowl" >Bowls</a>
+    return (
+        <React.Fragment>
+            <div className="quick-links">
+                <Button variant="contained" style={{ textTransform: 'none' }}>
+                    <a href="#planter">Planters</a>
+                </Button>
+                <Button variant="contained" style={{ textTransform: 'none' }}>
+                    <a href="#vase">Vases</a>
+                </Button>
+                <Button variant="contained" style={{ textTransform: 'none' }}>
+                    <a href="#bowl">Bowls</a>
+                </Button>
             </div>
             <div className="order-page">
-                <div ref={elRef} id='planter' className="products">
+                <div ref={elRef} id="planter" className="products">
                     <div className="type-list-container">
                         <h2>Planters</h2>
                         <VaseOrderList
@@ -242,7 +245,7 @@ export const OrderPage = props => {
                             handleOpen={handleOpen}
                         />
                     </div>
-                    <div ref={elRef} id='vase' className="type-list-container">
+                    <div ref={elRef} id="vase" className="type-list-container">
                         <h2>Vases</h2>
                         <VaseOrderList
                             vases={vases.typeVase}
@@ -281,7 +284,9 @@ export const OrderPage = props => {
                                             modalContent.type}
                                     </p>
                                     <p>
-                                        {modalContent.size.charAt(0).toUpperCase() +
+                                        {modalContent.size
+                                            .charAt(0)
+                                            .toUpperCase() +
                                             modalContent.size.slice(1)}{' '}
                                         size - {modalContent.dimensions}
                                     </p>
@@ -291,11 +296,13 @@ export const OrderPage = props => {
                                         {filaments.map(filament => {
                                             const isSelected =
                                                 modalContent.selectedColorId ===
-                                                    filament._id
+                                                filament._id
                                                     ? 'selectedColor'
                                                     : '';
                                             return (
-                                                <React.Fragment key={filament._id}>
+                                                <React.Fragment
+                                                    key={filament._id}
+                                                >
                                                     <img
                                                         data-tip
                                                         data-for={filament._id}
@@ -313,7 +320,9 @@ export const OrderPage = props => {
                                                         ].join(' ')}
                                                         src={filament.image}
                                                     ></img>
-                                                    <ReactTooltip id={filament._id}>
+                                                    <ReactTooltip
+                                                        id={filament._id}
+                                                    >
                                                         <span>
                                                             {filament.color}
                                                         </span>
@@ -334,7 +343,7 @@ export const OrderPage = props => {
                                         id="quantity"
                                         label="Quantity"
                                         variant="outlined"
-                                        className='quantity-field'
+                                        className="quantity-field"
                                     />
                                 </div>
                                 <Button
@@ -360,7 +369,7 @@ export const OrderPage = props => {
                     sx={dialogStyle}
                     fullWidth
                     TransitionComponent={Transition}
-                // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
+                    // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
                 >
                     <DialogTitle id="alert-dialog-title">
                         {`Hello ${store} TLV!`}
@@ -387,5 +396,5 @@ export const OrderPage = props => {
                 </Dialog>
             </div>
         </React.Fragment>
-        );
-    };
+    );
+};

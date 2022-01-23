@@ -119,7 +119,6 @@
                 }
                 .card-actions-btns {
                     flex-direction: column;
-                    
                 }
                 .cart-vase {
                     width: 80px;
@@ -136,13 +135,13 @@
             }
         }
     }
-    .order-confirmation-dialog{
+    .order-confirmation-dialog {
         width: 100%;
-        .confirm-dialog-btns{
+        .confirm-dialog-btns {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            *{
+            * {
                 margin: 0;
             }
         }

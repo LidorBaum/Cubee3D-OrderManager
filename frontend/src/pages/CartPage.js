@@ -36,7 +36,7 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-    dialogWidth: 500
+    dialogWidth: 500,
 };
 
 export const CartPage = props => {
@@ -44,7 +44,7 @@ export const CartPage = props => {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
         style.height = '85%';
-        style.dialogWidth = window.screen.width - 20
+        style.dialogWidth = window.screen.width - 20;
     }
 
     const { cart, setCart } = useContext(CartContext);
@@ -286,7 +286,7 @@ export const CartPage = props => {
                 aria-describedby="alert-dialog-description"
                 sx={{ mt: 2, minWidth: style.dialogWidth }}
                 fullWidth
-                className='order-confirmation-dialog'
+                className="order-confirmation-dialog"
             >
                 <DialogTitle id="alert-dialog-title">
                     {'Are you sure about your order?'}
@@ -318,11 +318,20 @@ export const CartPage = props => {
                         fullWidth
                     />
                 </DialogContent>
-                <DialogActions className='confirm-dialog-btns'>
-                    <Button  style={{ textTransform: 'none' }} variant="contained" onClick={handleCloseConfirmDialog}>
+                <DialogActions className="confirm-dialog-btns">
+                    <Button
+                        style={{ textTransform: 'none' }}
+                        variant="contained"
+                        onClick={handleCloseConfirmDialog}
+                    >
                         <ArrowBackIosNewIcon /> I want to fix!
                     </Button>
-                    <Button style={{ textTransform: 'none' }} variant="contained" onClick={onOrderConfirmed} autoFocus>
+                    <Button
+                        style={{ textTransform: 'none' }}
+                        variant="contained"
+                        onClick={onOrderConfirmed}
+                        autoFocus
+                    >
                         <DoubleArrowIcon />
                         Place Order Now!
                     </Button>
@@ -406,7 +415,7 @@ export const CartPage = props => {
                                         label="Quantity"
                                         variant="outlined"
                                         style={{ textTransform: 'none' }}
-                                        className='quantity-field'
+                                        className="quantity-field"
                                     />
                                 </div>
                                 <Button

@@ -10,11 +10,10 @@ export function OrderPreview({ orderObj, onInspect }) {
 
     const numOfColors = colorsArr.length;
 
-    const inspectOrder = () =>{
-        onInspect(orderObj._id)
-    }
+    const inspectOrder = () => {
+        onInspect(orderObj._id);
+    };
 
-    
     return (
         <article id={`${orderObj._id}-order-card`} className="order-card">
             <div className="info">
