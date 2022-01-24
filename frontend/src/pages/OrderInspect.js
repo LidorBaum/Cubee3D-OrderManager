@@ -4,20 +4,99 @@ import { OrderPreview } from '../cmps/orderPreview';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import { snackNoOrders } from '../snackMessages';
 import orderService from '../services/orderService';
+import { Button } from '@mui/material';
+import { VaseOrderList } from '../cmps/VaseOrderList';
+import { OrderInspectProductList } from '../cmps/OrderInspectProductList';
+
+//this object describes the current status and next status - for button text
+const statuses = {
+    Pending: 'Approve Order',
+    Approved: 'Start Printing',
+    Printing: 'Order Ready',
+    Ready: 'Order Shipped',
+    Shipped: 'Order Delivered',
+    Delivered: null,
+    Cancelled: null,
+};
+const vaseStatuses = {
+    Pending: 'Start Printing',
+    Printing: 'Vase Ready',
+    Ready: null,
+};
 
 export const OrderInspect = ({ match }) => {
     const [orderForDetails, setOrder] = useState(null);
 
     const notificationHandler = useContext(SnackbarHandlerContext);
+    const [isRefresh, setDoRefresh] = useState(false);
 
     useEffect(() => {
         const getOrder = async () => {
             const res = await orderService.getOrderById(match.params.orderId);
-            console.log(res);
+            if (res.error) return notificationHandler.error(res.error.message);
+            console.log(res.vasesArrForDisplay);
             setOrder(res);
         };
         getOrder();
-    }, [match.params.orderId]);
+    }, [match.params.orderId, isRefresh]);
+
+    const onChangeStatus = async () => {
+        //ADD CHECK OF THE TOTAL PRINTED - can't ready order if not x/x
+        console.log('chainging status');
+        const statusesArr = Object.keys(statuses);
+        console.log(statusesArr);
+        const indexOff = statusesArr.findIndex(
+            status => status === orderForDetails.status
+        );
+        console.log(indexOff);
+        const res = await orderService.updateOrder({
+            ...orderForDetails,
+            status: statusesArr[indexOff + 1],
+        });
+        console.log(res);
+        if (res.error) return notificationHandler.error(res.error.message);
+        setOrder(prevOrder => {
+            return { ...prevOrder, ...res };
+        });
+    };
+
+    const onChangeVaseStatus = async product => {
+        const vaseStatusesArr = Object.keys(vaseStatuses);
+        const indexOfProduct = orderForDetails.vasesArrForDisplay.findIndex(
+            prod => {
+                return (
+                    prod.vaseId === product.vaseId &&
+                    prod.filamentId === product.filamentId &&
+                    prod.vaseSize === product.vaseSize
+                );
+            }
+        );
+        console.log(indexOfProduct);
+
+        const indexOfStatus = vaseStatusesArr.findIndex(
+            status =>
+                status ===
+                orderForDetails.selectedVasesArray[indexOfProduct].status
+        );
+        console.log(indexOfStatus);
+        const res = await orderService.updateVaseStatus({
+            orderId: orderForDetails._id,
+            uniqueKey: {
+                vaseId: orderForDetails.selectedVasesArray[indexOfProduct]
+                    .vaseId,
+                filamentId:
+                    orderForDetails.selectedVasesArray[indexOfProduct]
+                        .filamentId,
+                vaseSize:
+                    orderForDetails.selectedVasesArray[indexOfProduct].vaseSize,
+            },
+            newStatus: vaseStatusesArr[indexOfStatus + 1],
+        });
+        setOrder(prevOrder => {
+            return { ...prevOrder, ...res };
+        });
+        setDoRefresh(!isRefresh);
+    };
 
     if (!orderForDetails)
         return (
@@ -27,32 +106,67 @@ export const OrderInspect = ({ match }) => {
         );
 
     return (
-        <div className="order-manage">
+        <div className="order-inspect">
             <div className="order-information">
-                <div className="">
-                    <p>Customer: {orderForDetails.customerName} </p>
+                <div className="left-info">
+                    <Button
+                        onClick={onChangeStatus}
+                        variant="contained"
+                        style={{ textTransform: 'none' }}
+                        sx={{
+                            display: statuses[orderForDetails.status]
+                                ? 'block'
+                                : 'none',
+                        }}
+                    >
+                        {statuses[orderForDetails.status]}
+                    </Button>
                     <p>Order status: {orderForDetails.status}</p>
+                    <p>
+                        Total Printed:{' '}
+                        <span>
+                            {orderForDetails.totalPrinted}/
+                            {orderForDetails.totalVases}
+                        </span>
+                    </p>
                 </div>
-                <div>
+                <div className="right-info">
+                    <p>
+                        Customer: <span>{orderForDetails.customerName}</span>{' '}
+                    </p>
                     <p>
                         Date:{' '}
-                        {new Intl.DateTimeFormat('en-il', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: '2-digit',
-                            hour: 'numeric',
-                            minute: 'numeric',
-                        }).format(new Date(orderForDetails.createdAt))}
+                        <span>
+                            {new Intl.DateTimeFormat('en-il', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: '2-digit',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                            }).format(new Date(orderForDetails.createdAt))}{' '}
+                        </span>
                     </p>
-                    <p>Total Vases: {orderForDetails.totalVases} </p>
-                    <p>Total Weight: {orderForDetails.totalWeight}g</p>
-                    <p>Total Colors: {orderForDetails.totalColors}</p>
-                    <p>Total Print Time: {orderForDetails.totalPrintTime}h</p>
                     <p>
-                        Total Printed: {orderForDetails.totalPrinted}/
-                        {orderForDetails.totalVases}
+                        Total Vases: <span>{orderForDetails.totalVases}</span>{' '}
+                    </p>
+                    <p>
+                        Total Weight:{' '}
+                        <span>{orderForDetails.totalWeight}g</span>
+                    </p>
+                    <p>
+                        Total Colors: <span>{orderForDetails.totalColors}</span>
+                    </p>
+                    <p>
+                        Total Print Time:{' '}
+                        <span>{orderForDetails.totalPrintTime}h</span>
                     </p>
                 </div>
+            </div>
+            <div className="order-vases">
+                <OrderInspectProductList
+                    productList={orderForDetails.vasesArrForDisplay}
+                    changeStatus={onChangeVaseStatus}
+                />
             </div>
             {/* <h3>Total Orders: {orderForDetails._id}</h3> */}
             {/* <p>{JSON.stringify(orderForDetails)}</p> */}

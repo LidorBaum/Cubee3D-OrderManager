@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import ReactTooltip from 'react-tooltip';
 
 export function CartPreview({ productObj, removeProduct, editProduct }) {
+    console.log(productObj);
     const onRemoveProduct = () => {
         removeProduct({
             vaseId: productObj.vaseId,

@@ -36,7 +36,7 @@ const OrderSchema = Schema(
                     },
                     status: {
                         type: String,
-                        enum: ['Pending', 'Printing', 'Ready'],
+                        enum: ['Pending', 'Printing', 'Ready', 'Cancelled'],
                         default: 'Pending',
                     },
                 },
@@ -82,13 +82,39 @@ OrderSchema.statics.getOrderById = function (orderId) {
     return this.findOne({ _id: orderId });
 };
 
+OrderSchema.statics.updateVaseStatus = function (
+    orderId,
+    uniqueKey,
+    newStatus
+) {
+    return this.findOneAndUpdate(
+        {
+            _id: orderId,
+            selectedVasesArray: {
+                $elemMatch: uniqueKey,
+            },
+        },
+        {
+            $set: {
+                'selectedVasesArray.$.status': newStatus,
+            },
+        },
+        {
+            new: true,
+        }
+    );
+};
+
 OrderSchema.statics.updateStatus = function (orderId, newStatus) {
-    return this.updateOne(
+    return this.findOneAndUpdate(
         { _id: orderId },
         {
             $set: {
                 status: newStatus,
             },
+        },
+        {
+            new: true,
         }
     );
 };

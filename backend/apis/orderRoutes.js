@@ -9,11 +9,11 @@ const orderRouter = express.Router();
 
 orderRouter.post('/', createOrder);
 
-orderRouter.get('/printTime', getTotalPrintTime);
-
 orderRouter.get('/', getAllOrders);
 
-orderRouter.put('/:orderId([A-Fa-f0-9]{24})', updateStatus);
+orderRouter.put('/edit/:orderId([A-Fa-f0-9]{24})/vase', updateVaseStatus);
+
+orderRouter.put('/edit/:orderId([A-Fa-f0-9]{24})', updateStatus);
 
 orderRouter.get('/:orderId([A-Fa-f0-9]{24})', getOrderById);
 
@@ -27,6 +27,7 @@ async function getOrderById(req, res) {
         const { orderId } = req.params;
         const orderObj = await OrderModel.getOrderById(orderId);
         const calculatedInfo = {
+            vasesArrForDisplay: [],
             totalPrintTime: 0,
             totalWeight: 0,
             totalVases: 0,
@@ -35,9 +36,24 @@ async function getOrderById(req, res) {
         };
         const vasesArray = await VaseModel.getAllVases();
         const filamentsArray = await FilamentModel.getAllFilaments();
-        orderObj.selectedVasesArray.forEach(vase => {
+        console.log(vasesArray, filamentsArray);
+        orderObj.selectedVasesArray.forEach(vaseMongoObj => {
+            const vase = vaseMongoObj.toObject();
             const currentVase = vasesArray.find(vaseObj => {
                 return vaseObj._id.equals(vase.vaseId);
+            });
+            const currentFil = filamentsArray.find(fil => {
+                return fil._id.equals(vase.filamentId);
+            });
+            console.log(vase, 'VASE FROM SELECTED VASE ARRAY');
+            console.log(currentVase, 'VASE FROM ORIGINAL VASES');
+
+            calculatedInfo.vasesArrForDisplay.push({
+                ...vase,
+                image: currentVase.image,
+                name: currentVase.name,
+                type: currentVase.type,
+                color: currentFil.image,
             });
             const isUsedFilament =
                 calculatedInfo.totalColors.findIndex(fil =>
@@ -64,10 +80,18 @@ async function getOrderById(req, res) {
     }
 }
 
-async function getTotalPrintTime(req, res) {
+async function updateVaseStatus(req, res) {
     try {
-        const { vaseArray } = req.body;
-        const result = await OrderModel.getPrintTimeArray(vaseArray);
+        console.log('updating in orderrouts');
+
+        const { orderId } = req.params;
+        const { newStatus, uniqueKey } = req.body;
+        const result = await OrderModel.updateVaseStatus(
+            orderId,
+            uniqueKey,
+            newStatus
+        );
+        res.send(result);
     } catch (err) {
         console.log(err);
         return responseError(res, err.message);
