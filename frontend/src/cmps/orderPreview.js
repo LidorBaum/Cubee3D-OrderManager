@@ -20,7 +20,7 @@ export function OrderPreview({ orderObj, onInspect }) {
                 <p>{orderObj.customerName}</p>
                 <p>{orderObj.selectedVasesArray.length} Vases</p>
                 <p>{numOfColors} Colors</p>
-                <p>{orderObj.status}</p>
+                <p style={{ fontWeight: 600 }}>{orderObj.status}</p>
                 <p>
                     {new Intl.DateTimeFormat('en-il', {
                         year: 'numeric',

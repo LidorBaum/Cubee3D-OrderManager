@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from 'react-router-dom';
 import ScrollToTop from 'react-scroll-to-top';
 import { UserContext } from './contexts/UserContext';
 import { SnackbarHandlerContext } from './contexts/SnackbarHandlerContext';
@@ -18,6 +23,7 @@ import { OrderManagement } from './pages/OrderManagement';
 import { CartPage } from './pages/CartPage';
 import { CartContext } from './contexts/CartContext';
 import { OrderInspect } from './pages/OrderInspect';
+import { snackUnauthorized } from './snackMessages';
 
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
@@ -25,9 +31,8 @@ function App() {
     const [snack, setSnack] = useState({});
     useEffect(() => {
         if (loggedUser) return;
-        if (Cookies.get('loggedUser')) {
-            const jsonStr = Cookies.get('loggedUser').slice(2);
-            setLoggedUser(JSON.parse(jsonStr));
+        if (Cookies.get('user')) {
+            setLoggedUser(JSON.parse(Cookies.get('user')));
         }
         if (Cookies.get('cart')) {
             const cartJson = JSON.parse(Cookies.get('cart'));
@@ -61,6 +66,11 @@ function App() {
                 setSnack(snackObj);
             }, 100);
         } else setSnack(snackObj);
+    };
+
+    const unauthorized = () => {
+        notificationHandler.error(snackUnauthorized);
+        return <Redirect to="/order" />;
     };
 
     return (
@@ -99,39 +109,58 @@ function App() {
                                 <div className="content">
                                     <ScrollToTop smooth />
                                     <Switch>
-                                        {/* <Route path="/" component={Home} exact /> */}
                                         <Route
                                             path="/login"
                                             component={LoginSignup}
                                         />
-                                        {/* <Route path="/board" component={Board} />
-                                    <Route
-                                        path="/company"
-                                        component={CompanyProfile}
-                                    /> */}
                                         <Route
                                             path="/inventory/vase"
-                                            component={VaseManagment}
+                                            // component={VaseManagment}
+                                            render={() =>
+                                                loggedUser &&
+                                                loggedUser.type === 'admin' ? (
+                                                    <VaseManagment />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
                                         />
                                         <Route
                                             path="/inventory/filament"
-                                            component={FialmentMangement}
+                                            render={() =>
+                                                loggedUser &&
+                                                loggedUser.type === 'admin' ? (
+                                                    <FialmentMangement />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
                                         />
                                         <Route
                                             path="/inventory/order/:orderId"
                                             component={OrderInspect}
+                                            // render={() => loggedUser && loggedUser.type==='admin'? <OrderInspect /> : unauthorized()}
                                         />
                                         <Route
                                             path="/inventory/order"
                                             exact
-                                            component={OrderManagement}
+                                            render={() =>
+                                                loggedUser &&
+                                                loggedUser.type === 'admin' ? (
+                                                    <OrderManagement />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
                                         />
                                         <Route
                                             path="/order"
+                                            // render={() => OrderPage}
                                             component={OrderPage}
                                         />
                                         <Route
                                             path="/cart"
+                                            // render={() => CartPage}
                                             component={CartPage}
                                         />
                                     </Switch>

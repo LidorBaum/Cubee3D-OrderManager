@@ -5,10 +5,9 @@ import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import { snackNoOrders } from '../snackMessages';
 import orderService from '../services/orderService';
 import { useHistory } from 'react-router';
-let totalVases = 0;
 
 export const OrderManagement = () => {
-    const [orders, setOrders] = useState(null);
+    const [ordersObj, setOrders] = useState(null);
     const [isRefresh, setDoRefresh] = useState(false);
     const notificationHandler = useContext(SnackbarHandlerContext);
     let history = useHistory();
@@ -17,24 +16,19 @@ export const OrderManagement = () => {
             const res = await orderService.getAllOrders();
             if (res.error) return notificationHandler.error(res.error.message);
             console.log(res);
-            if (!res.length) {
+            if (!res.orders.length) {
                 notificationHandler.error(snackNoOrders);
             }
-            res.map(order => {
-                console.log(order.selectedVasesArray.length);
-                totalVases += order.selectedVasesArray.length;
-            });
             setOrders(res);
         };
-        totalVases = 0;
         getAllOrders();
     }, [isRefresh]);
-    window.orders = orders;
+
     const onInspect = orderId => {
         history.push(`/inventory/order/${orderId}`);
     };
 
-    if (!orders || (orders && totalVases === 0))
+    if (!ordersObj)
         return (
             <div className="loader">
                 <Hypnosis width="200px" height="200px" duration="3s" />
@@ -43,7 +37,7 @@ export const OrderManagement = () => {
     return (
         <div className="order-manage">
             <div className="order-list">
-                {orders.map(order => {
+                {ordersObj.orders.map(order => {
                     return (
                         <OrderPreview
                             key={order._id}
@@ -54,8 +48,8 @@ export const OrderManagement = () => {
                 })}
             </div>
             <div className="statistics">
-                <h3>Total Orders: {orders.length}</h3>
-                <h3>Total Vases: {totalVases}</h3>
+                <h3>Total Orders: {ordersObj.orders.length}</h3>
+                <h3>Total Vases: {ordersObj.totalVases}</h3>
                 <h3>Total Print Time: </h3>
                 <h3>Total Print Weight: </h3>
             </div>

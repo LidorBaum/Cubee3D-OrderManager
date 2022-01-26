@@ -31,18 +31,15 @@ function responseError(response, errMessage) {
 
     return response.status(status).send(errMessage);
 }
+
 async function login(req, res) {
-    const { email, password } = req.body;
     try {
-        const user = await authService.login(email, password);
-        req.session.user = user._id;
-        const returnedUSer = {
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-        };
-        res.cookie('loggedUser', returnedUSer);
-        res.send(returnedUSer);
+        const { name, password } = req.body;
+        const user = await authService.login(name, password);
+        // req.session.user = user._id;
+        // res.cookie('loggedUser', returnedUSer);
+        user.password = undefined;
+        res.send(user);
     } catch (err) {
         return responseError(res, err.message);
     }
@@ -50,17 +47,9 @@ async function login(req, res) {
 
 async function signup(req, res) {
     try {
-        const { email, name, password } = req.body;
-        await authService.signup(email, name, password);
-        const user = await authService.login(email, password);
-        const returnedUSer = {
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-        };
-        req.session.user = returnedUSer._id;
-        res.cookie('loggedUser', returnedUSer);
-        res.send(returnedUSer);
+        const { name, password } = req.body;
+        const user = await authService.signup(name, password);
+        res.send(user);
     } catch (err) {
         return responseError(res, err.message);
     }

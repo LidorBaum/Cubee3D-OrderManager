@@ -1,7 +1,8 @@
 .quick-links {
     display: flex;
-    gap: 10px;
+    gap: 20px;
     justify-content: center;
+    margin-top: 15px;
     * {
         color: $clr6;
         text-decoration: none;
@@ -19,6 +20,7 @@
 .vase-choose-popup {
     display: flex;
     color: $clr1;
+    justify-content: space-around;
     .inputs-submit {
         display: flex;
         flex-direction: column;

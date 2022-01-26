@@ -147,7 +147,7 @@ export const FialmentMangement = () => {
         );
 
     return (
-        <div>
+        <div className="filament-page">
             <div className="inventory-nav">
                 <Button variant="contained" disabled>
                     Filaments

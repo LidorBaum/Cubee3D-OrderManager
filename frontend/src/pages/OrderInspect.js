@@ -2,9 +2,12 @@ import React, { useEffect, useState, useContext } from 'react';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import { OrderPreview } from '../cmps/orderPreview';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
-import { snackNoOrders } from '../snackMessages';
+import {
+    snackInvalidOrderStatus,
+    snackNotCompletedOrder,
+} from '../snackMessages';
 import orderService from '../services/orderService';
-import { Button } from '@mui/material';
+import { Button, CircularProgress, Box, Typography } from '@mui/material';
 import { VaseOrderList } from '../cmps/VaseOrderList';
 import { OrderInspectProductList } from '../cmps/OrderInspectProductList';
 
@@ -18,14 +21,25 @@ const statuses = {
     Delivered: null,
     Cancelled: null,
 };
+const borderStatus = {
+    Pending: 'orange',
+    Approved: '#45e9ff',
+    Printing: '#a270ff',
+    Ready: 'green',
+};
 const vaseStatuses = {
     Pending: 'Start Printing',
     Printing: 'Vase Ready',
     Ready: null,
 };
+const progressCircleColors = {
+    0: 'blue.500',
+    200: 'xx',
+};
 
 export const OrderInspect = ({ match }) => {
     const [orderForDetails, setOrder] = useState(null);
+    const [progress, setProgress] = useState(0);
 
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [isRefresh, setDoRefresh] = useState(false);
@@ -36,6 +50,10 @@ export const OrderInspect = ({ match }) => {
             if (res.error) return notificationHandler.error(res.error.message);
             console.log(res.vasesArrForDisplay);
             setOrder(res);
+            setTimeout(() => {
+                setProgress((res.totalPrinted / res.totalVases) * 100 + 200);
+            }, 1000);
+            console.log(progressCircleColors[progress]);
         };
         getOrder();
     }, [match.params.orderId, isRefresh]);
@@ -49,6 +67,9 @@ export const OrderInspect = ({ match }) => {
             status => status === orderForDetails.status
         );
         console.log(indexOff);
+
+        if (orderForDetails.status === 'Printing' && progress !== 300)
+            return notificationHandler.error(snackNotCompletedOrder);
         const res = await orderService.updateOrder({
             ...orderForDetails,
             status: statusesArr[indexOff + 1],
@@ -61,6 +82,8 @@ export const OrderInspect = ({ match }) => {
     };
 
     const onChangeVaseStatus = async product => {
+        if (orderForDetails.status !== 'Printing')
+            return notificationHandler.error(snackInvalidOrderStatus);
         const vaseStatusesArr = Object.keys(vaseStatuses);
         const indexOfProduct = orderForDetails.vasesArrForDisplay.findIndex(
             prod => {
@@ -106,31 +129,99 @@ export const OrderInspect = ({ match }) => {
         );
 
     return (
-        <div className="order-inspect">
+        <div
+            className="order-inspect"
+            style={{
+                borderLeft: `10px solid ${
+                    borderStatus[orderForDetails.status]
+                }`,
+            }}
+        >
             <div className="order-information">
-                <div className="left-info">
-                    <Button
-                        onClick={onChangeStatus}
-                        variant="contained"
-                        style={{ textTransform: 'none' }}
+                <div>
+                    <Box
+                        className="progress"
                         sx={{
-                            display: statuses[orderForDetails.status]
-                                ? 'block'
-                                : 'none',
+                            color: progressCircleColors[progress]
+                                ? 'text.secondary'
+                                : 'primary.main',
+                            position: 'relative',
+                            display: 'inline-flex',
                         }}
                     >
-                        {statuses[orderForDetails.status]}
-                    </Button>
-                    <p>Order status: {orderForDetails.status}</p>
-                    <p>
-                        Total Printed:{' '}
-                        <span>
-                            {orderForDetails.totalPrinted}/
-                            {orderForDetails.totalVases}
-                        </span>
-                    </p>
+                        <CircularProgress
+                            size={150}
+                            color="inherit"
+                            variant="determinate"
+                            value={progress === 200 ? 100 : progress}
+                        />
+                        <Box
+                            sx={{
+                                top: 0,
+                                left: 0,
+                                bottom: 0,
+                                right: 0,
+                                position: 'absolute',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Typography
+                                fontSize={25}
+                                variant="caption"
+                                component="div"
+                                color="text.secondary"
+                            >
+                                {progress === 0
+                                    ? '0%'
+                                    : `${Math.round(progress - 200)}%`}
+                            </Typography>
+                        </Box>
+                    </Box>
                 </div>
                 <div className="right-info">
+                    <p className="status-btn">
+                        <Button
+                            onClick={onChangeStatus}
+                            variant="contained"
+                            style={{ textTransform: 'none', m: 'auto' }}
+                            sx={{
+                                display: statuses[orderForDetails.status]
+                                    ? 'block'
+                                    : 'none',
+                            }}
+                            className="change-status-btn"
+                        >
+                            {statuses[orderForDetails.status]}
+                        </Button>
+                    </p>
+                    <p>Order status: {orderForDetails.status}</p>
+                    <div className="total-printed">
+                        <p>
+                            Total Printed:{' '}
+                            <span>
+                                {orderForDetails.totalPrinted}/
+                                {orderForDetails.totalVases}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div className="center-info">
+                    <p>
+                        Total Weight:{' '}
+                        <span>{orderForDetails.totalWeight}g</span>
+                    </p>
+                    <p>
+                        Total Colors: <span>{orderForDetails.totalColors}</span>
+                    </p>
+                    <p>
+                        Total Print Time:{' '}
+                        <span>{orderForDetails.totalPrintTime}h</span>
+                    </p>
+                </div>
+
+                <div className="left-info">
                     <p>
                         Customer: <span>{orderForDetails.customerName}</span>{' '}
                     </p>
@@ -148,17 +239,6 @@ export const OrderInspect = ({ match }) => {
                     </p>
                     <p>
                         Total Vases: <span>{orderForDetails.totalVases}</span>{' '}
-                    </p>
-                    <p>
-                        Total Weight:{' '}
-                        <span>{orderForDetails.totalWeight}g</span>
-                    </p>
-                    <p>
-                        Total Colors: <span>{orderForDetails.totalColors}</span>
-                    </p>
-                    <p>
-                        Total Print Time:{' '}
-                        <span>{orderForDetails.totalPrintTime}h</span>
                     </p>
                 </div>
             </div>

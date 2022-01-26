@@ -79,26 +79,4 @@ VaseSchema.statics.deleteVase = function (vaseObj) {
     return this.deleteOne({ _id: vaseObj });
 };
 
-// UserSchema.statics.getByEmail = async function (email) {
-//   console.log("getting by email");
-//   const user = await this.findOne({ email: email });
-//   console.log(user, "USER FROM EMAIL");
-//   return user;
-// };
-// UserSchema.statics.getById = function (userId) {
-//   return this.findById(userId);
-// };
-// VaseSchema.statics.updateVase = function (vaseObj) {
-//   return this.findOneAndUpdate(
-//     { _id: vaseObj._id },
-//     {
-//       $set: {
-//         name: userObj.name,
-//         email: userObj.email,
-//       },
-//     },
-//     { new: true }
-//   );
-// };
-
 exports.VaseModel = db.connection.model('Vase', VaseSchema);

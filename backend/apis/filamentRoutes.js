@@ -73,7 +73,6 @@ async function createFilament(req, res) {
         const newFilament = await FilamentModel.createFilament(req.body);
         res.send(newFilament);
     } catch (err) {
-        console.log(err);
         return responseError(res, err.message);
     }
 }

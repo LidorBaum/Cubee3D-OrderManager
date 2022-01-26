@@ -75,7 +75,7 @@ OrderSchema.statics.createOrder = function (orderObj) {
 };
 
 OrderSchema.statics.getAllOrders = function () {
-    return this.find({}).exec();
+    return this.find({}).sort({ createdAt: -1 }).exec();
 };
 
 OrderSchema.statics.getOrderById = function (orderId) {

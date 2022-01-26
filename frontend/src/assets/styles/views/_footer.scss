@@ -12,12 +12,17 @@ footer {
     // bottom: 0;
     p {
         margin-bottom: 0px;
+        margin-top: 10px;
     }
-    img {
-        margin-top: 0;
-        width: 60px;
+    .footer-icons {
+        margin-top: 5px;
+        display: flex;
+        gap: 10px;
+        img {
+            margin-top: 0;
+            width: 60px;
+        }
     }
 }
 footer * {
-    margin-top: 10px;
 }

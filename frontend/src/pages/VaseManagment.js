@@ -19,7 +19,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '50%',
+    width: 1000,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -44,6 +44,7 @@ export const VaseManagment = () => {
         vaseToEdit.image ||
             'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
     );
+    window.vaseToEdit = vaseToEdit;
 
     useEffect(() => {
         const getAllVases = async () => {
@@ -204,13 +205,15 @@ export const VaseManagment = () => {
                     Vases
                 </Button>
             </div>{' '}
-            <Button
-                onClick={handleOpen}
-                className="add-new-btn"
-                variant="contained"
-            >
-                Add New Vase
-            </Button>
+            <Box textAlign="center" sx={{ 'margin-top': 10 }}>
+                <Button
+                    onClick={handleOpen}
+                    className="add-new-btn"
+                    variant="contained"
+                >
+                    Add New Vase
+                </Button>
+            </Box>
             <div>
                 <VaseList
                     vases={vases}
@@ -319,7 +322,9 @@ export const VaseManagment = () => {
                                     label="Print Time (h)"
                                     name="printTime"
                                     value={
-                                        vaseToEdit.sizes.small.printTime || ''
+                                        vaseToEdit.sizes.small.printTime === '0'
+                                            ? ''
+                                            : vaseToEdit.sizes.small.printTime
                                     }
                                     onChange={handleSizeInputsChange}
                                     type="number"
@@ -383,7 +388,10 @@ export const VaseManagment = () => {
                                     label="Print Time (h)"
                                     name="printTime"
                                     value={
-                                        vaseToEdit.sizes.medium.printTime || ''
+                                        vaseToEdit.sizes.medium.printTime ===
+                                        '0'
+                                            ? ''
+                                            : vaseToEdit.sizes.medium.printTime
                                     }
                                     onChange={handleSizeInputsChange}
                                     type="number"
@@ -447,7 +455,9 @@ export const VaseManagment = () => {
                                     label="Print Time (h)"
                                     name="printTime"
                                     value={
-                                        vaseToEdit.sizes.large.printTime || ''
+                                        vaseToEdit.sizes.large.printTime === '0'
+                                            ? ''
+                                            : vaseToEdit.sizes.large.printTime
                                     }
                                     onChange={handleSizeInputsChange}
                                     type="number"

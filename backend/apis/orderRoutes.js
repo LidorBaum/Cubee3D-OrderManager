@@ -36,7 +36,6 @@ async function getOrderById(req, res) {
         };
         const vasesArray = await VaseModel.getAllVases();
         const filamentsArray = await FilamentModel.getAllFilaments();
-        console.log(vasesArray, filamentsArray);
         orderObj.selectedVasesArray.forEach(vaseMongoObj => {
             const vase = vaseMongoObj.toObject();
             const currentVase = vasesArray.find(vaseObj => {
@@ -45,8 +44,6 @@ async function getOrderById(req, res) {
             const currentFil = filamentsArray.find(fil => {
                 return fil._id.equals(vase.filamentId);
             });
-            console.log(vase, 'VASE FROM SELECTED VASE ARRAY');
-            console.log(currentVase, 'VASE FROM ORIGINAL VASES');
 
             calculatedInfo.vasesArrForDisplay.push({
                 ...vase,
@@ -75,15 +72,12 @@ async function getOrderById(req, res) {
         const newObj = { ...orderObj.toObject(), toto: 'toto' };
         res.send({ ...newObj, ...calculatedInfo });
     } catch (err) {
-        console.log(err);
         return responseError(res, err.message);
     }
 }
 
 async function updateVaseStatus(req, res) {
     try {
-        console.log('updating in orderrouts');
-
         const { orderId } = req.params;
         const { newStatus, uniqueKey } = req.body;
         const result = await OrderModel.updateVaseStatus(
@@ -123,7 +117,12 @@ async function createOrder(req, res) {
 async function getAllOrders(req, res) {
     try {
         const orders = await OrderModel.getAllOrders();
-        res.send(orders);
+        const totalVases = orders.reduce((total, order) => {
+            return Libs.Utils.getTotalVases(order.selectedVasesArray) + total;
+        }, 0);
+
+        // const newObj = { ...orders.toObject(), toto: 'toto' };
+        res.send({ orders: orders, totalVases: totalVases });
     } catch (err) {
         return responseError(res, err.message);
     }

@@ -46,7 +46,6 @@ export function CartPreview({ productObj, removeProduct, editProduct }) {
             </div>
             <div className="card-actions-btns">
                 <Button
-                    size="small"
                     onClick={onEditProduct}
                     variant="contained"
                     color="primary"
@@ -54,7 +53,6 @@ export function CartPreview({ productObj, removeProduct, editProduct }) {
                     Edit
                 </Button>
                 <Button
-                    size="small"
                     onClick={onRemoveProduct}
                     variant="contained"
                     color="error"

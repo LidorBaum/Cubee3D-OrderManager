@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import httpService from './httpService';
 
 export default {
@@ -8,7 +9,13 @@ export default {
     getById,
     remove,
     update,
+    checkUserExistAndType,
+    adminLogin,
 };
+
+function checkUserExistAndType(name) {
+    return httpService.get(`user/type/${name}`);
+}
 
 function getUsers() {
     return httpService.get('user');
@@ -25,19 +32,27 @@ function update(user) {
     return httpService.put(`user/${user._id}`, user);
 }
 
-async function login(userCred) {
+async function adminLogin(userCred) {
     const user = await httpService.post('auth/login', userCred);
     return _handleLogin(user);
 }
+
+async function login(user) {
+    return _handleLogin(user);
+}
+
 async function signup(userCred) {
     const user = await httpService.post('auth/signup', userCred);
     return _handleLogin(user);
 }
 async function logout() {
-    await httpService.post('auth/logout');
+    // await httpService.post('auth/logout');
+    Cookies.remove('user');
     sessionStorage.clear();
 }
 function _handleLogin(user) {
     sessionStorage.setItem('user', JSON.stringify(user));
+    console.log(user);
+    Cookies.set('user', JSON.stringify(user));
     return user;
 }
