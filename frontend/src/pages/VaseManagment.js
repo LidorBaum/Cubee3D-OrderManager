@@ -50,7 +50,6 @@ export const VaseManagment = () => {
         const getAllVases = async () => {
             const res = await vaseService.getAllVases();
             if (res.error) return notificationHandler.error(res.error.message);
-            console.log(res);
             if (!res.length) {
                 notificationHandler.error(snackNoVases);
             }
@@ -128,7 +127,6 @@ export const VaseManagment = () => {
         const size = e.target.dataset.sizing;
         const target = e.target.name;
         const value = e.target.value;
-        console.log(`${value} @ ${target} @ ${size}`);
         let prevSizesObj = vaseToEdit.sizes;
         let specificSize = prevSizesObj[size];
         specificSize[target] = value;

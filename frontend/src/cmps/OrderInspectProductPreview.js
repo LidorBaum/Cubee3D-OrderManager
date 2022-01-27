@@ -12,7 +12,6 @@ export function OrderInspectProductPreview({
     changeStatus,
     isAdmin,
 }) {
-    console.log(productObj);
     const onChangeStatus = () => {
         changeStatus({
             vaseId: productObj.vaseId,

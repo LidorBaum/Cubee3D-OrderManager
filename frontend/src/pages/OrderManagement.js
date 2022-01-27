@@ -15,7 +15,6 @@ export const OrderManagement = () => {
         const getAllOrders = async () => {
             const res = await orderService.getAllOrders();
             if (res.error) return notificationHandler.error(res.error.message);
-            console.log(res);
             if (!res.orders.length) {
                 notificationHandler.error(snackNoOrders);
             }

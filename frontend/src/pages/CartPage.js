@@ -86,7 +86,6 @@ export const CartPage = props => {
                 prod.size === productIdentifier.size
             );
         });
-        console.log(newCartArr);
         setCart(newCartArr);
         Cookies.set('cart', JSON.stringify(newCartArr));
     };
@@ -165,14 +164,12 @@ export const CartPage = props => {
     };
 
     const onEditProduct = async productObj => {
-        console.log('editing');
         const filamentsArray = await filamentService.getAllFilaments();
         if (filamentsArray.error)
             return notificationHandler.error(filamentsArray.error.message);
         if (!filamentsArray.length) {
             notificationHandler.error(snackNoFilaments);
         }
-        console.log(filamentsArray);
         setFilaments(filamentsArray);
         const productForEditObj = cart.find(prod => {
             return (
@@ -199,10 +196,8 @@ export const CartPage = props => {
 
     const onSaveChanges = () => {
         const index = cart.findIndex(prod => {
-            console.log(prod === productForEdit);
             return prod === productForEdit;
         });
-        console.log(index);
         const updatedProduct = {
             vaseId: modalContent.vaseId,
             name: modalContent.name,
@@ -214,13 +209,8 @@ export const CartPage = props => {
             quantity: modalContent.quantity,
             dimensions: modalContent.dimensions,
         };
-        console.log(updatedProduct);
-        console.log(cart);
-
         let newCartArray = [...cart];
         newCartArray.splice(index, 1, updatedProduct);
-
-        console.log(newCartArray);
         setCart(newCartArray);
         Cookies.set('cart', JSON.stringify(newCartArray));
         handleClose();

@@ -134,7 +134,6 @@ export const Header = props => {
     const onLogin = async e => {
         e.preventDefault();
         setIsLoading(true);
-        console.log('try login');
         if (!loginForm.name)
             return notificationHandler.error(snackMissingCreds);
         if (!isKnownType) {
@@ -144,13 +143,11 @@ export const Header = props => {
             if (res.noUserFound)
                 return notificationHandler.error(snackNoUserFound);
             if (res.admin) {
-                console.log('ADMIN');
                 setIsKnownType(true);
                 setIsLoading(false);
                 valueRef.current.focus();
                 return;
             }
-            console.log('it is a customer');
             return onLoginCustomer(res);
         }
         return onLoginAdmin();
@@ -162,7 +159,6 @@ export const Header = props => {
         userService.login(user);
         setMenuType('customer');
         handleClose();
-        console.log('logged user', user);
     };
 
     const onLoginAdmin = async () => {

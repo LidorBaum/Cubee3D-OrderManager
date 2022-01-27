@@ -176,7 +176,6 @@ export const OrderPage = props => {
         if (!productToAdd.filamentId)
             return notificationHandler.error(noColorChosen);
         for (let i = 0; i < cart.length; i++) {
-            console.log('inloop');
             if (
                 cart[i].vaseId === productToAdd.vaseId &&
                 cart[i].filamentId === productToAdd.filamentId &&
@@ -189,7 +188,6 @@ export const OrderPage = props => {
         }
         if (!isExist)
             setCart(prevCart => {
-                console.log('should add to cart');
                 return [...prevCart, productToAdd];
             });
         const cartArr = [...cart, productToAdd];
@@ -198,10 +196,9 @@ export const OrderPage = props => {
     };
     let myRef = useRef();
 
-    const scrollTo = () => {
-        window.scrollTo({ behavior: 'smooth', top: elRef.current });
-        console.log('scrolling');
-    };
+    // const scrollTo = () => {
+    //     window.scrollTo({ behavior: 'smooth', top: elRef.current });
+    // };
 
     let elRef = useRef(null);
     const useScroll = () => {

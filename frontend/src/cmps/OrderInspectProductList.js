@@ -6,7 +6,6 @@ export const OrderInspectProductList = ({
     changeStatus,
     isAdmin,
 }) => {
-    console.log(productList, 'PRODUCT LIST');
     return (
         <>
             <div className="order-product-list">

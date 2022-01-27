@@ -31,7 +31,6 @@ export const LoginSignup = props => {
         const field = ev.target.name;
         const value = ev.target.value;
         setSignup(prevSignup => ({ ...prevSignup, [field]: value }));
-        console.log(signupCred);
     };
 
     const loginHandleChange = ev => {
@@ -39,7 +38,6 @@ export const LoginSignup = props => {
         const field = ev.target.name;
         const value = ev.target.value;
         setLogin(prevLogin => ({ ...prevLogin, [field]: value }));
-        console.log(loginCred);
     };
 
     const doLogin = async ev => {

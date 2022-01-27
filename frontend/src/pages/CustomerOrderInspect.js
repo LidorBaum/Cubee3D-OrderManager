@@ -48,25 +48,20 @@ export const CustomerOrderInspect = ({ match }) => {
         const getOrder = async () => {
             const res = await orderService.getOrderById(match.params.orderId);
             if (res.error) return notificationHandler.error(res.error.message);
-            console.log(res.vasesArrForDisplay);
             setOrder(res);
             setTimeout(() => {
                 setProgress((res.totalPrinted / res.totalVases) * 100 + 200);
             }, 1000);
-            console.log(progressCircleColors[progress]);
         };
         getOrder();
     }, [match.params.orderId, isRefresh]);
 
     const onChangeStatus = async () => {
         //ADD CHECK OF THE TOTAL PRINTED - can't ready order if not x/x
-        console.log('chainging status');
         const statusesArr = Object.keys(statuses);
-        console.log(statusesArr);
         const indexOff = statusesArr.findIndex(
             status => status === orderForDetails.status
         );
-        console.log(indexOff);
 
         if (orderForDetails.status === 'Printing' && progress !== 300)
             return notificationHandler.error(snackNotCompletedOrder);
@@ -74,7 +69,6 @@ export const CustomerOrderInspect = ({ match }) => {
             ...orderForDetails,
             status: statusesArr[indexOff + 1],
         });
-        console.log(res);
         if (res.error) return notificationHandler.error(res.error.message);
         setOrder(prevOrder => {
             return { ...prevOrder, ...res };
@@ -94,14 +88,12 @@ export const CustomerOrderInspect = ({ match }) => {
                 );
             }
         );
-        console.log(indexOfProduct);
 
         const indexOfStatus = vaseStatusesArr.findIndex(
             status =>
                 status ===
                 orderForDetails.selectedVasesArray[indexOfProduct].status
         );
-        console.log(indexOfStatus);
         const res = await orderService.updateVaseStatus({
             orderId: orderForDetails._id,
             uniqueKey: {

@@ -88,14 +88,11 @@ export const OrderInspect = ({ match }) => {
                 );
             }
         );
-        console.log(indexOfProduct);
-
         const indexOfStatus = vaseStatusesArr.findIndex(
             status =>
                 status ===
                 orderForDetails.selectedVasesArray[indexOfProduct].status
         );
-        console.log(indexOfStatus);
         const res = await orderService.updateVaseStatus({
             orderId: orderForDetails._id,
             uniqueKey: {

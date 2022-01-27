@@ -46,13 +46,11 @@ async function signup(userCred) {
     return _handleLogin(user);
 }
 async function logout() {
-    // await httpService.post('auth/logout');
     Cookies.remove('user');
     sessionStorage.clear();
 }
 function _handleLogin(user) {
     sessionStorage.setItem('user', JSON.stringify(user));
-    console.log(user);
     Cookies.set('user', JSON.stringify(user));
     return user;
 }

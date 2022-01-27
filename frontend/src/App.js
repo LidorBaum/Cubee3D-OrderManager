@@ -32,8 +32,7 @@ let userFromCookie;
 if (Cookies.get('user')) {
     userFromCookie = JSON.parse(Cookies.get('user'));
 } else userFromCookie = null;
-console.log(userFromCookie);
-window.userFromCookie = userFromCookie
+window.userFromCookie = userFromCookie;
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
     const [cart, setCart] = useState([]);
@@ -144,7 +143,7 @@ function App() {
                                             // component={VaseManagment}
                                             render={() =>
                                                 userFromCookie &&
-                                                    userFromCookie.type ===
+                                                userFromCookie.type ===
                                                     'admin' ? (
                                                     <VaseManagment />
                                                 ) : (
@@ -156,7 +155,7 @@ function App() {
                                             path="/inventory/filament"
                                             render={() =>
                                                 userFromCookie &&
-                                                    userFromCookie.type ===
+                                                userFromCookie.type ===
                                                     'admin' ? (
                                                     <FialmentMangement />
                                                 ) : (
@@ -169,7 +168,7 @@ function App() {
                                             // component={OrderInspect}
                                             render={props =>
                                                 userFromCookie &&
-                                                    userFromCookie.type ===
+                                                userFromCookie.type ===
                                                     'admin' ? (
                                                     <OrderInspect {...props} />
                                                 ) : (
@@ -181,8 +180,10 @@ function App() {
                                             path="/inventory/order"
                                             exact
                                             render={() =>
-                                                    (userFromCookie?.type ===
-                                                    'admin' || userFromCookie?.type === 'customer') ? (
+                                                userFromCookie?.type ===
+                                                    'admin' ||
+                                                userFromCookie?.type ===
+                                                    'customer' ? (
                                                     <OrderManagement />
                                                 ) : (
                                                     unauthorized()
@@ -199,9 +200,12 @@ function App() {
                                             // render={() => OrderPage}
                                             // component={CustomerOrderInspect}
                                             render={props =>
-                                                ['admin', 'customer'].includes(userFromCookie?.type)
-                                                ? (
-                                                    <CustomerOrderInspect {...props} />
+                                                ['admin', 'customer'].includes(
+                                                    userFromCookie?.type
+                                                ) ? (
+                                                    <CustomerOrderInspect
+                                                        {...props}
+                                                    />
                                                 ) : (
                                                     unauthorized()
                                                 )
@@ -212,14 +216,17 @@ function App() {
                                             exact
                                             // render={() => OrderPage}
                                             render={props =>
-                                                ['admin', 'customer'].includes(userFromCookie?.type)
-                                                ? (
-                                                    <CustomerOrdersPage {...props} />
+                                                ['admin', 'customer'].includes(
+                                                    userFromCookie?.type
+                                                ) ? (
+                                                    <CustomerOrdersPage
+                                                        {...props}
+                                                    />
                                                 ) : (
                                                     unauthorized()
                                                 )
                                             }
-                                        // component={CustomerOrdersPage}
+                                            // component={CustomerOrdersPage}
                                         />
                                         <Route
                                             path="/cart"
