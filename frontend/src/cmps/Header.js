@@ -20,6 +20,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import LoginIcon from '@mui/icons-material/Login';
 import FaceIcon from '@mui/icons-material/Face';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -75,7 +76,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 1200,
+    width: 600,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -86,7 +87,7 @@ export const Header = props => {
     if (window.screen.width < 1000) {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
-        style.height = '85%';
+        style.height = '40%';
     }
     let history = useHistory();
     const { loggedUser, setLoggedUser } = useContext(UserContext);
@@ -173,8 +174,8 @@ export const Header = props => {
             setIsLoading(false);
             return;
         }
-        userService.login(user);
         setLoggedUser(user);
+        userService.login(user);
         setIsLoading(false);
         setMenuType('admin');
         handleClose();
@@ -191,10 +192,11 @@ export const Header = props => {
 
     const onClickMenuItem = async setting => {
         if (setting === 'Logout') {
-            setLoggedUser(null);
             handleCloseUserMenu();
             setMenuType('guest');
-            return userService.logout();
+            userService.logout();
+            setLoggedUser(null);
+            return history.push('/order')
         }
         handleCloseUserMenu();
         history.push('/orders');
@@ -452,9 +454,10 @@ export const Header = props => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
-                    <h1>Login Popup</h1>
-                    <form id="login-form" onSubmit={onLogin}>
+                <Box sx={style} className='login-form-container'>
+                    <p>Welcome Back!</p>
+                    <p>Log into your account</p>
+                    <form className='login-form' id="login-form" onSubmit={onLogin}>
                         <TextField
                             required
                             label="Name"
@@ -471,10 +474,12 @@ export const Header = props => {
                             name="password"
                             value={loginForm.password}
                             onChange={handleChange}
-                            style={{ display: isKnownType ? 'block' : 'none' }}
+                            style={{ display: isKnownType ? '' : 'none' }}
                             inputRef={valueRef}
+                            // style={{width: 240}}
                         />
                         <Button
+                        className='login-btn'
                             variant="contained"
                             disabled={isLoading}
                             type="submit"

@@ -15,34 +15,44 @@ header {
         }
     }
 }
-// .links {
-//     display: flex;
-//     justify-content: flex-start;
-//     align-items: center;
-//     height: 70px;
-//     padding: 20px;
-//     margin-bottom: 10px;
-//     img{
-//         width: 120px;
-//     }
-// }
-// .links * {
-//     display: inline-block;
-//     margin-inline-end: 30px;
-//     vertical-align: middle;
-//     text-decoration: none;
-//     color: $clr2;
-//     transition: all 0.4s;
-
-//     &:hover {
-//         color: rgba(23, 202, 178, 0.753);
-//         transform: scale(1.08);
-//     }
-//     &:last-child {
-//         transform: scale(1);
-//     }
-// }
-
-// .active {
-//     color: rgba(19, 50, 136, 0.753);
-// }
+.login-form-container{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+    color: $clr1;
+    p{
+        margin: 0;
+        font-size: 28px;
+    }
+    // padding: 2px;
+    .login-form{
+        // text-align: center;
+        // margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        > *{
+            width: 240px;
+            // height: 100px;
+        }
+        .login-btn{
+            height: 50px;
+        }
+    }
+}
+@media only screen and (max-width: 750px) {
+    .login-form-container{
+        justify-content: space-evenly;
+        p{
+            font-size: 18px;
+        }
+        .login-form{
+            // flex-grow: 1;
+            .login-btn{
+                flex-grow: 1;
+            }
+        }
+    }
+}

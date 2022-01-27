@@ -9,6 +9,11 @@ const OrderSchema = Schema(
             type: String,
             required: true,
         },
+        customerId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
         comment: {
             type: String,
         },
@@ -71,6 +76,7 @@ const OrderSchema = Schema(
 OrderSchema.statics.getPrintTimeArray = function (vaseArray) {};
 
 OrderSchema.statics.createOrder = function (orderObj) {
+    console.log(orderObj);
     return this.create(orderObj);
 };
 

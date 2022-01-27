@@ -24,13 +24,24 @@ import { CartPage } from './pages/CartPage';
 import { CartContext } from './contexts/CartContext';
 import { OrderInspect } from './pages/OrderInspect';
 import { snackUnauthorized } from './snackMessages';
+let userFromCookie
+if (Cookies.get('user')) {
+    userFromCookie = (JSON.parse(Cookies.get('user')));
+}
+else userFromCookie = null
+
+
 
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
+    window.loggedUser = loggedUser
     const [cart, setCart] = useState([]);
     const [snack, setSnack] = useState({});
     useEffect(() => {
-        if (loggedUser) return;
+        if (loggedUser) {
+            userFromCookie = loggedUser;
+            return
+        }
         if (Cookies.get('user')) {
             setLoggedUser(JSON.parse(Cookies.get('user')));
         }
@@ -117,8 +128,8 @@ function App() {
                                             path="/inventory/vase"
                                             // component={VaseManagment}
                                             render={() =>
-                                                loggedUser &&
-                                                loggedUser.type === 'admin' ? (
+                                                userFromCookie &&
+                                                    userFromCookie.type === 'admin' ? (
                                                     <VaseManagment />
                                                 ) : (
                                                     unauthorized()
@@ -128,8 +139,8 @@ function App() {
                                         <Route
                                             path="/inventory/filament"
                                             render={() =>
-                                                loggedUser &&
-                                                loggedUser.type === 'admin' ? (
+                                                userFromCookie &&
+                                                    userFromCookie.type === 'admin' ? (
                                                     <FialmentMangement />
                                                 ) : (
                                                     unauthorized()
@@ -139,14 +150,14 @@ function App() {
                                         <Route
                                             path="/inventory/order/:orderId"
                                             component={OrderInspect}
-                                            // render={() => loggedUser && loggedUser.type==='admin'? <OrderInspect /> : unauthorized()}
+                                        // render={() => loggedUser && loggedUser.type==='admin'? <OrderInspect /> : unauthorized()}
                                         />
                                         <Route
                                             path="/inventory/order"
                                             exact
                                             render={() =>
-                                                loggedUser &&
-                                                loggedUser.type === 'admin' ? (
+                                                userFromCookie &&
+                                                    userFromCookie.type === 'admin' ? (
                                                     <OrderManagement />
                                                 ) : (
                                                     unauthorized()

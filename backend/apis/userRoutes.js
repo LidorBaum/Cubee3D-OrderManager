@@ -26,8 +26,8 @@ async function getExistanceAndType(req, res) {
     try {
         const { name } = req.params;
         const result = await UserModel.getExistanceAndType(name);
-        if (!result) res.send({ noUserFound: true });
-        if (result.type === 'admin') res.send({ admin: true });
+        if (!result) return res.send({ noUserFound: true });
+        if (result.type === 'admin') return res.send({ admin: true });
         res.send(result);
     } catch (err) {
         return responseError(res, err.message);

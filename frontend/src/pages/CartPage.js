@@ -2,11 +2,13 @@ import Cookies from 'js-cookie';
 import React, { useEffect, useState, useContext } from 'react';
 import { CartContext } from '../contexts/CartContext';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
+import { UserContext } from '../contexts/UserContext';
 import orderService from '../services/orderService';
 import {
     snackOrderPlaced,
     snackNoStoreName,
     snackNoFilaments,
+    snackPleaseLogin
 } from '../snackMessages';
 import { CartPreview } from '../cmps/CartPreview';
 import ReactTooltip from 'react-tooltip';
@@ -49,6 +51,7 @@ export const CartPage = props => {
 
     const { cart, setCart } = useContext(CartContext);
     const [openPlaceConfirm, setOpenPlaceConfirm] = useState(false);
+    const { loggedUser } = useContext(UserContext);
     const [orderAttachments, setOrderAttachments] = useState({
         storeName: '',
         comments: '',
@@ -69,9 +72,16 @@ export const CartPage = props => {
     });
 
     const [productForEdit, setProductForEdit] = useState(null);
-
     const notificationHandler = useContext(SnackbarHandlerContext);
+    useEffect(()=>{
+        if(loggedUser) orderAttachments.storeName = loggedUser.name
+    }, [loggedUser])
     window.productForEdit = productForEdit;
+
+
+
+
+
     const onRemoveProduct = productIdentifier => {
         const newCartArr = cart.filter(prod => {
             return !(
@@ -95,6 +105,7 @@ export const CartPage = props => {
     };
 
     const handleopenConfirmDialog = () => {
+        if(!loggedUser) return notificationHandler.warning(snackPleaseLogin)
         setOpenPlaceConfirm(true);
     };
 
@@ -137,6 +148,7 @@ export const CartPage = props => {
             selectedVasesArray: selectedProductsForOrderObj,
             customerName: orderAttachments.storeName,
             comment: orderAttachments.comments,
+            customerId: loggedUser._id
         };
         const newOrder = await orderService.createOrder(orderObj);
         if (newOrder.error) {
@@ -307,6 +319,7 @@ export const CartPage = props => {
                         value={orderAttachments.storeName}
                         onChange={handleChangeOrderAttachments}
                         required
+                        disabled
                     />
                     <br />
                     <TextField

@@ -117,10 +117,13 @@ async function createOrder(req, res) {
 async function getAllOrders(req, res) {
     try {
         const orders = await OrderModel.getAllOrders();
+        console.log(orders[0].selectedVasesArray);
         const totalVases = orders.reduce((total, order) => {
             return Libs.Utils.getTotalVases(order.selectedVasesArray) + total;
         }, 0);
-
+        // const totalPrintTime = orders.reduce((total, order) =>{
+        //     return Libs.Utils.getTotalPrintTime(order.selectedVasesArray) + total
+        // }, 0)
         // const newObj = { ...orders.toObject(), toto: 'toto' };
         res.send({ orders: orders, totalVases: totalVases });
     } catch (err) {

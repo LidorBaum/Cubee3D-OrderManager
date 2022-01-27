@@ -20,7 +20,7 @@ const snackNoUserFound =
     "Couldn't find a user with this name. Please try again or contact us";
 const snackMissingCreds = 'Missing Name / Password';
 const snackUnauthorized = 'You are not allowed to view this page, redirecting';
-
+const snackPleaseLogin = 'Please Login in the top-right corner to place an order'
 module.exports = {
     snackNoVases,
     snackVaseDeleted,
@@ -41,4 +41,5 @@ module.exports = {
     snackNoUserFound,
     snackMissingCreds,
     snackUnauthorized,
+    snackPleaseLogin
 };
