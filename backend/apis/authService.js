@@ -1,34 +1,33 @@
 const bcrypt = require('bcrypt');
-const { UserModel } = require('../models/Vase');
+const { UserModel } = require('../models/User');
 
 const saltRounds = 10;
 
-async function login(email, password) {
-    console.log(email, password);
-    const user = await UserModel.getByEmail(email);
-    console.log(password, user.password);
+async function login(name, password) {
+    const user = await UserModel.getExistanceAndType(name);
     const match = await bcrypt.compare(password, user.password);
     if (!match)
         return Promise.reject({
-            message: 'Password or email is not valid',
+            message: 'Password or name is not match',
         });
-    delete user.password;
+    user.password = undefined;
     return user;
 }
 
-async function signup(email, name, password) {
-    const hash = await bcrypt.hash(password, saltRounds);
-    console.log('signing up', email, name, password);
-    if (!UserModel.checkEmailAvailable(email)) {
-        console.log('email exists');
-        return Promise.reject({
-            message: 'Email is already subscribed',
+async function signup(name, password = null) {
+    if (password) {
+        const hash = await bcrypt.hash(password, saltRounds);
+
+        const createdUser = await UserModel.createUser({
+            name,
+            type: 'admin',
+            password: hash,
         });
+        return createdUser;
     }
     const createdUser = await UserModel.createUser({
         name,
-        email,
-        password: hash,
+        type: 'customer',
     });
     return createdUser;
 }

@@ -26,7 +26,6 @@ async function deleteVase(req, res) {
         if (vaseId === 'undefined')
             return responseError(res, 'Colud not find vase to delete');
         const result = await VaseModel.deleteVase(vaseId || null);
-        console.log(result);
         if (result.deletedCount === 0) {
             return responseError(
                 res,

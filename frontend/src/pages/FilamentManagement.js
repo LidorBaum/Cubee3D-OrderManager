@@ -30,7 +30,7 @@ export const FialmentMangement = () => {
     if (window.screen.width < 1000) {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';
-        style.height = '80%';
+        style.height = '90%';
     }
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [filaments, setFilaments] = useState(null);
@@ -147,7 +147,7 @@ export const FialmentMangement = () => {
         );
 
     return (
-        <div>
+        <div className="filament-page">
             <div className="inventory-nav">
                 <Button variant="contained" disabled>
                     Filaments

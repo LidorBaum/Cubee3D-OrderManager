@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from 'react-router-dom';
+import ScrollToTop from 'react-scroll-to-top';
 import { UserContext } from './contexts/UserContext';
 import { SnackbarHandlerContext } from './contexts/SnackbarHandlerContext';
 import { SnackbarContext } from './contexts/SnackbarContext';
@@ -14,16 +20,45 @@ import { VaseManagment } from './pages/VaseManagment';
 import { FialmentMangement } from './pages/FilamentManagement';
 import { OrderPage } from './pages/OrderPage';
 import { OrderManagement } from './pages/OrderManagement';
+import { CartPage } from './pages/CartPage';
+import { CustomerOrdersPage } from './pages/CustomerOrdersPage';
+import { CartContext } from './contexts/CartContext';
+import { OrderInspect } from './pages/OrderInspect';
+import { snackUnauthorized } from './snackMessages';
+import userService from './services/userService';
+import { CustomerOrderInspect } from './pages/CustomerOrderInspect';
 
+let userFromCookie;
+if (Cookies.get('user')) {
+    userFromCookie = JSON.parse(Cookies.get('user'));
+} else userFromCookie = null;
+console.log(userFromCookie);
+window.userFromCookie = userFromCookie
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
+    const [cart, setCart] = useState([]);
     const [snack, setSnack] = useState({});
     useEffect(() => {
-        if (loggedUser) return;
-        if (Cookies.get('loggedUser')) {
-            const jsonStr = Cookies.get('loggedUser').slice(2);
-            setLoggedUser(JSON.parse(jsonStr));
+        const getUpdatedUser = async () => {
+            const updated = await userService.getById(userFromCookie._id);
+            setLoggedUser(updated);
+        };
+        if (userFromCookie) getUpdatedUser();
+        if (loggedUser) {
+            userFromCookie = loggedUser;
+            return;
         }
+        if (Cookies.get('user')) {
+            setLoggedUser(JSON.parse(Cookies.get('user')));
+        }
+        if (Cookies.get('cart')) {
+            const cartJson = JSON.parse(Cookies.get('cart'));
+            setCart(cartJson);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (loggedUser) userFromCookie = loggedUser;
     }, [loggedUser]);
 
     const handleClose = (event, reason) => {
@@ -54,70 +89,150 @@ function App() {
         } else setSnack(snackObj);
     };
 
+    const unauthorized = () => {
+        notificationHandler.error(snackUnauthorized);
+        return <Redirect to="/order" />;
+    };
+
     return (
         <div className="App">
             <Router>
-                <UserContext.Provider value={{ loggedUser, setLoggedUser }}>
-                    <SnackbarHandlerContext.Provider
-                        value={notificationHandler}
-                    >
-                        <SnackbarContext.Provider value={{ snack, setSnack }}>
-                            {
-                                <Snackbar
-                                    TransitionComponent={Slide}
-                                    onClose={handleClose}
-                                    autoHideDuration={3000}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'center',
-                                    }}
-                                    open={snack.open}
-                                >
-                                    <Alert
+                <CartContext.Provider value={{ cart, setCart }}>
+                    <UserContext.Provider value={{ loggedUser, setLoggedUser }}>
+                        <SnackbarHandlerContext.Provider
+                            value={notificationHandler}
+                        >
+                            <SnackbarContext.Provider
+                                value={{ snack, setSnack }}
+                            >
+                                {
+                                    <Snackbar
+                                        TransitionComponent={Slide}
                                         onClose={handleClose}
-                                        severity={snack.severity}
-                                        sx={{ width: '100%' }}
+                                        autoHideDuration={3000}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'center',
+                                        }}
+                                        open={snack.open}
                                     >
-                                        {snack.message}
-                                        {/* <Button onClick={handleClose}>Share</Button> */}
-                                    </Alert>
-                                </Snackbar>
-                            }
-                            <Header />
-                            <div className="content">
-                                <Switch>
-                                    {/* <Route path="/" component={Home} exact /> */}
-                                    <Route
-                                        path="/login"
-                                        component={LoginSignup}
-                                    />
-                                    {/* <Route path="/board" component={Board} />
-                                    <Route
-                                        path="/company"
-                                        component={CompanyProfile}
-                                    /> */}
-                                    <Route
-                                        path="/inventory/vase"
-                                        component={VaseManagment}
-                                    />
-                                    <Route
-                                        path="/inventory/filament"
-                                        component={FialmentMangement}
-                                    />
-                                    <Route
-                                        path="/inventory/order"
-                                        component={OrderManagement}
-                                    />
-                                    <Route
-                                        path="/order"
-                                        component={OrderPage}
-                                    />
-                                </Switch>
-                            </div>
-                            <Footer /> 
-                        </SnackbarContext.Provider>
-                    </SnackbarHandlerContext.Provider>
-                </UserContext.Provider>
+                                        <Alert
+                                            onClose={handleClose}
+                                            severity={snack.severity}
+                                            sx={{ width: '100%' }}
+                                        >
+                                            {snack.message}
+                                            {/* <Button onClick={handleClose}>Share</Button> */}
+                                        </Alert>
+                                    </Snackbar>
+                                }
+                                <Header />
+                                <div className="content">
+                                    <ScrollToTop smooth />
+                                    <Switch>
+                                        <Route
+                                            path="/"
+                                            exact
+                                            component={OrderPage}
+                                        />
+                                        <Route
+                                            path="/login"
+                                            component={LoginSignup}
+                                        />
+                                        <Route
+                                            path="/inventory/vase"
+                                            // component={VaseManagment}
+                                            render={() =>
+                                                userFromCookie &&
+                                                    userFromCookie.type ===
+                                                    'admin' ? (
+                                                    <VaseManagment />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
+                                        />
+                                        <Route
+                                            path="/inventory/filament"
+                                            render={() =>
+                                                userFromCookie &&
+                                                    userFromCookie.type ===
+                                                    'admin' ? (
+                                                    <FialmentMangement />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
+                                        />
+                                        <Route
+                                            path="/inventory/order/:orderId"
+                                            // component={OrderInspect}
+                                            render={props =>
+                                                userFromCookie &&
+                                                    userFromCookie.type ===
+                                                    'admin' ? (
+                                                    <OrderInspect {...props} />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
+                                        />
+                                        <Route
+                                            path="/inventory/order"
+                                            exact
+                                            render={() =>
+                                                    (userFromCookie?.type ===
+                                                    'admin' || userFromCookie?.type === 'customer') ? (
+                                                    <OrderManagement />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
+                                        />
+                                        <Route
+                                            path="/order"
+                                            // render={() => OrderPage}
+                                            component={OrderPage}
+                                        />
+                                        <Route
+                                            path="/orders/order/:orderId"
+                                            // render={() => OrderPage}
+                                            // component={CustomerOrderInspect}
+                                            render={props =>
+                                                ['admin', 'customer'].includes(userFromCookie?.type)
+                                                ? (
+                                                    <CustomerOrderInspect {...props} />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
+                                        />
+                                        <Route
+                                            path="/orders"
+                                            exact
+                                            // render={() => OrderPage}
+                                            render={props =>
+                                                ['admin', 'customer'].includes(userFromCookie?.type)
+                                                ? (
+                                                    <CustomerOrdersPage {...props} />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
+                                        // component={CustomerOrdersPage}
+                                        />
+                                        <Route
+                                            path="/cart"
+                                            // render={() => CartPage}
+                                            component={CartPage}
+                                        />
+                                    </Switch>
+                                </div>
+                                <Footer />
+                            </SnackbarContext.Provider>
+                        </SnackbarHandlerContext.Provider>
+                    </UserContext.Provider>
+                </CartContext.Provider>
             </Router>
         </div>
     );

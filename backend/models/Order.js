@@ -9,6 +9,11 @@ const OrderSchema = Schema(
             type: String,
             required: true,
         },
+        customerId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
         comment: {
             type: String,
         },
@@ -33,6 +38,11 @@ const OrderSchema = Schema(
                     quantity: {
                         type: Number,
                         default: 0,
+                    },
+                    status: {
+                        type: String,
+                        enum: ['Pending', 'Printing', 'Ready', 'Cancelled'],
+                        default: 'Pending',
                     },
                 },
             ],
@@ -63,21 +73,56 @@ const OrderSchema = Schema(
     }
 );
 
+OrderSchema.statics.getCustomerOrders = function (customerId) {
+    return this.find({ customerId: customerId }).sort({ createdAt: -1 }).exec();
+};
+
 OrderSchema.statics.createOrder = function (orderObj) {
+    console.log(orderObj);
     return this.create(orderObj);
 };
 
 OrderSchema.statics.getAllOrders = function () {
-    return this.find({}).exec();
+    return this.find({}).sort({ createdAt: -1 }).exec();
+};
+
+OrderSchema.statics.getOrderById = function (orderId) {
+    return this.findOne({ _id: orderId });
+};
+
+OrderSchema.statics.updateVaseStatus = function (
+    orderId,
+    uniqueKey,
+    newStatus
+) {
+    return this.findOneAndUpdate(
+        {
+            _id: orderId,
+            selectedVasesArray: {
+                $elemMatch: uniqueKey,
+            },
+        },
+        {
+            $set: {
+                'selectedVasesArray.$.status': newStatus,
+            },
+        },
+        {
+            new: true,
+        }
+    );
 };
 
 OrderSchema.statics.updateStatus = function (orderId, newStatus) {
-    return this.updateOne(
+    return this.findOneAndUpdate(
         { _id: orderId },
         {
             $set: {
                 status: newStatus,
             },
+        },
+        {
+            new: true,
         }
     );
 };

@@ -10,7 +10,18 @@ const snackSavedVase = 'Vase Saved Succesfully';
 const snackSavedFilament = 'Filament Saved Succesfully';
 const snackOrderPlaced = 'Order Placed!';
 const snackNoOrders = 'No Orders Yet';
-
+const snackNoStoreName = 'Please fill up store name';
+const snackInvalidOrderStatus =
+    "Order status must be 'Printing' for that action";
+const snackNotCompletedOrder =
+    "Can not move to 'Ready' until all vases are printed";
+const snackNoUsers = 'No users yet, be the first!';
+const snackNoUserFound =
+    "Couldn't find a user with this name. Please try again or contact us";
+const snackMissingCreds = 'Missing Name / Password';
+const snackUnauthorized = 'You are not allowed to view this page, redirecting';
+const snackPleaseLogin =
+    'Please Login in the top-right corner to place an order';
 module.exports = {
     snackNoVases,
     snackVaseDeleted,
@@ -23,4 +34,13 @@ module.exports = {
     snackSavedFilament,
     snackSavedVase,
     snackOrderPlaced,
+    snackNoStoreName,
+    snackNoOrders,
+    snackInvalidOrderStatus,
+    snackNoUsers,
+    snackNotCompletedOrder,
+    snackNoUserFound,
+    snackMissingCreds,
+    snackUnauthorized,
+    snackPleaseLogin,
 };

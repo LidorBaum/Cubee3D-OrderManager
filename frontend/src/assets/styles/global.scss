@@ -19,9 +19,11 @@
 @import './views/orderPage';
 @import './views/header';
 @import './views/footer';
+@import './views/cartPage';
+@import './views/orderInspect';
 
-body{
-    background-color: #f5f5f5;
+body {
+    background-color: rgb(245, 245, 245);
 }
 .mapcon {
     width: 100px;
