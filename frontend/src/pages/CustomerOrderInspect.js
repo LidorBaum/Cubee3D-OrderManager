@@ -137,7 +137,7 @@ export const CustomerOrderInspect = ({ match }) => {
             }}
         >
             <div className="order-information">
-                <div>
+                <div className='progress-div'>
                     <Box
                         className="progress"
                         sx={{
