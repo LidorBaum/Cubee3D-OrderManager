@@ -15,42 +15,42 @@ header {
         }
     }
 }
-.login-form-container{
+.login-form-container {
     display: flex;
     flex-direction: column;
     gap: 18px;
     align-items: center;
     color: $clr1;
-    p{
+    p {
         margin: 0;
         font-size: 28px;
     }
     // padding: 2px;
-    .login-form{
+    .login-form {
         // text-align: center;
         // margin: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 15px;
-        > *{
+        > * {
             width: 240px;
             // height: 100px;
         }
-        .login-btn{
+        .login-btn {
             height: 50px;
         }
     }
 }
 @media only screen and (max-width: 750px) {
-    .login-form-container{
+    .login-form-container {
         justify-content: space-evenly;
-        p{
+        p {
             font-size: 18px;
         }
-        .login-form{
+        .login-form {
             // flex-grow: 1;
-            .login-btn{
+            .login-btn {
                 flex-grow: 1;
             }
         }

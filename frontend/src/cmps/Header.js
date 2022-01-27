@@ -196,7 +196,7 @@ export const Header = props => {
             setMenuType('guest');
             userService.logout();
             setLoggedUser(null);
-            return history.push('/order')
+            return history.push('/order');
         }
         handleCloseUserMenu();
         history.push('/orders');
@@ -454,10 +454,14 @@ export const Header = props => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className='login-form-container'>
+                <Box sx={style} className="login-form-container">
                     <p>Welcome Back!</p>
                     <p>Log into your account</p>
-                    <form className='login-form' id="login-form" onSubmit={onLogin}>
+                    <form
+                        className="login-form"
+                        id="login-form"
+                        onSubmit={onLogin}
+                    >
                         <TextField
                             required
                             label="Name"
@@ -479,7 +483,7 @@ export const Header = props => {
                             // style={{width: 240}}
                         />
                         <Button
-                        className='login-btn'
+                            className="login-btn"
                             variant="contained"
                             disabled={isLoading}
                             type="submit"

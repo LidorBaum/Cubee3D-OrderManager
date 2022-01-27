@@ -132,7 +132,7 @@ export const OrderInspect = ({ match }) => {
             }}
         >
             <div className="order-information">
-            <div className='progress-div'>
+                <div className="progress-div">
                     <Box
                         className="progress"
                         sx={{
@@ -238,7 +238,7 @@ export const OrderInspect = ({ match }) => {
             </div>
             <div className="order-vases">
                 <OrderInspectProductList
-                    isAdmin = {true}
+                    isAdmin={true}
                     productList={orderForDetails.vasesArrForDisplay}
                     changeStatus={onChangeVaseStatus}
                 />

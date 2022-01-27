@@ -7,7 +7,11 @@ const vaseStatuses = {
     Ready: null,
 };
 
-export function OrderInspectProductPreview({ productObj, changeStatus, isAdmin }) {
+export function OrderInspectProductPreview({
+    productObj,
+    changeStatus,
+    isAdmin,
+}) {
     console.log(productObj);
     const onChangeStatus = () => {
         changeStatus({
@@ -26,7 +30,7 @@ export function OrderInspectProductPreview({ productObj, changeStatus, isAdmin }
         <article
             id={`${productObj.vaseId}-cart-card`}
             className="vase-order-card"
-            style={!isAdmin? {height: '370px'}: {}} 
+            style={!isAdmin ? { height: '370px' } : {}}
         >
             <div className="order-card-imgs">
                 <img
@@ -50,14 +54,18 @@ export function OrderInspectProductPreview({ productObj, changeStatus, isAdmin }
                 <p>
                     <span>{productObj.status}</span>
                 </p>
-                {isAdmin && <Button
-                    onClick={onChangeStatus}
-                    style={{ textTransform: 'none' }}
-                    sx={{ display: productObj.status != 'Ready' ? '' : 'none' }}
-                    variant="contained"
-                >
-                    {vaseStatuses[productObj.status]}
-                </Button>}
+                {isAdmin && (
+                    <Button
+                        onClick={onChangeStatus}
+                        style={{ textTransform: 'none' }}
+                        sx={{
+                            display: productObj.status != 'Ready' ? '' : 'none',
+                        }}
+                        variant="contained"
+                    >
+                        {vaseStatuses[productObj.status]}
+                    </Button>
+                )}
             </div>
         </article>
     );

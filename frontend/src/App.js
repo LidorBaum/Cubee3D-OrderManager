@@ -21,35 +21,31 @@ import { FialmentMangement } from './pages/FilamentManagement';
 import { OrderPage } from './pages/OrderPage';
 import { OrderManagement } from './pages/OrderManagement';
 import { CartPage } from './pages/CartPage';
-import {CustomerOrdersPage} from './pages/CustomerOrdersPage'
+import { CustomerOrdersPage } from './pages/CustomerOrdersPage';
 import { CartContext } from './contexts/CartContext';
 import { OrderInspect } from './pages/OrderInspect';
 import { snackUnauthorized } from './snackMessages';
 import userService from './services/userService';
 import { CustomerOrderInspect } from './pages/CustomerOrderInspect';
 
-
-let userFromCookie
+let userFromCookie;
 if (Cookies.get('user')) {
-    userFromCookie = (JSON.parse(Cookies.get('user')));
-}
-else userFromCookie = null
-
-
+    userFromCookie = JSON.parse(Cookies.get('user'));
+} else userFromCookie = null;
 
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
     const [cart, setCart] = useState([]);
     const [snack, setSnack] = useState({});
     useEffect(() => {
-        const getUpdatedUser = async () =>{
-            const updated = await userService.getById(userFromCookie._id)
-            setLoggedUser(updated)
-        }
-        if(userFromCookie) getUpdatedUser()
+        const getUpdatedUser = async () => {
+            const updated = await userService.getById(userFromCookie._id);
+            setLoggedUser(updated);
+        };
+        if (userFromCookie) getUpdatedUser();
         if (loggedUser) {
             userFromCookie = loggedUser;
-            return
+            return;
         }
         if (Cookies.get('user')) {
             setLoggedUser(JSON.parse(Cookies.get('user')));
@@ -60,10 +56,9 @@ function App() {
         }
     }, []);
 
-    useEffect(()=>{
-        if(loggedUser)
-            userFromCookie = loggedUser
-    },[loggedUser])
+    useEffect(() => {
+        if (loggedUser) userFromCookie = loggedUser;
+    }, [loggedUser]);
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -143,7 +138,8 @@ function App() {
                                             // component={VaseManagment}
                                             render={() =>
                                                 userFromCookie &&
-                                                    userFromCookie.type === 'admin' ? (
+                                                userFromCookie.type ===
+                                                    'admin' ? (
                                                     <VaseManagment />
                                                 ) : (
                                                     unauthorized()
@@ -154,7 +150,8 @@ function App() {
                                             path="/inventory/filament"
                                             render={() =>
                                                 userFromCookie &&
-                                                    userFromCookie.type === 'admin' ? (
+                                                userFromCookie.type ===
+                                                    'admin' ? (
                                                     <FialmentMangement />
                                                 ) : (
                                                     unauthorized()
@@ -164,9 +161,10 @@ function App() {
                                         <Route
                                             path="/inventory/order/:orderId"
                                             // component={OrderInspect}
-                                            render={(props) =>
+                                            render={props =>
                                                 userFromCookie &&
-                                                    userFromCookie.type === 'admin' ? (
+                                                userFromCookie.type ===
+                                                    'admin' ? (
                                                     <OrderInspect {...props} />
                                                 ) : (
                                                     unauthorized()
@@ -178,7 +176,8 @@ function App() {
                                             exact
                                             render={() =>
                                                 userFromCookie &&
-                                                    userFromCookie.type === 'admin' ? (
+                                                userFromCookie.type ===
+                                                    'admin' ? (
                                                     <OrderManagement />
                                                 ) : (
                                                     unauthorized()

@@ -132,12 +132,13 @@ export const CustomerOrderInspect = ({ match }) => {
         <div
             className="order-inspect"
             style={{
-                borderLeft: `10px solid ${borderStatus[orderForDetails.status]
-                    }`,
+                borderLeft: `10px solid ${
+                    borderStatus[orderForDetails.status]
+                }`,
             }}
         >
             <div className="order-information">
-                <div className='progress-div'>
+                <div className="progress-div">
                     <Box
                         className="progress"
                         sx={{
@@ -180,7 +181,9 @@ export const CustomerOrderInspect = ({ match }) => {
                     </Box>
                 </div>
                 <div className="right-info">
-                    <p className='order-status-p'>Order status: <span>{orderForDetails.status}</span></p>
+                    <p className="order-status-p">
+                        Order status: <span>{orderForDetails.status}</span>
+                    </p>
                     <div className="total-printed">
                         <p>
                             Total Printed:{' '}

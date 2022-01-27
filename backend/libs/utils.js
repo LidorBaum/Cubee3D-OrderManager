@@ -6,7 +6,7 @@ function getTotalVases(selectedVases) {
 
 function getTotalPrintTime(selectedVases) {
     // return selectedVases.reduce((total, selectedVase) =>{
-        // return selectedVase.printTime
+    // return selectedVase.printTime
     // })
 }
 

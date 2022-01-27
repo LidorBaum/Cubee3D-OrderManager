@@ -28,7 +28,7 @@ async function getCustomerOrders(req, res) {
     try {
         console.log('getting customer orders');
         const { customerId } = req.params;
-        const ordersArr = await OrderModel.getCustomerOrders(customerId)
+        const ordersArr = await OrderModel.getCustomerOrders(customerId);
         const totalVases = ordersArr.reduce((total, order) => {
             return Libs.Utils.getTotalVases(order.selectedVasesArray) + total;
         }, 0);

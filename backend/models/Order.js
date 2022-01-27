@@ -12,7 +12,7 @@ const OrderSchema = Schema(
         customerId: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: true
+            required: true,
         },
         comment: {
             type: String,
@@ -73,10 +73,9 @@ const OrderSchema = Schema(
     }
 );
 
-OrderSchema.statics.getCustomerOrders = function (customerId){
-    return this.find({customerId: customerId}).sort({createdAt: -1}).exec()
-}
-
+OrderSchema.statics.getCustomerOrders = function (customerId) {
+    return this.find({ customerId: customerId }).sort({ createdAt: -1 }).exec();
+};
 
 OrderSchema.statics.createOrder = function (orderObj) {
     console.log(orderObj);

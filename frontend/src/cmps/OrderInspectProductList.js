@@ -1,7 +1,11 @@
 import React from 'react';
 import { OrderInspectProductPreview } from './OrderInspectProductPreview';
 
-export const OrderInspectProductList = ({ productList, changeStatus, isAdmin }) => {
+export const OrderInspectProductList = ({
+    productList,
+    changeStatus,
+    isAdmin,
+}) => {
     console.log(productList, 'PRODUCT LIST');
     return (
         <>

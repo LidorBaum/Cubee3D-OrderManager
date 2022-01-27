@@ -7,7 +7,6 @@ import orderService from '../services/orderService';
 import { useHistory } from 'react-router';
 import { UserContext } from '../contexts/UserContext';
 
-
 export const CustomerOrdersPage = () => {
     const { loggedUser, setLoggedUser } = useContext(UserContext);
     const [ordersObj, setOrders] = useState(null);
@@ -23,7 +22,7 @@ export const CustomerOrdersPage = () => {
             }
             setOrders(res);
         };
-        if(!loggedUser) return
+        if (!loggedUser) return;
         getCustomerOrders();
     }, [loggedUser, isRefresh]);
 
@@ -39,25 +38,25 @@ export const CustomerOrdersPage = () => {
         );
     return (
         <React.Fragment>
-        <div className="order-manage">
-            <div className="order-list">
-                {ordersObj.orders.map(order => {
-                    return (
-                        <OrderPreview
-                            key={order._id}
-                            orderObj={order}
-                            onInspect={onInspect}
-                        />
-                    );
-                })}
-            </div>
-            <div className="statistics">
-            <h2>{loggedUser.name}'s Orders</h2>
+            <div className="order-manage">
+                <div className="order-list">
+                    {ordersObj.orders.map(order => {
+                        return (
+                            <OrderPreview
+                                key={order._id}
+                                orderObj={order}
+                                onInspect={onInspect}
+                            />
+                        );
+                    })}
+                </div>
+                <div className="statistics">
+                    <h2>{loggedUser.name}'s Orders</h2>
 
-                <h3>Total Orders: {ordersObj.orders.length}</h3>
-                <h3>Total Vases: {ordersObj.totalVases}</h3>
+                    <h3>Total Orders: {ordersObj.orders.length}</h3>
+                    <h3>Total Vases: {ordersObj.totalVases}</h3>
+                </div>
             </div>
-        </div>
         </React.Fragment>
     );
 };

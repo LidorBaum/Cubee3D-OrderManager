@@ -8,7 +8,7 @@ import {
     snackOrderPlaced,
     snackNoStoreName,
     snackNoFilaments,
-    snackPleaseLogin
+    snackPleaseLogin,
 } from '../snackMessages';
 import { CartPreview } from '../cmps/CartPreview';
 import ReactTooltip from 'react-tooltip';
@@ -73,14 +73,10 @@ export const CartPage = props => {
 
     const [productForEdit, setProductForEdit] = useState(null);
     const notificationHandler = useContext(SnackbarHandlerContext);
-    useEffect(()=>{
-        if(loggedUser) orderAttachments.storeName = loggedUser.name
-    }, [loggedUser])
+    useEffect(() => {
+        if (loggedUser) orderAttachments.storeName = loggedUser.name;
+    }, [loggedUser]);
     window.productForEdit = productForEdit;
-
-
-
-
 
     const onRemoveProduct = productIdentifier => {
         const newCartArr = cart.filter(prod => {
@@ -105,7 +101,7 @@ export const CartPage = props => {
     };
 
     const handleopenConfirmDialog = () => {
-        if(!loggedUser) return notificationHandler.warning(snackPleaseLogin)
+        if (!loggedUser) return notificationHandler.warning(snackPleaseLogin);
         setOpenPlaceConfirm(true);
     };
 
@@ -148,7 +144,7 @@ export const CartPage = props => {
             selectedVasesArray: selectedProductsForOrderObj,
             customerName: orderAttachments.storeName,
             comment: orderAttachments.comments,
-            customerId: loggedUser._id
+            customerId: loggedUser._id,
         };
         const newOrder = await orderService.createOrder(orderObj);
         if (newOrder.error) {
