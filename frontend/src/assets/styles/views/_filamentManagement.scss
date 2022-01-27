@@ -31,7 +31,7 @@
         // border: 3px solid rgba(2, 44, 63, 0.719);
         text-align: center;
         width: 300px;
-        height: 300px;
+        height: 340px;
         box-sizing: border-box;
         border-radius: 15px;
         align-items: center;
@@ -75,6 +75,7 @@
         .edit-delete-btns {
             display: flex;
             gap: 20px;
+            margin-bottom: 10px;
             * {
                 width: 80px;
                 height: 35px;

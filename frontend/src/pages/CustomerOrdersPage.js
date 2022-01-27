@@ -5,27 +5,30 @@ import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
 import { snackNoOrders } from '../snackMessages';
 import orderService from '../services/orderService';
 import { useHistory } from 'react-router';
+import { UserContext } from '../contexts/UserContext';
 
-export const OrderManagement = () => {
+
+export const CustomerOrdersPage = () => {
+    const { loggedUser, setLoggedUser } = useContext(UserContext);
     const [ordersObj, setOrders] = useState(null);
     const [isRefresh, setDoRefresh] = useState(false);
     const notificationHandler = useContext(SnackbarHandlerContext);
     let history = useHistory();
     useEffect(() => {
-        const getAllOrders = async () => {
-            const res = await orderService.getAllOrders();
+        const getCustomerOrders = async () => {
+            const res = await orderService.getCustomerOrders(loggedUser._id);
             if (res.error) return notificationHandler.error(res.error.message);
-            console.log(res);
             if (!res.orders.length) {
                 notificationHandler.error(snackNoOrders);
             }
             setOrders(res);
         };
-        getAllOrders();
-    }, [isRefresh]);
+        if(!loggedUser) return
+        getCustomerOrders();
+    }, [loggedUser, isRefresh]);
 
     const onInspect = orderId => {
-        history.push(`/inventory/order/${orderId}`);
+        history.push(`/orders/order/${orderId}`);
     };
 
     if (!ordersObj)
@@ -35,6 +38,7 @@ export const OrderManagement = () => {
             </div>
         );
     return (
+        <React.Fragment>
         <div className="order-manage">
             <div className="order-list">
                 {ordersObj.orders.map(order => {
@@ -48,11 +52,12 @@ export const OrderManagement = () => {
                 })}
             </div>
             <div className="statistics">
+            <h2>{loggedUser.name}'s Orders</h2>
+
                 <h3>Total Orders: {ordersObj.orders.length}</h3>
                 <h3>Total Vases: {ordersObj.totalVases}</h3>
-                {/* <h3>Total Print Time: </h3>
-                <h3>Total Print Weight: </h3> */}
             </div>
         </div>
+        </React.Fragment>
     );
 };

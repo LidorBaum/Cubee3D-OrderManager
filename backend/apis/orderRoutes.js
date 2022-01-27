@@ -17,9 +17,25 @@ orderRouter.put('/edit/:orderId([A-Fa-f0-9]{24})', updateStatus);
 
 orderRouter.get('/:orderId([A-Fa-f0-9]{24})', getOrderById);
 
+orderRouter.get('/orders/:customerId([A-Fa-f0-9]{24})', getCustomerOrders);
+
 function responseError(response, errMessage) {
     let status = 500;
     return response.status(status).send(errMessage);
+}
+
+async function getCustomerOrders(req, res) {
+    try {
+        console.log('getting customer orders');
+        const { customerId } = req.params;
+        const ordersArr = await OrderModel.getCustomerOrders(customerId)
+        const totalVases = ordersArr.reduce((total, order) => {
+            return Libs.Utils.getTotalVases(order.selectedVasesArray) + total;
+        }, 0);
+        res.send({ orders: ordersArr, totalVases: totalVases });
+    } catch (err) {
+        return responseError(res, err.message);
+    }
 }
 
 async function getOrderById(req, res) {

@@ -8,7 +8,12 @@ export default {
     getAllOrders,
     getTotalPrintTime,
     updateVaseStatus,
+    getCustomerOrders
 };
+
+async function getCustomerOrders(customerId){
+    return await httpService.get(`order/orders/${customerId}`)
+}
 
 async function getTotalPrintTime(vaseArray) {
     return await httpService.get('order/printTime', vaseArray);

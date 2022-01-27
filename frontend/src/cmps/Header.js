@@ -55,7 +55,7 @@ const darkTheme = createTheme({
 
 const navLinks = {
     customer: {
-        Orders: '/',
+        Orders: '/orders',
         Products: '/order',
     },
     admin: {

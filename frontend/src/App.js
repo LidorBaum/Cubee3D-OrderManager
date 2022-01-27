@@ -21,9 +21,14 @@ import { FialmentMangement } from './pages/FilamentManagement';
 import { OrderPage } from './pages/OrderPage';
 import { OrderManagement } from './pages/OrderManagement';
 import { CartPage } from './pages/CartPage';
+import {CustomerOrdersPage} from './pages/CustomerOrdersPage'
 import { CartContext } from './contexts/CartContext';
 import { OrderInspect } from './pages/OrderInspect';
 import { snackUnauthorized } from './snackMessages';
+import userService from './services/userService';
+import { CustomerOrderInspect } from './pages/CustomerOrderInspect';
+
+
 let userFromCookie
 if (Cookies.get('user')) {
     userFromCookie = (JSON.parse(Cookies.get('user')));
@@ -34,10 +39,14 @@ else userFromCookie = null
 
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
-    window.loggedUser = loggedUser
     const [cart, setCart] = useState([]);
     const [snack, setSnack] = useState({});
     useEffect(() => {
+        const getUpdatedUser = async () =>{
+            const updated = await userService.getById(userFromCookie._id)
+            setLoggedUser(updated)
+        }
+        if(userFromCookie) getUpdatedUser()
         if (loggedUser) {
             userFromCookie = loggedUser;
             return
@@ -49,7 +58,12 @@ function App() {
             const cartJson = JSON.parse(Cookies.get('cart'));
             setCart(cartJson);
         }
-    }, [loggedUser]);
+    }, []);
+
+    useEffect(()=>{
+        if(loggedUser)
+            userFromCookie = loggedUser
+    },[loggedUser])
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -149,8 +163,15 @@ function App() {
                                         />
                                         <Route
                                             path="/inventory/order/:orderId"
-                                            component={OrderInspect}
-                                        // render={() => loggedUser && loggedUser.type==='admin'? <OrderInspect /> : unauthorized()}
+                                            // component={OrderInspect}
+                                            render={(props) =>
+                                                userFromCookie &&
+                                                    userFromCookie.type === 'admin' ? (
+                                                    <OrderInspect {...props} />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
                                         />
                                         <Route
                                             path="/inventory/order"
@@ -168,6 +189,17 @@ function App() {
                                             path="/order"
                                             // render={() => OrderPage}
                                             component={OrderPage}
+                                        />
+                                        <Route
+                                            path="/orders/order/:orderId"
+                                            // render={() => OrderPage}
+                                            component={CustomerOrderInspect}
+                                        />
+                                        <Route
+                                            path="/orders"
+                                            exact
+                                            // render={() => OrderPage}
+                                            component={CustomerOrdersPage}
                                         />
                                         <Route
                                             path="/cart"

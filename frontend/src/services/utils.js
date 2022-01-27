@@ -41,6 +41,9 @@ const welcomeStores = {
     agua: 'https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg',
 };
 
+
+
+
 module.exports = {
     isValidPassword,
     emptyVaseObj,

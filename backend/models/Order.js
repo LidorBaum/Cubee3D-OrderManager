@@ -73,7 +73,10 @@ const OrderSchema = Schema(
     }
 );
 
-OrderSchema.statics.getPrintTimeArray = function (vaseArray) {};
+OrderSchema.statics.getCustomerOrders = function (customerId){
+    return this.find({customerId: customerId}).sort({createdAt: -1}).exec()
+}
+
 
 OrderSchema.statics.createOrder = function (orderObj) {
     console.log(orderObj);

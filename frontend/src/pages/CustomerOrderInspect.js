@@ -37,7 +37,7 @@ const progressCircleColors = {
     200: 'xx',
 };
 
-export const OrderInspect = ({ match }) => {
+export const CustomerOrderInspect = ({ match }) => {
     const [orderForDetails, setOrder] = useState(null);
     const [progress, setProgress] = useState(0);
 
@@ -48,20 +48,25 @@ export const OrderInspect = ({ match }) => {
         const getOrder = async () => {
             const res = await orderService.getOrderById(match.params.orderId);
             if (res.error) return notificationHandler.error(res.error.message);
+            console.log(res.vasesArrForDisplay);
             setOrder(res);
             setTimeout(() => {
                 setProgress((res.totalPrinted / res.totalVases) * 100 + 200);
             }, 1000);
+            console.log(progressCircleColors[progress]);
         };
         getOrder();
     }, [match.params.orderId, isRefresh]);
 
     const onChangeStatus = async () => {
         //ADD CHECK OF THE TOTAL PRINTED - can't ready order if not x/x
+        console.log('chainging status');
         const statusesArr = Object.keys(statuses);
+        console.log(statusesArr);
         const indexOff = statusesArr.findIndex(
             status => status === orderForDetails.status
         );
+        console.log(indexOff);
 
         if (orderForDetails.status === 'Printing' && progress !== 300)
             return notificationHandler.error(snackNotCompletedOrder);
@@ -69,6 +74,7 @@ export const OrderInspect = ({ match }) => {
             ...orderForDetails,
             status: statusesArr[indexOff + 1],
         });
+        console.log(res);
         if (res.error) return notificationHandler.error(res.error.message);
         setOrder(prevOrder => {
             return { ...prevOrder, ...res };
@@ -126,9 +132,8 @@ export const OrderInspect = ({ match }) => {
         <div
             className="order-inspect"
             style={{
-                borderLeft: `10px solid ${
-                    borderStatus[orderForDetails.status]
-                }`,
+                borderLeft: `10px solid ${borderStatus[orderForDetails.status]
+                    }`,
             }}
         >
             <div className="order-information">
@@ -175,22 +180,7 @@ export const OrderInspect = ({ match }) => {
                     </Box>
                 </div>
                 <div className="right-info">
-                    <p className="status-btn">
-                        <Button
-                            onClick={onChangeStatus}
-                            variant="contained"
-                            style={{ textTransform: 'none', m: 'auto' }}
-                            sx={{
-                                display: statuses[orderForDetails.status]
-                                    ? 'block'
-                                    : 'none',
-                            }}
-                            className="change-status-btn"
-                        >
-                            {statuses[orderForDetails.status]}
-                        </Button>
-                    </p>
-                    <p>Order status: {orderForDetails.status}</p>
+                    <p className='order-status-p'>Order status: <span>{orderForDetails.status}</span></p>
                     <div className="total-printed">
                         <p>
                             Total Printed:{' '}
@@ -202,10 +192,6 @@ export const OrderInspect = ({ match }) => {
                     </div>
                 </div>
                 <div className="center-info">
-                    <p>
-                        Total Weight:{' '}
-                        <span>{orderForDetails.totalWeight}g</span>
-                    </p>
                     <p>
                         Total Colors: <span>{orderForDetails.totalColors}</span>
                     </p>
@@ -220,25 +206,13 @@ export const OrderInspect = ({ match }) => {
                         Customer: <span>{orderForDetails.customerName}</span>{' '}
                     </p>
                     <p>
-                        Date:{' '}
-                        <span>
-                            {new Intl.DateTimeFormat('en-il', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: '2-digit',
-                                hour: 'numeric',
-                                minute: 'numeric',
-                            }).format(new Date(orderForDetails.createdAt))}{' '}
-                        </span>
-                    </p>
-                    <p>
                         Total Vases: <span>{orderForDetails.totalVases}</span>{' '}
                     </p>
                 </div>
             </div>
             <div className="order-vases">
                 <OrderInspectProductList
-                    isAdmin = {true}
+                    isAdmin={false}
                     productList={orderForDetails.vasesArrForDisplay}
                     changeStatus={onChangeVaseStatus}
                 />

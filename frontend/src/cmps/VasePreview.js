@@ -7,10 +7,8 @@ export function VasePreview({ vase, deleteVase, editVase }) {
         deleteVase(vase._id);
     };
     const onEditVase = () => {
-        console.log('open');
         editVase(vase);
     };
-    console.log(vase);
     const isAnySize =
         !vase.sizes.small.printTime &&
         !vase.sizes.medium.printTime &&
