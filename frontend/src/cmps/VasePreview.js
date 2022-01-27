@@ -10,11 +10,11 @@ export function VasePreview({ vase, deleteVase, editVase }) {
         console.log('open');
         editVase(vase);
     };
-
+    console.log(vase);
     const isAnySize =
         !vase.sizes.small.printTime &&
-        !vase.sizes.small.printTime &&
-        !vase.sizes.small.printTime ? (
+        !vase.sizes.medium.printTime &&
+        !vase.sizes.large.printTime ? (
             <p>No Sizes Available</p>
         ) : (
             ''
