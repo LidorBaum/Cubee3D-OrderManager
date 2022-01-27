@@ -32,7 +32,8 @@ let userFromCookie;
 if (Cookies.get('user')) {
     userFromCookie = JSON.parse(Cookies.get('user'));
 } else userFromCookie = null;
-
+console.log(userFromCookie);
+window.userFromCookie = userFromCookie
 function App() {
     const [loggedUser, setLoggedUser] = useState(null);
     const [cart, setCart] = useState([]);
@@ -130,6 +131,11 @@ function App() {
                                     <ScrollToTop smooth />
                                     <Switch>
                                         <Route
+                                            path="/"
+                                            exact
+                                            component={OrderPage}
+                                        />
+                                        <Route
                                             path="/login"
                                             component={LoginSignup}
                                         />
@@ -138,7 +144,7 @@ function App() {
                                             // component={VaseManagment}
                                             render={() =>
                                                 userFromCookie &&
-                                                userFromCookie.type ===
+                                                    userFromCookie.type ===
                                                     'admin' ? (
                                                     <VaseManagment />
                                                 ) : (
@@ -150,7 +156,7 @@ function App() {
                                             path="/inventory/filament"
                                             render={() =>
                                                 userFromCookie &&
-                                                userFromCookie.type ===
+                                                    userFromCookie.type ===
                                                     'admin' ? (
                                                     <FialmentMangement />
                                                 ) : (
@@ -163,7 +169,7 @@ function App() {
                                             // component={OrderInspect}
                                             render={props =>
                                                 userFromCookie &&
-                                                userFromCookie.type ===
+                                                    userFromCookie.type ===
                                                     'admin' ? (
                                                     <OrderInspect {...props} />
                                                 ) : (
@@ -175,9 +181,8 @@ function App() {
                                             path="/inventory/order"
                                             exact
                                             render={() =>
-                                                userFromCookie &&
-                                                userFromCookie.type ===
-                                                    'admin' ? (
+                                                    (userFromCookie?.type ===
+                                                    'admin' || userFromCookie?.type === 'customer') ? (
                                                     <OrderManagement />
                                                 ) : (
                                                     unauthorized()
@@ -192,13 +197,29 @@ function App() {
                                         <Route
                                             path="/orders/order/:orderId"
                                             // render={() => OrderPage}
-                                            component={CustomerOrderInspect}
+                                            // component={CustomerOrderInspect}
+                                            render={props =>
+                                                ['admin', 'customer'].includes(userFromCookie?.type)
+                                                ? (
+                                                    <CustomerOrderInspect {...props} />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
                                         />
                                         <Route
                                             path="/orders"
                                             exact
                                             // render={() => OrderPage}
-                                            component={CustomerOrdersPage}
+                                            render={props =>
+                                                ['admin', 'customer'].includes(userFromCookie?.type)
+                                                ? (
+                                                    <CustomerOrdersPage {...props} />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
+                                        // component={CustomerOrdersPage}
                                         />
                                         <Route
                                             path="/cart"
