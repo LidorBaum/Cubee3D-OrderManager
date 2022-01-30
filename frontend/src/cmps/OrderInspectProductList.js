@@ -6,13 +6,14 @@ export const OrderInspectProductList = ({
     changeStatus,
     isAdmin,
 }) => {
+    
     return (
         <>
             <div className="order-product-list">
                 {productList.map(product => (
                     <OrderInspectProductPreview
                         isAdmin={isAdmin}
-                        key={product.vaseId + product.filamentId}
+                        key={product.vaseId + product.filamentId + product.vaseSize}
                         changeStatus={changeStatus}
                         productObj={product}
                     />
