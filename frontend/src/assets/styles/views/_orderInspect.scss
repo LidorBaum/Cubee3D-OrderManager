@@ -64,7 +64,7 @@
         .order-product-list {
             display: flex;
             flex-direction: row;
-
+            flex-wrap: wrap;
             .vase-order-card {
                 height: 450px;
                 margin: 0px 28px;
@@ -76,7 +76,7 @@
                 // border-top: 1px solid black;
                 // border-bottom: 1px solid black;
                 padding: 8px;
-                width: 100%;
+                width: 300px;
                 box-shadow: 2px 2px 10px #00000040;
                 border-radius: 10px;
 

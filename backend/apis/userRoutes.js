@@ -2,12 +2,16 @@ const express = require('express');
 const Libs = require('../libs');
 const { UserModel } = require('../models/User');
 const { baseURL, env } = require('../config');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const userRouter = express.Router();
 
 userRouter.post('/', createUser);
 
 userRouter.get('/', getAllUsers);
+
+userRouter.get('/sorted', getFilteredUsers);
 
 userRouter.get('/type/:name', getExistanceAndType);
 
@@ -20,6 +24,16 @@ userRouter.delete('/:userId([A-Fa-f0-9]{24})', deleteUser);
 function responseError(response, errMessage) {
     let status = 500;
     return response.status(status).send(errMessage);
+}
+
+async function getFilteredUsers(req, res) {
+    try {
+        const { filter } = req.query;
+        const result = await UserModel.getFilteredUsers(filter);
+        res.send(result);
+    } catch (err) {
+        return responseError(res, err.message);
+    }
 }
 
 async function getExistanceAndType(req, res) {
@@ -61,16 +75,33 @@ async function getUserById(req, res) {
 }
 async function createUser(req, res) {
     try {
-        const newUser = await UserModel.createUser(req.body);
+        const userObj = req.body;
+        if (userObj.type === 'customer') userObj.password = undefined;
+        else {
+            const hash = await bcrypt.hash(userObj.password, saltRounds);
+            userObj.password = hash;
+        }
+        const newUser = await UserModel.createUser(userObj);
         res.send(newUser);
     } catch (err) {
-        console.log(err);
+        err;
         return responseError(res, err.message);
     }
 }
 
 async function updateUser(req, res) {
     try {
+        const userObj = req.body;
+        if (userObj.type === 'customer') userObj.password = undefined;
+        else {
+            const hash = await bcrypt.hash(userObj.password, saltRounds);
+            userObj.password = hash;
+        }
+        if (
+            userObj.image ===
+            'https://res.cloudinary.com/echoshare/image/upload/v1638211337/1997805_dje7p6.png'
+        )
+            userObj.image = undefined;
         const newUserObj = await UserModel.updateUser(req.body);
         res.send(newUserObj);
     } catch (err) {
@@ -81,10 +112,6 @@ async function updateUser(req, res) {
 async function getAllUsers(req, res) {
     try {
         const users = await UserModel.getAllUsers();
-        // const usersCleaned = users.filter(user=>{
-        //     delete user.password
-        //     return user
-        // })
         res.send(users);
     } catch (err) {
         return responseError(res, err.message);

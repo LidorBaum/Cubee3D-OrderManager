@@ -63,13 +63,18 @@ const navLinks = {
         Vase: '/inventory/vase',
         Filament: '/inventory/filament',
         Products: '/order',
+        Users: '/users',
     },
     guest: {
         Products: '/order',
     },
 };
 
-const settings = ['Orders', 'Logout'];
+const settings = {
+    customer: ['Orders', 'Logout'],
+    admin: ['Manage Users', 'Logout'],
+    guest: [],
+};
 
 const style = {
     position: 'absolute',
@@ -187,15 +192,21 @@ export const Header = props => {
     };
 
     const onClickMenuItem = async setting => {
-        if (setting === 'Logout') {
-            handleCloseUserMenu();
-            setMenuType('guest');
-            userService.logout();
-            setLoggedUser(null);
-            return history.push('/order');
+        switch (setting) {
+            case 'Logout':
+                handleCloseUserMenu();
+                setMenuType('guest');
+                userService.logout();
+                setLoggedUser(null);
+                return history.push('/order');
+            case 'Manage Users':
+                console.log('manage users');
+                handleCloseUserMenu();
+                return history.push('/users');
+            case 'Orders':
+                handleCloseUserMenu();
+                return history.push('/orders');
         }
-        handleCloseUserMenu();
-        history.push('/orders');
     };
 
     const handleOpenNavMenu = event => {
@@ -389,9 +400,7 @@ export const Header = props => {
                                                 loggedUser.image ? (
                                                     <Avatar
                                                         alt={loggedUser.name}
-                                                        src={
-                                                            'https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg'
-                                                        }
+                                                        src={loggedUser.image}
                                                     />
                                                 ) : (
                                                     <FaceIcon
@@ -425,7 +434,14 @@ export const Header = props => {
                                         open={Boolean(anchorElUser)}
                                         onClose={handleCloseUserMenu}
                                     >
-                                        {settings.map(setting => (
+                                        {loggedUser?.name && (
+                                            <MenuItem key={1}>
+                                                <Typography>
+                                                    Hello {loggedUser.name},
+                                                </Typography>
+                                            </MenuItem>
+                                        )}
+                                        {settings[menuType].map(setting => (
                                             <MenuItem
                                                 key={setting}
                                                 onClick={() =>
@@ -476,6 +492,7 @@ export const Header = props => {
                             onChange={handleChange}
                             style={{ display: isKnownType ? '' : 'none' }}
                             inputRef={valueRef}
+                            type="password"
                             // style={{width: 240}}
                         />
                         <Button

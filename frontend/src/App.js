@@ -27,6 +27,7 @@ import { OrderInspect } from './pages/OrderInspect';
 import { snackUnauthorized } from './snackMessages';
 import userService from './services/userService';
 import { CustomerOrderInspect } from './pages/CustomerOrderInspect';
+import { UserManagement } from './pages/UserManagement';
 
 let userFromCookie;
 if (Cookies.get('user')) {
@@ -171,6 +172,21 @@ function App() {
                                                 userFromCookie.type ===
                                                     'admin' ? (
                                                     <OrderInspect {...props} />
+                                                ) : (
+                                                    unauthorized()
+                                                )
+                                            }
+                                        />
+                                        <Route
+                                            path="/users"
+                                            // component={OrderInspect}
+                                            render={props =>
+                                                userFromCookie &&
+                                                userFromCookie.type ===
+                                                    'admin' ? (
+                                                    <UserManagement
+                                                        {...props}
+                                                    />
                                                 ) : (
                                                     unauthorized()
                                                 )

@@ -49,6 +49,14 @@ UserSchema.statics.getAllUsers = function () {
     return this.find({}, { password: 0 }).sort({ name: 1 }).exec();
 };
 
+UserSchema.statics.getFilteredUsers = function (filter) {
+    if (filter)
+        return this.find({ type: filter }, { password: 0 })
+            .sort({ createdAt: -1 })
+            .exec();
+    return this.find({}, { password: 0 }).sort({ type: -1 }).exec();
+};
+
 UserSchema.statics.getById = function (userId) {
     return this.findById(userId);
 };
@@ -63,7 +71,9 @@ UserSchema.statics.updateUser = function (userObj) {
         {
             $set: {
                 name: userObj.name,
-                password: userObj.password,
+                image: userObj.image || undefined,
+                type: userObj.type,
+                password: userObj.password || undefined,
             },
         },
         { new: true }

@@ -26,7 +26,6 @@ function responseError(response, errMessage) {
 
 async function getCustomerOrders(req, res) {
     try {
-        console.log('getting customer orders');
         const { customerId } = req.params;
         const ordersArr = await OrderModel.getCustomerOrders(customerId);
         const totalVases = ordersArr.reduce((total, order) => {
@@ -103,7 +102,6 @@ async function updateVaseStatus(req, res) {
         );
         res.send(result);
     } catch (err) {
-        console.log(err);
         return responseError(res, err.message);
     }
 }
@@ -115,7 +113,6 @@ async function updateStatus(req, res) {
         const result = await OrderModel.updateStatus(orderId, newStatus);
         res.send(result);
     } catch (err) {
-        console.log(err);
         return responseError(res, err.message);
     }
 }
@@ -125,7 +122,7 @@ async function createOrder(req, res) {
         const newOrder = await OrderModel.createOrder(req.body);
         res.send(newOrder);
     } catch (err) {
-        console.log(err);
+        err;
         return responseError(res, err.message);
     }
 }
@@ -133,7 +130,6 @@ async function createOrder(req, res) {
 async function getAllOrders(req, res) {
     try {
         const orders = await OrderModel.getAllOrders();
-        console.log(orders[0].selectedVasesArray);
         const totalVases = orders.reduce((total, order) => {
             return Libs.Utils.getTotalVases(order.selectedVasesArray) + total;
         }, 0);

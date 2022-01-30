@@ -22,6 +22,8 @@ const snackMissingCreds = 'Missing Name / Password';
 const snackUnauthorized = 'You are not allowed to view this page, redirecting';
 const snackPleaseLogin =
     'Please Login in the top-right corner to place an order';
+
+const snackSavedUser = 'User saved succesfully';
 module.exports = {
     snackNoVases,
     snackVaseDeleted,
@@ -43,4 +45,5 @@ module.exports = {
     snackMissingCreds,
     snackUnauthorized,
     snackPleaseLogin,
+    snackSavedUser,
 };

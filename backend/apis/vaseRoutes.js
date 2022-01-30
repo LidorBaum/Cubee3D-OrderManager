@@ -44,7 +44,6 @@ async function createVase(req, res) {
         const newVase = await VaseModel.createVase(req.body);
         res.send(newVase);
     } catch (err) {
-        console.log(err);
         return responseError(res, err.message);
     }
 }

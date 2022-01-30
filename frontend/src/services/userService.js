@@ -8,10 +8,17 @@ export default {
     getUsers,
     getById,
     remove,
-    update,
+    updateUser,
     checkUserExistAndType,
     adminLogin,
+    addUser,
+    getFilteredUsers,
 };
+
+function getFilteredUsers(filter = null) {
+    if (filter) return httpService.get(`user/sorted?filter=${filter}`);
+    return httpService.get(`user/sorted`);
+}
 
 function checkUserExistAndType(name) {
     return httpService.get(`user/type/${name}`);
@@ -28,8 +35,12 @@ function remove(userId) {
     return httpService.delete(`user/${userId}`);
 }
 
-function update(user) {
-    return httpService.put(`user/${user._id}`, user);
+function addUser(userObj) {
+    return httpService.post('user', userObj);
+}
+
+function updateUser(user) {
+    return httpService.put(`user/edit/${user._id}`, user);
 }
 
 async function adminLogin(userCred) {

@@ -42,7 +42,7 @@ export function VaseOrderPreview({ vase, handleOpen }) {
                         Small
                         <br />
                         Height {vase.sizes.small.height}mm / Diameter{' '}
-                        {vase.sizes.small.height}mm
+                        {vase.sizes.small.diameter}mm
                     </span>
                 </ReactTooltip>
 
@@ -61,7 +61,7 @@ export function VaseOrderPreview({ vase, handleOpen }) {
                         Medium
                         <br />
                         Height {vase.sizes.medium.height}mm / Diameter{' '}
-                        {vase.sizes.medium.height}mm
+                        {vase.sizes.medium.diameter}mm
                     </span>
                 </ReactTooltip>
 
@@ -80,7 +80,7 @@ export function VaseOrderPreview({ vase, handleOpen }) {
                         Large
                         <br />
                         Height {vase.sizes.large.height}mm / Diameter{' '}
-                        {vase.sizes.large.height}mm
+                        {vase.sizes.large.diameter}mm
                     </span>
                 </ReactTooltip>
             </div>

@@ -78,7 +78,6 @@ OrderSchema.statics.getCustomerOrders = function (customerId) {
 };
 
 OrderSchema.statics.createOrder = function (orderObj) {
-    console.log(orderObj);
     return this.create(orderObj);
 };
 

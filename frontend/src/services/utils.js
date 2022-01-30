@@ -11,6 +11,13 @@ const emptyFilamentObj = {
     weight: 1000,
 };
 
+const emptyUserObj = {
+    name: '',
+    type: '',
+    image: '',
+    password: '',
+};
+
 const emptyVaseObj = {
     name: '',
     type: '',
@@ -46,4 +53,5 @@ module.exports = {
     emptyVaseObj,
     emptyFilamentObj,
     welcomeStores,
+    emptyUserObj,
 };
