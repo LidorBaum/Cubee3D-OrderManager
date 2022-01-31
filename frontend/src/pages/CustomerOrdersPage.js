@@ -7,6 +7,7 @@ import orderService from '../services/orderService';
 import { useHistory } from 'react-router';
 import { UserContext } from '../contexts/UserContext';
 
+
 export const CustomerOrdersPage = () => {
     const { loggedUser } = useContext(UserContext);
     const [ordersObj, setOrders] = useState(null);
