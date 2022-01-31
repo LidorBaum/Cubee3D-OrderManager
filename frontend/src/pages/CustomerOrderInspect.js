@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 import { OrderInspectProductList } from '../cmps/OrderInspectProductList';
 import ReactPlayer from 'react-player/twitch';
-
 import io from 'socket.io-client';
 
 const { baseURL } = require('../config');
@@ -136,9 +135,8 @@ export const CustomerOrderInspect = ({ match }) => {
         <div
             className="order-inspect"
             style={{
-                borderLeft: `10px solid ${
-                    borderStatus[orderForDetails.status]
-                }`,
+                borderLeft: `10px solid ${borderStatus[orderForDetails.status]
+                    }`,
             }}
         >
             <div className="order-information">
@@ -217,6 +215,7 @@ export const CustomerOrderInspect = ({ match }) => {
                         <span>{orderForDetails.totalPrintTime}h</span>
                     </p>
                 </div>
+
 
                 <div className="left-info">
                     <p>

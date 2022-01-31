@@ -47,6 +47,7 @@ const progressCircleColors = {
 };
 
 export const OrderInspect = ({ match }) => {
+    const { loggedUser } = useContext(UserContext)
     const [orderForDetails, setOrder] = useState(null);
     const [progress, setProgress] = useState(0);
 
@@ -181,9 +182,8 @@ export const OrderInspect = ({ match }) => {
         <div
             className="order-inspect"
             style={{
-                borderLeft: `10px solid ${
-                    borderStatus[orderForDetails.status]
-                }`,
+                borderLeft: `10px solid ${borderStatus[orderForDetails.status]
+                    }`,
             }}
         >
             <div className="order-information">
