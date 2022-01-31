@@ -8,6 +8,7 @@ export default {
     getAllOrders,
     getTotalPrintTime,
     updateVaseStatus,
+    updateVasePrintedCount,
     getCustomerOrders,
 };
 
@@ -25,6 +26,12 @@ async function createOrder(orderObj) {
 function updateOrder(orderObj) {
     return httpService.put(`order/edit/${orderObj._id}`, {
         newStatus: orderObj.status,
+    });
+}
+
+function updateVasePrintedCount(orderObj) {
+    return httpService.put(`order/edit/${orderObj.orderId}/printed`, {
+        ...orderObj,
     });
 }
 

@@ -44,6 +44,12 @@ const OrderSchema = Schema(
                         enum: ['Pending', 'Printing', 'Ready', 'Cancelled'],
                         default: 'Pending',
                     },
+                    printed: {
+                        type: Number,
+                        default: 0,
+                        min: 0,
+                        max: 5,
+                    },
                 },
             ],
             required: true,
@@ -87,6 +93,30 @@ OrderSchema.statics.getAllOrders = function () {
 
 OrderSchema.statics.getOrderById = function (orderId) {
     return this.findOne({ _id: orderId });
+};
+
+OrderSchema.statics.updateVasePrintedCount = function (
+    orderId,
+    uniqueKey,
+    isAdd
+) {
+    const amountToAdd = isAdd ? 1 : -1;
+    return this.findOneAndUpdate(
+        {
+            _id: orderId,
+            selectedVasesArray: {
+                $elemMatch: uniqueKey,
+            },
+        },
+        {
+            $inc: {
+                'selectedVasesArray.$.printed': amountToAdd,
+            },
+        },
+        {
+            new: true,
+        }
+    );
 };
 
 OrderSchema.statics.updateVaseStatus = function (

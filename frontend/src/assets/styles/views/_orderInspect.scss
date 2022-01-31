@@ -86,9 +86,17 @@
                 }
                 .info {
                     // width: 30%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
                     flex-grow: 1;
                     span {
                         font-weight: 800;
+                    }
+                    .plus-minus-container {
+                        display: flex;
+                        gap: 10px;
+                        justify-content: center;
                     }
                 }
                 .card-actions-btns {

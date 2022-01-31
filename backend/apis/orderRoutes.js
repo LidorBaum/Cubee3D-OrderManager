@@ -11,6 +11,11 @@ orderRouter.post('/', createOrder);
 
 orderRouter.get('/', getAllOrders);
 
+orderRouter.put(
+    '/edit/:orderId([A-Fa-f0-9]{24})/printed',
+    updateVasePrintedCount
+);
+
 orderRouter.put('/edit/:orderId([A-Fa-f0-9]{24})/vase', updateVaseStatus);
 
 orderRouter.put('/edit/:orderId([A-Fa-f0-9]{24})', updateStatus);
@@ -78,14 +83,32 @@ async function getOrderById(req, res) {
             calculatedInfo.totalPrintTime +=
                 currentVase.sizes[vase.vaseSize].printTime * vase.quantity;
             calculatedInfo.totalVases += vase.quantity;
-            if (vase.status === 'Ready')
-                calculatedInfo.totalPrinted += vase.quantity;
+            calculatedInfo.totalPrinted += vase.printed;
+            // if (vase.status === 'Ready')
+            //     calculatedInfo.totalPrinted += vase.quantity;
         });
         calculatedInfo.totalPrintTime =
             +calculatedInfo.totalPrintTime.toFixed(2);
         calculatedInfo.totalColors = calculatedInfo.totalColors.length;
         const newObj = { ...orderObj.toObject(), toto: 'toto' };
         res.send({ ...newObj, ...calculatedInfo });
+    } catch (err) {
+        return responseError(res, err.message);
+    }
+}
+
+async function updateVasePrintedCount(req, res) {
+    try {
+        // console.log(req.body);
+        const { orderId } = req.params;
+        const { isAdd, uniqueKey } = req.body;
+        const result = await OrderModel.updateVasePrintedCount(
+            orderId,
+            uniqueKey,
+            isAdd
+        );
+        console.log(result.selectedVasesArray[0]);
+        res.send(result);
     } catch (err) {
         return responseError(res, err.message);
     }

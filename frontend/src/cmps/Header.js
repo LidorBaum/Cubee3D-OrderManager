@@ -62,8 +62,8 @@ const navLinks = {
         Orders: '/inventory/order',
         Vase: '/inventory/vase',
         Filament: '/inventory/filament',
-        Products: '/order',
         Users: '/users',
+        Products: '/order',
     },
     guest: {
         Products: '/order',

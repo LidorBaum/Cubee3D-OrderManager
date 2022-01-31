@@ -41,6 +41,7 @@ function App() {
     useEffect(() => {
         const getUpdatedUser = async () => {
             const updated = await userService.getById(userFromCookie._id);
+            if (updated.error) notificationHandler.error(updated.error.message);
             setLoggedUser(updated);
         };
         if (userFromCookie) getUpdatedUser();

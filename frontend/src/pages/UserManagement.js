@@ -12,7 +12,7 @@ import Select from '@mui/material/Select';
 import { Button } from '@mui/material';
 import { emptyUserObj } from '../services/utils';
 import { uploadImg } from '../services/cloudinaryService';
-import { height } from '@mui/system';
+// import { height } from '@mui/system';
 
 import { snackSavedUser } from '../snackMessages';
 
@@ -256,7 +256,7 @@ export const UserManagement = () => {
                                 </FormControl>
                             </Box>
                             <TextField
-                                label="New Password"
+                                label="Password"
                                 name="password"
                                 value={userToEdit.password}
                                 onChange={handleChange}

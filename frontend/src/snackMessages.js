@@ -24,6 +24,9 @@ const snackPleaseLogin =
     'Please Login in the top-right corner to place an order';
 
 const snackSavedUser = 'User saved succesfully';
+const snackPrintedBelow0 = 'Printed Count can not be below 0!';
+const snackPrintedAboveQuantity = 'Printed Count can not be above quantity!';
+
 module.exports = {
     snackNoVases,
     snackVaseDeleted,
@@ -45,5 +48,7 @@ module.exports = {
     snackMissingCreds,
     snackUnauthorized,
     snackPleaseLogin,
+    snackPrintedAboveQuantity,
+    snackPrintedBelow0,
     snackSavedUser,
 };

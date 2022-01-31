@@ -75,6 +75,36 @@ export const OrderInspect = ({ match }) => {
         });
     };
 
+    const onChangeVasePrintedCount = async product => {
+        const indexOfProduct = orderForDetails.vasesArrForDisplay.findIndex(
+            prod => {
+                return (
+                    prod.vaseId === product.vaseId &&
+                    prod.filamentId === product.filamentId &&
+                    prod.vaseSize === product.vaseSize
+                );
+            }
+        );
+        const res = await orderService.updateVasePrintedCount({
+            orderId: orderForDetails._id,
+            uniqueKey: {
+                vaseId: orderForDetails.selectedVasesArray[indexOfProduct]
+                    .vaseId,
+                filamentId:
+                    orderForDetails.selectedVasesArray[indexOfProduct]
+                        .filamentId,
+                vaseSize:
+                    orderForDetails.selectedVasesArray[indexOfProduct].vaseSize,
+            },
+            isAdd: product.isAdd,
+        });
+        if (res.error) return notificationHandler.error(res.error.message);
+        setOrder(prevOrder => {
+            return { ...prevOrder, ...res };
+        });
+        setDoRefresh(!isRefresh);
+    };
+
     const onChangeVaseStatus = async product => {
         if (orderForDetails.status !== 'Printing')
             return notificationHandler.error(snackInvalidOrderStatus);
@@ -106,6 +136,7 @@ export const OrderInspect = ({ match }) => {
             },
             newStatus: vaseStatusesArr[indexOfStatus + 1],
         });
+        if (res.error) return notificationHandler.error(res.error.message);
         setOrder(prevOrder => {
             return { ...prevOrder, ...res };
         });
@@ -238,6 +269,7 @@ export const OrderInspect = ({ match }) => {
                     isAdmin={true}
                     productList={orderForDetails.vasesArrForDisplay}
                     changeStatus={onChangeVaseStatus}
+                    changeCount={onChangeVasePrintedCount}
                 />
             </div>
             {/* <h3>Total Orders: {orderForDetails._id}</h3> */}
