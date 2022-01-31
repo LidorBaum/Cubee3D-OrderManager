@@ -156,7 +156,7 @@ export const FialmentMangement = () => {
                     <Button variant="contained">Vases</Button>{' '}
                 </Link>
             </div>
-            <Box textAlign="center" sx={{ 'margin-top': 10 }}>
+            <Box textAlign="center" sx={{ m: 1 }}>
                 <Button
                     onClick={handleOpen}
                     className="add-new-btn"

@@ -11,6 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Button } from '@mui/material';
 import { emptyUserObj } from '../services/utils';
+import { UserContext } from '../contexts/UserContext';
 import { uploadImg } from '../services/cloudinaryService';
 // import { height } from '@mui/system';
 
@@ -37,6 +38,7 @@ export const UserManagement = () => {
         style.height = '77%';
     }
     const [users, setUsers] = useState(null);
+    const { loggedUser, setLoggedUser } = useContext(UserContext);
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [filter, setFilter] = useState('Show All');
     const [isUploading, setIsUploading] = useState(false);
@@ -126,9 +128,9 @@ export const UserManagement = () => {
             'https://res.cloudinary.com/echoshare/image/upload/v1643374508/Cubee3D/2884221-200_z5tsjy.png'
         )
             userObj.image = undefined;
-        console.log(userObj);
+        let updateUser;
         if (userObj._id) {
-            const updateUser = await userService.updateUser(userObj);
+            updateUser = await userService.updateUser(userObj);
             if (updateUser.error) {
                 notificationHandler.error(updateUser.error.message);
                 return setIsLoading(false);
@@ -140,6 +142,7 @@ export const UserManagement = () => {
                 return setIsLoading(false);
             }
         }
+        if (loggedUser._id === updateUser._id) setLoggedUser(updateUser);
         notificationHandler.success(snackSavedUser);
         setIsLoading(false);
         setUserToEdit({ ...emptyUserObj });

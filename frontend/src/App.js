@@ -77,7 +77,6 @@ function App() {
         info: message => showNotification('info', message),
         warning: message => showNotification('warning', message),
     };
-
     const showNotification = (severity, message) => {
         const snackObj = { severity, message, open: true };
         if (snack.open) {
