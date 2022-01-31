@@ -4,7 +4,8 @@ This Project is WIP <br />
 This project developed as freelancing job for [Cubee3D](https://cubee3d.com) . <br />
 The project includes a stock management of 3D printed Vases & 3D Filaments, <br/> and managing the orders that are placed from the local-stores.
 <br />
-Live hosting of the project at https://cubee3dordermanagement.herokuapp.com/
+Live hosting of the project at https://cubee3dordermanagement.herokuapp.com/ <br />
+Please allow a few seconds for the server to start-up
 <br />
 This project is based on ReactJS framework, NodeJS server and MongoDB.<br />
 <br/>
