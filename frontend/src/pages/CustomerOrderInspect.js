@@ -140,7 +140,7 @@ export const CustomerOrderInspect = ({ match }) => {
             }}
         >
             <div className="order-information">
-                <h1>Heroku</h1>
+                <h1>Heroku TESTER</h1>
                 <div className="progress-div">
                     <Box
                         className="progress"
