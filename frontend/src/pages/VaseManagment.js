@@ -227,7 +227,6 @@ export const VaseManagment = () => {
                 className="vase-form-modal"
             >
                 <Box sx={style} clasName="vase-form-modal-box">
-                    {/* <FormControl fullWidth> */}
                     <form id="vase-form" onSubmit={onAddVase}>
                         <div className="vase-form-basic">
                             <TextField
@@ -470,7 +469,6 @@ export const VaseManagment = () => {
                             </div>
                         </div>
                     </form>
-                    {/* </FormControl> */}
                     <Box textAlign="center" sx={{ 'margin-top': 30 }}>
                         <Button
                             disabled={isUploading || isLoading}

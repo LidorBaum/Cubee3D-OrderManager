@@ -13,7 +13,6 @@ import { Button } from '@mui/material';
 import { emptyUserObj } from '../services/utils';
 import { UserContext } from '../contexts/UserContext';
 import { uploadImg } from '../services/cloudinaryService';
-// import { height } from '@mui/system';
 
 import { snackSavedUser } from '../snackMessages';
 
@@ -85,7 +84,6 @@ export const UserManagement = () => {
     };
 
     const handleChangeUserType = e => {
-        // e.persist()
         setUserToEdit(prevForm => {
             return { ...prevForm, type: e.target.value, password: '' };
         });
@@ -218,7 +216,6 @@ export const UserManagement = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style} className="user-modal-container">
-                    {/* <FormControl fullWidth> */}
                     <h2>User Details</h2>
                     <form
                         className="user-form"
@@ -233,7 +230,6 @@ export const UserManagement = () => {
                                 value={userToEdit.name}
                                 onChange={handleChange}
                                 type="text"
-                                // inputProps={{ min: 1 }}
                             />
 
                             <Box className="filter-box">
@@ -271,7 +267,6 @@ export const UserManagement = () => {
                                 }}
                                 inputRef={valueRef}
                                 type="password"
-                                // style={{width: 240}}
                             />
                             <div className="form-img">
                                 <label htmlFor="img-input">
@@ -290,7 +285,6 @@ export const UserManagement = () => {
                             </div>
                         </div>
                     </form>
-                    {/* </FormControl> */}
                     <Box textAlign="center">
                         <Button
                             disabled={isUploading || isLoading}

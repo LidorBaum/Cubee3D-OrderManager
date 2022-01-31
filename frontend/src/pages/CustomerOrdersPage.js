@@ -8,11 +8,11 @@ import { useHistory } from 'react-router';
 import { UserContext } from '../contexts/UserContext';
 
 export const CustomerOrdersPage = () => {
-    const { loggedUser, setLoggedUser } = useContext(UserContext);
+    const { loggedUser } = useContext(UserContext);
     const [ordersObj, setOrders] = useState(null);
-    const [isRefresh, setDoRefresh] = useState(false);
     const notificationHandler = useContext(SnackbarHandlerContext);
     let history = useHistory();
+
     useEffect(() => {
         const getCustomerOrders = async () => {
             const res = await orderService.getCustomerOrders(loggedUser._id);
@@ -24,7 +24,7 @@ export const CustomerOrdersPage = () => {
         };
         if (!loggedUser) return;
         getCustomerOrders();
-    }, [loggedUser, isRefresh]);
+    }, [loggedUser]);
 
     const onInspect = orderId => {
         history.push(`/orders/order/${orderId}`);
@@ -36,6 +36,7 @@ export const CustomerOrdersPage = () => {
                 <Hypnosis width="200px" height="200px" duration="3s" />
             </div>
         );
+
     return (
         <React.Fragment>
             <div className="order-manage">
@@ -52,7 +53,6 @@ export const CustomerOrdersPage = () => {
                 </div>
                 <div className="statistics">
                     <h2>{loggedUser.name}'s Orders</h2>
-
                     <h3>Total Orders: {ordersObj.orders.length}</h3>
                     <h3>Total Vases: {ordersObj.totalVases}</h3>
                 </div>

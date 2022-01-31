@@ -41,7 +41,7 @@ const style = {
     dialogWidth: 500,
 };
 
-export const CartPage = props => {
+export const CartPage = () => {
     if (window.screen.width < 720) {
         style.width = window.screen.width - 50;
         style.overflow = 'scroll';

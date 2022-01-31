@@ -68,7 +68,6 @@ export const OrderPage = props => {
         dimensions: '',
         vaseId: '',
     });
-    const cartCookie = Cookies.get('cart');
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [vases, setVases] = useState(null);
     const [filaments, setFilaments] = useState(null);
@@ -194,25 +193,12 @@ export const OrderPage = props => {
         Cookies.set('cart', JSON.stringify(cartArr));
         handleClose();
     };
-    let myRef = useRef();
-
-    // const scrollTo = () => {
-    //     window.scrollTo({ behavior: 'smooth', top: elRef.current });
-    // };
 
     let elRef = useRef(null);
     const useScroll = () => {
         window.scrollTo({ behavior: 'smooth', top: elRef.current - 100 });
-
-        // const executeScroll = () => elRef.current.scrollIntoView({block: "end", inline: "nearest"});
-        // return [executeScroll, elRef];
     };
 
-    const ScrollDemo = () => {
-        // const myRef = useRef(null)
-        const [executeScroll, elRef] = useScroll();
-        useEffect(executeScroll, []); // Scroll on mount
-    };
     if (!filaments || !vases)
         return (
             <div className="loader">
@@ -257,13 +243,6 @@ export const OrderPage = props => {
                         />
                     </div>
                 </div>
-                {/* <div className="cart-container">
-                <Cart
-                    removeProduct={onRemoveProduct}
-                    selectedProducts={cart}
-                    onPlaceOrder={onPlaceOrder}
-                />
-            </div> */}
 
                 <Modal
                     open={open}
@@ -349,6 +328,11 @@ export const OrderPage = props => {
                                     className="addtocart"
                                     variant="contained"
                                     style={{ width: '180px' }}
+                                    disabled={
+                                        modalContent.selectedColorId
+                                            ? false
+                                            : true
+                                    }
                                 >
                                     Add to cart
                                 </Button>
@@ -366,7 +350,6 @@ export const OrderPage = props => {
                     sx={dialogStyle}
                     fullWidth
                     TransitionComponent={Transition}
-                    // style={{backgroundImage: `url(https://res.cloudinary.com/echoshare/image/upload/v1642465658/Cubee3D/61995740_2245317985550489_7473695634269143040_n_pr2m2w.jpg)`}}
                 >
                     <DialogTitle id="alert-dialog-title">
                         {`Hello ${store} TLV!`}

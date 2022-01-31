@@ -3,7 +3,7 @@ import { VaseOrderPreview } from './VaseOrderPreview';
 
 export const VaseOrderList = ({ vases, handleOpen }) => {
     return (
-        <>
+        <React.Fragment>
             <div className="vase-list">
                 {vases.map(vase => (
                     <VaseOrderPreview
@@ -13,6 +13,6 @@ export const VaseOrderList = ({ vases, handleOpen }) => {
                     />
                 ))}
             </div>
-        </>
+        </React.Fragment>
     );
 };

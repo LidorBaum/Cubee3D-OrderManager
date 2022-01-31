@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from '@mui/material';
 
-export const Home = props => {
+export const Home = () => {
     let history = useHistory();
 
     const onLogin = () => {

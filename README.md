@@ -12,9 +12,8 @@ To login as store-customer, and place & review orders, you can use the name: `gi
 To login as admin and manage the stock & and orders, you can use the name: `admin`, password: `admin` <br />
 
 ---
+
 ### Run Locally
-
-
 
 To run this project locally, clone the repository and run `npm i` in both backend and frontend folders.
 <br />

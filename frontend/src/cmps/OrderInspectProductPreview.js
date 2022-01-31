@@ -8,7 +8,7 @@ import {
     snackPrintedBelow0,
     snackPrintedAboveQuantity,
 } from '../snackMessages';
-import ReactTooltip from 'react-tooltip';
+
 const vaseStatuses = {
     Pending: 'Start Printing',
     Printing: 'Vase Ready',
@@ -63,11 +63,6 @@ export function OrderInspectProductPreview({
         setTimeout(() => {
             setIsLoading(false);
         }, 300);
-    };
-    const vaseStatuses = {
-        Pending: 'Start Printing',
-        Printing: 'Vase Ready',
-        Ready: null,
     };
 
     return (
