@@ -8,6 +8,7 @@ Live hosting of the project at https://cubee3dordermanagement.herokuapp.com/ <br
 Please allow a few seconds for the server to start-up
 <br />
 This project is based on ReactJS framework, NodeJS server and MongoDB.<br />
+Socket.io is used to live-update the order status <br />
 <br/>
 To login as store-customer, and place & review orders, you can use the name: `github` <br />
 To login as admin and manage the stock & and orders, you can use the name: `admin`, password: `admin` <br />
