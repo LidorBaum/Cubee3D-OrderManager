@@ -8,7 +8,6 @@ import { useHistory } from 'react-router';
 
 export const OrderManagement = () => {
     const [ordersObj, setOrders] = useState(null);
-    const [isRefresh, setDoRefresh] = useState(false);
     const notificationHandler = useContext(SnackbarHandlerContext);
     let history = useHistory();
     useEffect(() => {
@@ -21,7 +20,7 @@ export const OrderManagement = () => {
             setOrders(res);
         };
         getAllOrders();
-    }, [isRefresh]);
+    }, []);
 
     const onInspect = orderId => {
         history.push(`/inventory/order/${orderId}`);
@@ -49,8 +48,6 @@ export const OrderManagement = () => {
             <div className="statistics">
                 <h3>Total Orders: {ordersObj.orders.length}</h3>
                 <h3>Total Vases: {ordersObj.totalVases}</h3>
-                {/* <h3>Total Print Time: </h3>
-                <h3>Total Print Weight: </h3> */}
             </div>
         </div>
     );

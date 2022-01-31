@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
-import { OrderPreview } from '../cmps/orderPreview';
 import Hypnosis from 'react-cssfx-loading/lib/Hypnosis';
-import {
-    snackInvalidOrderStatus,
-    snackNotCompletedOrder,
-} from '../snackMessages';
+import { snackInvalidOrderStatus } from '../snackMessages';
 import orderService from '../services/orderService';
-import { Button, CircularProgress, Box, Typography, Modal } from '@mui/material';
-import { VaseOrderList } from '../cmps/VaseOrderList';
+import {
+    Button,
+    CircularProgress,
+    Box,
+    Typography,
+    Modal,
+} from '@mui/material';
 import { OrderInspectProductList } from '../cmps/OrderInspectProductList';
-import ReactPlayer from 'react-player/twitch'
-
+import ReactPlayer from 'react-player/twitch';
 import io from 'socket.io-client';
 
 const { baseURL } = require('../config');
@@ -22,25 +22,13 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    // width: 640,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
     textAlign: 'center',
-    // height: 360,
 };
 
-//this object describes the current status and next status - for button text
-const statuses = {
-    Pending: 'Approve Order',
-    Approved: 'Start Printing',
-    Printing: 'Order Ready',
-    Ready: 'Order Shipped',
-    Shipped: 'Order Delivered',
-    Delivered: null,
-    Cancelled: null,
-};
 const borderStatus = {
     Pending: 'orange',
     Approved: '#45e9ff',
@@ -91,7 +79,6 @@ export const CustomerOrderInspect = ({ match }) => {
         });
     }, []);
 
-
     const onChangeVaseStatus = async product => {
         if (orderForDetails.status !== 'Printing')
             return notificationHandler.error(snackInvalidOrderStatus);
@@ -136,7 +123,6 @@ export const CustomerOrderInspect = ({ match }) => {
     const handleClose = () => {
         setOpen(false);
     };
-
 
     if (!orderForDetails)
         return (
@@ -196,8 +182,15 @@ export const CustomerOrderInspect = ({ match }) => {
                         </Box>
                     </Box>
                 </div>
-                <div className='live-stream'>
-                    <Button onClick={handleOpen} size='large' variant='contained' color='secondary'>Watch Live Stream</Button>
+                <div className="live-stream">
+                    <Button
+                        onClick={handleOpen}
+                        size="large"
+                        variant="contained"
+                        color="secondary"
+                    >
+                        Watch Live Stream
+                    </Button>
                 </div>
                 <div className="right-info">
                     <p className="order-status-p">
@@ -247,12 +240,18 @@ export const CustomerOrderInspect = ({ match }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style} className="user-modal-container">
-                    <ReactPlayer width="100%"
-                        height="100%" playing={true} volume={0} muted={true} autoPlay controls={false} url='https://www.twitch.tv/echoshop3d' />
+                    <ReactPlayer
+                        width="100%"
+                        height="100%"
+                        playing={true}
+                        volume={0}
+                        muted={true}
+                        autoPlay
+                        controls={false}
+                        url="https://www.twitch.tv/echoshop3d"
+                    />
                 </Box>
             </Modal>
-            {/* <h3>Total Orders: {orderForDetails._id}</h3> */}
-            {/* <p>{JSON.stringify(orderForDetails)}</p> */}
         </div>
     );
 };

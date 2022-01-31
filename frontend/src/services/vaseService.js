@@ -1,13 +1,5 @@
 import httpService from './httpService';
 
-export default {
-    addVase,
-    updateVase,
-    getVaseById,
-    removeVase,
-    getAllVases,
-};
-
 async function addVase(vaseObj) {
     return await httpService.post('vase', vaseObj);
 }
@@ -26,3 +18,11 @@ function removeVase(vaseId) {
 function getAllVases() {
     return httpService.get('vase');
 }
+
+export default {
+    addVase,
+    updateVase,
+    getVaseById,
+    removeVase,
+    getAllVases,
+};

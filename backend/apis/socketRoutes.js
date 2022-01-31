@@ -7,10 +7,8 @@ function connectSockets(io) {
             socket.join(data);
         });
 
-        socket.on('update_dashboard', ({  orderId}) => {
-            socket
-                .to(orderId)
-                .emit('update_dashboard', { orderId });
+        socket.on('update_dashboard', ({ orderId }) => {
+            socket.to(orderId).emit('update_dashboard', { orderId });
         });
     });
 }
