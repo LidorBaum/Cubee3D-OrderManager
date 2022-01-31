@@ -27,9 +27,13 @@
         .left-info {
             display: flex;
             flex-direction: column;
+            margin-left: 30px;
             // width: 33%;
             // background-color: blue;
             // text-align: right;
+        }
+        .live-stream{
+            margin-top: 25px;
         }
         .right-info {
             width: 23%;
@@ -128,6 +132,10 @@
         flex-wrap: wrap;
         width: 85vw;
         .order-information {
+            .live-stream{
+                margin: 0px auto 10px auto;
+
+            }
             .progress-div {
                 margin: 0 auto;
             }

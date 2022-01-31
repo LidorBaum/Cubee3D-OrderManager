@@ -7,9 +7,29 @@ import {
     snackNotCompletedOrder,
 } from '../snackMessages';
 import orderService from '../services/orderService';
-import { Button, CircularProgress, Box, Typography } from '@mui/material';
+import { Button, CircularProgress, Box, Typography, Modal } from '@mui/material';
 import { VaseOrderList } from '../cmps/VaseOrderList';
 import { OrderInspectProductList } from '../cmps/OrderInspectProductList';
+import ReactPlayer from 'react-player/twitch'
+
+import io from 'socket.io-client';
+
+const { baseURL } = require('../config');
+const socket = io(baseURL);
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    // width: 640,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    textAlign: 'center',
+    // height: 360,
+};
 
 //this object describes the current status and next status - for button text
 const statuses = {
@@ -38,9 +58,14 @@ const progressCircleColors = {
 };
 
 export const CustomerOrderInspect = ({ match }) => {
+    if (window.screen.width < 1000) {
+        style.width = window.screen.width - 50;
+        style.overflow = 'scroll';
+        style.height = '30%';
+    }
     const [orderForDetails, setOrder] = useState(null);
     const [progress, setProgress] = useState(0);
-
+    const [open, setOpen] = useState(false);
     const notificationHandler = useContext(SnackbarHandlerContext);
     const [isRefresh, setDoRefresh] = useState(false);
 
@@ -56,24 +81,16 @@ export const CustomerOrderInspect = ({ match }) => {
         getOrder();
     }, [match.params.orderId, isRefresh]);
 
-    const onChangeStatus = async () => {
-        //ADD CHECK OF THE TOTAL PRINTED - can't ready order if not x/x
-        const statusesArr = Object.keys(statuses);
-        const indexOff = statusesArr.findIndex(
-            status => status === orderForDetails.status
-        );
+    useEffect(() => {
+        socket.emit('dashboard', match.params.orderId);
+    }, [match.params.orderId]);
 
-        if (orderForDetails.status === 'Printing' && progress !== 300)
-            return notificationHandler.error(snackNotCompletedOrder);
-        const res = await orderService.updateOrder({
-            ...orderForDetails,
-            status: statusesArr[indexOff + 1],
+    useEffect(() => {
+        socket.on('update_dashboard', ({ orderId }) => {
+            setDoRefresh(Math.random());
         });
-        if (res.error) return notificationHandler.error(res.error.message);
-        setOrder(prevOrder => {
-            return { ...prevOrder, ...res };
-        });
-    };
+    }, []);
+
 
     const onChangeVaseStatus = async product => {
         if (orderForDetails.status !== 'Printing')
@@ -113,6 +130,14 @@ export const CustomerOrderInspect = ({ match }) => {
         setDoRefresh(!isRefresh);
     };
 
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+
     if (!orderForDetails)
         return (
             <div className="loader">
@@ -124,9 +149,8 @@ export const CustomerOrderInspect = ({ match }) => {
         <div
             className="order-inspect"
             style={{
-                borderLeft: `10px solid ${
-                    borderStatus[orderForDetails.status]
-                }`,
+                borderLeft: `10px solid ${borderStatus[orderForDetails.status]
+                    }`,
             }}
         >
             <div className="order-information">
@@ -172,6 +196,9 @@ export const CustomerOrderInspect = ({ match }) => {
                         </Box>
                     </Box>
                 </div>
+                <div className='live-stream'>
+                    <Button onClick={handleOpen} size='large' variant='contained' color='secondary'>Watch Live Stream</Button>
+                </div>
                 <div className="right-info">
                     <p className="order-status-p">
                         Order status: <span>{orderForDetails.status}</span>
@@ -196,6 +223,7 @@ export const CustomerOrderInspect = ({ match }) => {
                     </p>
                 </div>
 
+
                 <div className="left-info">
                     <p>
                         Customer: <span>{orderForDetails.customerName}</span>{' '}
@@ -212,6 +240,17 @@ export const CustomerOrderInspect = ({ match }) => {
                     changeStatus={onChangeVaseStatus}
                 />
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className="user-modal-container">
+                    <ReactPlayer width="100%"
+                        height="100%" playing={true} volume={0} muted={true} autoPlay controls={false} url='https://www.twitch.tv/echoshop3d' />
+                </Box>
+            </Modal>
             {/* <h3>Total Orders: {orderForDetails._id}</h3> */}
             {/* <p>{JSON.stringify(orderForDetails)}</p> */}
         </div>

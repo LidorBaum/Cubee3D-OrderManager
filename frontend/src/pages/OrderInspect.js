@@ -7,9 +7,20 @@ import {
     snackNotCompletedOrder,
 } from '../snackMessages';
 import orderService from '../services/orderService';
-import { Button, CircularProgress, Box, Typography } from '@mui/material';
+import { Button, CircularProgress, Box, Typography , CardMedia} from '@mui/material';
 import { VaseOrderList } from '../cmps/VaseOrderList';
 import { OrderInspectProductList } from '../cmps/OrderInspectProductList';
+import io from 'socket.io-client';
+import { UserContext } from '../contexts/UserContext';
+import ReactTwitchEmbedVideo from "react-twitch-embed-video"
+import ReactPlayer from 'react-player/twitch'
+
+
+const { baseURL } = require('../config');
+const socket = io(baseURL);
+
+
+
 
 //this object describes the current status and next status - for button text
 const statuses = {
@@ -38,6 +49,7 @@ const progressCircleColors = {
 };
 
 export const OrderInspect = ({ match }) => {
+    const { loggedUser } = useContext(UserContext)
     const [orderForDetails, setOrder] = useState(null);
     const [progress, setProgress] = useState(0);
 
@@ -56,6 +68,25 @@ export const OrderInspect = ({ match }) => {
         getOrder();
     }, [match.params.orderId, isRefresh]);
 
+
+    useEffect(() => {
+        socket.emit('dashboard', match.params.orderId);
+    }, [match.params.orderId]);
+
+
+    useEffect(() => {
+        socket.on('update_dashboard', ({ orderId }) => {
+            setDoRefresh(!isRefresh);
+        });
+    }, []);
+
+    const updateConnectedSockets = async (orderId) => {
+        await socket.emit('update_dashboard', {
+            orderId
+        });
+    }
+
+
     const onChangeStatus = async () => {
         //ADD CHECK OF THE TOTAL PRINTED - can't ready order if not x/x
         const statusesArr = Object.keys(statuses);
@@ -73,6 +104,7 @@ export const OrderInspect = ({ match }) => {
         setOrder(prevOrder => {
             return { ...prevOrder, ...res };
         });
+        updateConnectedSockets(orderForDetails._id)
     };
 
     const onChangeVasePrintedCount = async product => {
@@ -102,6 +134,7 @@ export const OrderInspect = ({ match }) => {
         setOrder(prevOrder => {
             return { ...prevOrder, ...res };
         });
+        updateConnectedSockets(orderForDetails._id)
         setDoRefresh(!isRefresh);
     };
 
@@ -141,6 +174,7 @@ export const OrderInspect = ({ match }) => {
             return { ...prevOrder, ...res };
         });
         setDoRefresh(!isRefresh);
+        updateConnectedSockets(orderForDetails._id)
     };
 
     if (!orderForDetails)
@@ -154,9 +188,8 @@ export const OrderInspect = ({ match }) => {
         <div
             className="order-inspect"
             style={{
-                borderLeft: `10px solid ${
-                    borderStatus[orderForDetails.status]
-                }`,
+                borderLeft: `10px solid ${borderStatus[orderForDetails.status]
+                    }`,
             }}
         >
             <div className="order-information">
@@ -272,6 +305,7 @@ export const OrderInspect = ({ match }) => {
                     changeCount={onChangeVasePrintedCount}
                 />
             </div>
+
             {/* <h3>Total Orders: {orderForDetails._id}</h3> */}
             {/* <p>{JSON.stringify(orderForDetails)}</p> */}
         </div>
