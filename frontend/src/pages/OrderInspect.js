@@ -10,6 +10,14 @@ import orderService from '../services/orderService';
 import { Button, CircularProgress, Box, Typography } from '@mui/material';
 import { VaseOrderList } from '../cmps/VaseOrderList';
 import { OrderInspectProductList } from '../cmps/OrderInspectProductList';
+import io from 'socket.io-client';
+import { UserContext } from '../contexts/UserContext';
+
+const { baseURL } = require('../config');
+const socket = io(baseURL);
+
+
+
 
 //this object describes the current status and next status - for button text
 const statuses = {
@@ -38,6 +46,7 @@ const progressCircleColors = {
 };
 
 export const OrderInspect = ({ match }) => {
+    const {loggedUser} = useContext(UserContext)
     const [orderForDetails, setOrder] = useState(null);
     const [progress, setProgress] = useState(0);
 
@@ -55,6 +64,25 @@ export const OrderInspect = ({ match }) => {
         };
         getOrder();
     }, [match.params.orderId, isRefresh]);
+
+
+    useEffect(() => {
+        socket.emit('dashboard', match.params.orderId);
+    }, [match.params.orderId]);
+
+
+    useEffect(() => {
+        socket.on('update_dashboard', ({orderId }) => {
+            setDoRefresh(!isRefresh);
+        });
+    }, []);
+
+    const updateConnectedSockets = async (orderId) =>{
+        await socket.emit('update_dashboard', {
+            orderId
+        });
+    }
+
 
     const onChangeStatus = async () => {
         //ADD CHECK OF THE TOTAL PRINTED - can't ready order if not x/x
@@ -102,6 +130,7 @@ export const OrderInspect = ({ match }) => {
         setOrder(prevOrder => {
             return { ...prevOrder, ...res };
         });
+        updateConnectedSockets(orderForDetails._id)
         setDoRefresh(!isRefresh);
     };
 

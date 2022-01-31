@@ -10,6 +10,10 @@ import orderService from '../services/orderService';
 import { Button, CircularProgress, Box, Typography } from '@mui/material';
 import { VaseOrderList } from '../cmps/VaseOrderList';
 import { OrderInspectProductList } from '../cmps/OrderInspectProductList';
+import io from 'socket.io-client';
+
+const { baseURL } = require('../config');
+const socket = io(baseURL);
 
 //this object describes the current status and next status - for button text
 const statuses = {
@@ -56,24 +60,16 @@ export const CustomerOrderInspect = ({ match }) => {
         getOrder();
     }, [match.params.orderId, isRefresh]);
 
-    const onChangeStatus = async () => {
-        //ADD CHECK OF THE TOTAL PRINTED - can't ready order if not x/x
-        const statusesArr = Object.keys(statuses);
-        const indexOff = statusesArr.findIndex(
-            status => status === orderForDetails.status
-        );
+    useEffect(() => {
+        socket.emit('dashboard', match.params.orderId);
+    }, [match.params.orderId]);
 
-        if (orderForDetails.status === 'Printing' && progress !== 300)
-            return notificationHandler.error(snackNotCompletedOrder);
-        const res = await orderService.updateOrder({
-            ...orderForDetails,
-            status: statusesArr[indexOff + 1],
+    useEffect(() => {
+        socket.on('update_dashboard', ({orderId }) => {
+            setDoRefresh(Math.random());
         });
-        if (res.error) return notificationHandler.error(res.error.message);
-        setOrder(prevOrder => {
-            return { ...prevOrder, ...res };
-        });
-    };
+    }, []);
+    
 
     const onChangeVaseStatus = async product => {
         if (orderForDetails.status !== 'Printing')

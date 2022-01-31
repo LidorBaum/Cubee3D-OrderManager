@@ -1,15 +1,16 @@
 module.exports = connectSockets;
 
 function connectSockets(io) {
+    console.log('i m in sockets');
     io.on('connection', socket => {
-        socket.on('board_page', data => {
+        socket.on('dashboard', data => {
             socket.join(data);
         });
 
-        socket.on('update_board', ({ companyId, employeeId }) => {
+        socket.on('update_dashboard', ({  orderId}) => {
             socket
-                .to(companyId)
-                .emit('update_board', { companyId, employeeId });
+                .to(orderId)
+                .emit('update_dashboard', { orderId });
         });
     });
 }

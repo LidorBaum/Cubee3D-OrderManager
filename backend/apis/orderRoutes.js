@@ -99,7 +99,6 @@ async function getOrderById(req, res) {
 
 async function updateVasePrintedCount(req, res) {
     try {
-        // console.log(req.body);
         const { orderId } = req.params;
         const { isAdd, uniqueKey } = req.body;
         const result = await OrderModel.updateVasePrintedCount(
@@ -107,7 +106,6 @@ async function updateVasePrintedCount(req, res) {
             uniqueKey,
             isAdd
         );
-        console.log(result.selectedVasesArray[0]);
         res.send(result);
     } catch (err) {
         return responseError(res, err.message);

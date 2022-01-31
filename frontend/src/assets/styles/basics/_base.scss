@@ -22,10 +22,6 @@ body {
     max-width: 100%;
     overflow-x: hidden;
     background-color: #fff;
-    // display: flex;
-    // flex-direction: column;
-
-    // justify-content: space-between;
 }
 
 h1,
@@ -54,16 +50,8 @@ p {
 .App {
     display: flex;
     flex-direction: column;
-    // height: 100vh;
-    // flex: 1 0 auto
     height: 100vh;
 }
 .content {
     flex-grow: 1;
 }
-// :target {
-//     display: block;
-//     position: relative;
-//     top: -120px;
-//     visibility: hidden;
-//   }
