@@ -27,6 +27,8 @@ const style = {
     boxShadow: 24,
     p: 4,
     textAlign: 'center',
+    width: 1280,
+    height: 750
 };
 
 const borderStatus = {
