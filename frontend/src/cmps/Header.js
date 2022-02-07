@@ -167,8 +167,10 @@ export const Header = props => {
     };
 
     const onLoginAdmin = async () => {
-        if (!loginForm.name || !loginForm.password)
+        if (!loginForm.name || !loginForm.password){
+            setIsLoading(false)
             return notificationHandler.error(snackMissingCreds);
+        }
         const user = await userService.adminLogin(loginForm);
         if (user.error) {
             notificationHandler.error(user.error.message);

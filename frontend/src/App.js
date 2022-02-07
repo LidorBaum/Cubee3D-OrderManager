@@ -29,6 +29,10 @@ import userService from './services/userService';
 import { CustomerOrderInspect } from './pages/CustomerOrderInspect';
 import { UserManagement } from './pages/UserManagement';
 
+
+
+
+
 let userFromCookie;
 if (Cookies.get('user')) {
     userFromCookie = JSON.parse(Cookies.get('user'));
@@ -129,6 +133,7 @@ function App() {
                                 <Header />
                                 <div className="content">
                                     <ScrollToTop smooth />
+
                                     <Switch>
                                         <Route
                                             path="/"
@@ -144,7 +149,7 @@ function App() {
                                             // component={VaseManagment}
                                             render={() =>
                                                 userFromCookie &&
-                                                userFromCookie.type ===
+                                                    userFromCookie.type ===
                                                     'admin' ? (
                                                     <VaseManagment />
                                                 ) : (
@@ -156,7 +161,7 @@ function App() {
                                             path="/inventory/filament"
                                             render={() =>
                                                 userFromCookie &&
-                                                userFromCookie.type ===
+                                                    userFromCookie.type ===
                                                     'admin' ? (
                                                     <FialmentMangement />
                                                 ) : (
@@ -169,7 +174,7 @@ function App() {
                                             // component={OrderInspect}
                                             render={props =>
                                                 userFromCookie &&
-                                                userFromCookie.type ===
+                                                    userFromCookie.type ===
                                                     'admin' ? (
                                                     <OrderInspect {...props} />
                                                 ) : (
@@ -182,7 +187,7 @@ function App() {
                                             // component={OrderInspect}
                                             render={props =>
                                                 userFromCookie &&
-                                                userFromCookie.type ===
+                                                    userFromCookie.type ===
                                                     'admin' ? (
                                                     <UserManagement
                                                         {...props}
@@ -198,7 +203,7 @@ function App() {
                                             render={() =>
                                                 userFromCookie?.type ===
                                                     'admin' ||
-                                                userFromCookie?.type ===
+                                                    userFromCookie?.type ===
                                                     'customer' ? (
                                                     <OrderManagement />
                                                 ) : (
@@ -242,7 +247,7 @@ function App() {
                                                     unauthorized()
                                                 )
                                             }
-                                            // component={CustomerOrdersPage}
+                                        // component={CustomerOrdersPage}
                                         />
                                         <Route
                                             path="/cart"

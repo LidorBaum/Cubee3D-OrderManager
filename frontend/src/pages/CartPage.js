@@ -164,6 +164,7 @@ export const CartPage = () => {
     };
 
     const onEditProduct = async productObj => {
+        console.log('editing product');
         const filamentsArray = await filamentService.getAllFilaments();
         if (filamentsArray.error)
             return notificationHandler.error(filamentsArray.error.message);
@@ -178,6 +179,7 @@ export const CartPage = () => {
                 prod.size === productObj.size
             );
         });
+        console.log(productForEditObj);
         setProductForEdit(productForEditObj);
         const colorIndex = filamentsArray.findIndex(filament => {
             return filament._id === productForEditObj.filamentId;
@@ -186,6 +188,7 @@ export const CartPage = () => {
             ...productForEditObj,
             selectedColorId: productForEditObj.filamentId,
             selectedColor: filamentsArray[colorIndex].image,
+            quantity: productForEditObj.quantity
         });
     };
 
@@ -404,9 +407,9 @@ export const CartPage = () => {
                                     <br />
                                     <TextField
                                         onChange={onChangeQuantity}
-                                        defaultValue="1"
+                                        value={modalContent.quantity}
                                         InputProps={{
-                                            inputProps: { min: 0, max: 10 },
+                                            inputProps: { min: 0, max: 1000 },
                                         }}
                                         size="medium"
                                         type="number"
