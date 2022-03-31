@@ -78,10 +78,7 @@ export const OrderPage = props => {
         const getVasesAndFilaments = async () => {
             let vases = await vaseService.getAllVases();
             if (vases.error) return notificationHandler.error(vases.error.message);
-            console.log(vases);
             vases = vases.filter(vase => vase.isAvailable)
-            console.log(vases);
-            // vases = []
             if (!vases.length) {
                 notificationHandler.error(snackNoVases);
             }
