@@ -84,7 +84,6 @@ export const OrderPage = props => {
             }
             const arrangedVases = arrangeVasesByType(vases);
             let filamentsArray = await filamentService.getAllFilaments();
-            console.log(filamentsArray);
             if (filamentsArray.error)
                 return notificationHandler.error(filamentsArray.error.message);
                 filamentsArray = filamentsArray.filter(filament => filament.isAvailable)
