@@ -83,9 +83,11 @@ export const OrderPage = props => {
                 notificationHandler.error(snackNoVases);
             }
             const arrangedVases = arrangeVasesByType(vases);
-            const filamentsArray = await filamentService.getAllFilaments();
+            let filamentsArray = await filamentService.getAllFilaments();
+            console.log(filamentsArray);
             if (filamentsArray.error)
                 return notificationHandler.error(filamentsArray.error.message);
+                filamentsArray = filamentsArray.filter(filament => filament.isAvailable)
             if (!filamentsArray.length) {
                 notificationHandler.error(snackNoFilaments);
             }
@@ -209,39 +211,39 @@ export const OrderPage = props => {
     return (
         <React.Fragment>
             <div className="quick-links">
-                <Button variant="contained" style={{ textTransform: 'none' }}>
+            {vases.typePlanter.length > 0 && <Button variant="contained" style={{ textTransform: 'none' }}>
                     <a href="#planter">Planters</a>
-                </Button>
-                <Button variant="contained" style={{ textTransform: 'none' }}>
+                </Button> }
+                {vases.typeVase.length > 0 && <Button variant="contained" style={{ textTransform: 'none' }}>
                     <a href="#vase">Vases</a>
-                </Button>
-                <Button variant="contained" style={{ textTransform: 'none' }}>
-                    <a href="#bowl">Bowls</a>
-                </Button>
+                </Button> }
+                {vases.typeBowl.length > 0 && <Button variant="contained" style={{ textTransform: 'none' }}>
+                    <a href="#bowl">Bowls</a> 
+                </Button> }
             </div>
             <div className="order-page">
                 <div ref={elRef} id="planter" className="products">
-                    <div className="type-list-container">
+                    {vases.typePlanter.length > 0 && <div className="type-list-container">
                         <h2>Planters</h2>
                         <VaseOrderList
                             vases={vases.typePlanter}
                             handleOpen={handleOpen}
                         />
-                    </div>
-                    <div ref={elRef} id="vase" className="type-list-container">
+                    </div>}
+                    {vases.typeVase.length > 0 && <div ref={elRef} id="vase" className="type-list-container">
                         <h2>Vases</h2>
                         <VaseOrderList
                             vases={vases.typeVase}
                             handleOpen={handleOpen}
                         />
-                    </div>
-                    <div ref={elRef} id="bowl" className="type-list-container">
+                    </div>}
+                    {vases.typeBowl.length > 0 && <div ref={elRef} id="bowl" className="type-list-container">
                         <h2>Bowls</h2>
                         <VaseOrderList
                             vases={vases.typeBowl}
                             handleOpen={handleOpen}
                         />
-                    </div>
+                    </div> }
                 </div>
 
                 <Modal
