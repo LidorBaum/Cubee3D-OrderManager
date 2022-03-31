@@ -76,9 +76,12 @@ export const OrderPage = props => {
 
     useEffect(() => {
         const getVasesAndFilaments = async () => {
-            const vases = await vaseService.getAllVases();
-            if (vases.error)
-                return notificationHandler.error(vases.error.message);
+            let vases = await vaseService.getAllVases();
+            if (vases.error) return notificationHandler.error(vases.error.message);
+            console.log(vases);
+            vases = vases.filter(vase => vase.isAvailable)
+            console.log(vases);
+            // vases = []
             if (!vases.length) {
                 notificationHandler.error(snackNoVases);
             }
@@ -272,7 +275,7 @@ export const OrderPage = props => {
                                         {filaments.map(filament => {
                                             const isSelected =
                                                 modalContent.selectedColorId ===
-                                                filament._id
+                                                    filament._id
                                                     ? 'selectedColor'
                                                     : '';
                                             return (
@@ -323,9 +326,8 @@ export const OrderPage = props => {
                                     />
                                 </div>
                                 <Button
-                                    className="add-to-cart-btn"
+                                    className="add-to-cart-btn addtocart"
                                     onClick={onAddToCart}
-                                    className="addtocart"
                                     variant="contained"
                                     style={{ width: '180px' }}
                                     disabled={
