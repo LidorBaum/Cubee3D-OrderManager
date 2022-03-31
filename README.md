@@ -1,6 +1,5 @@
 # Cubee3D-OrderManager
 
-This Project is WIP <br />
 This project developed as freelancing job for [Cubee3D](https://cubee3d.com) . <br />
 The project includes a stock management of 3D printed Vases & 3D Filaments, <br/> and managing the orders that are placed from the local-stores.
 <br />
