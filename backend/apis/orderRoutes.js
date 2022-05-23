@@ -143,7 +143,8 @@ async function createOrder(req, res) {
         console.log(req.body)
         const newOrder = await OrderModel.createOrder(req.body);
         const sgMail = require('@sendgrid/mail')
-        sgMail.setApiKey('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')
+        console.log(process.env.NODE_ENV_SENDGRID);
+        sgMail.setApiKey(process.env.NODE_ENV_SENDGRID)
         const msg = {
             to: ['lidor5500@gmail.com', 'lidor@cubee3d.com', 'oded@cubee3d.com', 'daniel@cubee3d.com'], // Change to your recipient
             from: 'lidor@cubee3d.com', // Change to your verified sender
