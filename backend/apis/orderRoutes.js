@@ -143,7 +143,6 @@ async function createOrder(req, res) {
         console.log(req.body)
         const newOrder = await OrderModel.createOrder(req.body);
         const sgMail = require('@sendgrid/mail')
-        console.log(process.env.NODE_ENV_SENDGRID);
         sgMail.setApiKey(process.env.NODE_ENV_SENDGRID)
         const msg = {
             to: ['lidor5500@gmail.com', 'lidor@cubee3d.com', 'oded@cubee3d.com', 'daniel@cubee3d.com'], // Change to your recipient
@@ -155,6 +154,7 @@ async function createOrder(req, res) {
           sgMail
             .sendMultiple(msg)
             .then(() => {
+                console.log('emails sent succesfully');
             })
             .catch((error) => {
               console.error(error)
