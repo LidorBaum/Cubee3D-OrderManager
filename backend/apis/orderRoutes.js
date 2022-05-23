@@ -140,7 +140,24 @@ async function updateStatus(req, res) {
 
 async function createOrder(req, res) {
     try {
+        console.log(req.body)
         const newOrder = await OrderModel.createOrder(req.body);
+        const sgMail = require('@sendgrid/mail')
+        sgMail.setApiKey('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')
+        const msg = {
+            to: ['lidor5500@gmail.com', 'lidor@cubee3d.com', 'oded@cubee3d.com', 'daniel@cubee3d.com'], // Change to your recipient
+            from: 'lidor@cubee3d.com', // Change to your verified sender
+            subject: `New Order In Order Manager from ${newOrder.customerName}!`,
+            text: 'Please check it out on the Order Manager.',
+            html: '<strong>Thanks.</strong>',
+          }
+          sgMail
+            .sendMultiple(msg)
+            .then(() => {
+            })
+            .catch((error) => {
+              console.error(error)
+            })
         res.send(newOrder);
     } catch (err) {
         err;
