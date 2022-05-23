@@ -140,7 +140,6 @@ async function updateStatus(req, res) {
 
 async function createOrder(req, res) {
     try {
-        console.log(req.body)
         const newOrder = await OrderModel.createOrder(req.body);
         const sgMail = require('@sendgrid/mail')
         sgMail.setApiKey(process.env.NODE_ENV_SENDGRID)
